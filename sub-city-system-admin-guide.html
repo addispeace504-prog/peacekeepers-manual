@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peace Keepers — Sub City System Admin Guide</title>
+<style>
+  :root{
+    --brand-dark:#0d3d2e;
+    --brand-green:#1a5c3f;
+    --brand-light:#e8f5ec;
+    --brand-gold:#c9a227;
+    --brand-gold-2:#e0b83a;
+    --card:#ffffff;
+    --text:#1a1a1a;
+    --muted:#64748b;
+    --border:#e2e8f0;
+    --bg:#f4f7f5;
+    --error:#dc2626;
+    --success:#16a34a;
+    --info:#2563eb;
+    --warn:#f59e0b;
+    --purple:#7c3aed;
+    --subcity:#7c3aed;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Segoe UI','Inter',system-ui,sans-serif;
+    background:var(--bg); color:var(--text);
+    line-height:1.75; font-size:15px;
+  }
+
+  /* ============ TOP BAR ============ */
+  .top-bar{
+    position:sticky; top:0; z-index:300;
+    background:var(--brand-dark); color:#fff;
+    padding:10px 22px; display:flex; justify-content:space-between;
+    align-items:center; flex-wrap:wrap; gap:10px;
+    box-shadow:0 4px 18px rgba(13,61,46,.35);
+    border-bottom:3px solid var(--brand-gold);
+  }
+  .top-bar .brand{
+    display:flex; align-items:center; gap:10px;
+    font-weight:800; font-size:.95rem;
+  }
+  .top-bar .brand .seal{
+    width:32px; height:32px; border-radius:50%;
+    background:radial-gradient(circle,#7c3aed 0%,#5b21b6 60%,#0d3d2e 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1rem; border:2px solid var(--brand-gold);
+  }
+  .top-bar .role-badge{
+    background:var(--subcity); color:#fff; padding:5px 14px;
+    border-radius:20px; font-weight:700; font-size:.82rem;
+    letter-spacing:.5px;
+  }
+
+  /* ============ HERO ============ */
+  header.hero{
+    background:
+      radial-gradient(circle at 20% 30%, rgba(201,162,39,.28), transparent 55%),
+      radial-gradient(circle at 80% 70%, rgba(124,58,237,.55), transparent 55%),
+      linear-gradient(135deg,#0d3d2e 0%,#5b21b6 60%,#0d3d2e 100%);
+    color:#fff; padding:60px 24px 70px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  header.hero .seal-big{
+    font-size:5rem; margin-bottom:14px; display:block;
+    filter:drop-shadow(0 6px 20px rgba(0,0,0,.5));
+    animation:float 3.5s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  header.hero h1{
+    font-size:2rem; margin-bottom:10px; letter-spacing:.3px;
+    text-shadow:0 4px 20px rgba(0,0,0,.4); font-weight:800;
+  }
+  header.hero h2{
+    font-size:1.15rem; font-weight:400; opacity:.92; margin-bottom:6px;
+  }
+  header.hero p.lead{
+    max-width:780px; margin:18px auto 0; font-size:1rem;
+    opacity:.92; line-height:1.75;
+  }
+  header.hero .badges{
+    display:flex; gap:8px; justify-content:center;
+    flex-wrap:wrap; margin-top:24px;
+  }
+  header.hero .badge{
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.28);
+    backdrop-filter:blur(8px); padding:6px 16px; border-radius:24px;
+    font-weight:600; font-size:.82rem;
+  }
+  header.hero .badge.gold{
+    background:var(--brand-gold); color:var(--brand-dark);
+    border-color:var(--brand-gold); font-weight:800;
+  }
+
+  /* ============ SEARCH ============ */
+  .search-bar{
+    position:sticky; top:52px; z-index:200;
+    background:rgba(255,255,255,.98); backdrop-filter:blur(10px);
+    padding:12px 22px; box-shadow:0 4px 18px rgba(13,61,46,.08);
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    border-bottom:3px solid var(--brand-gold);
+  }
+  .search-bar input{
+    flex:1; min-width:240px;
+    padding:11px 20px 11px 44px;
+    border:2px solid var(--border); border-radius:30px;
+    font-size:.95rem; outline:none; transition:.25s;
+    background:#f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E") no-repeat 16px center;
+  }
+  .search-bar input:focus{
+    border-color:var(--brand-green); background-color:#fff;
+    box-shadow:0 0 0 4px rgba(26,92,63,.12);
+  }
+  .search-bar button{
+    background:linear-gradient(135deg,var(--brand-dark),var(--brand-green));
+    color:#fff; border:none; padding:11px 22px; border-radius:30px;
+    font-weight:700; cursor:pointer; transition:.25s; font-size:.9rem;
+  }
+  .search-bar button:hover{transform:translateY(-2px)}
+  .search-stats{font-size:.82rem; color:var(--muted); font-weight:600}
+
+  /* ============ TOC ============ */
+  nav.toc{
+    max-width:1180px; margin:22px auto; padding:30px 34px;
+    background:#fff; border-radius:16px;
+    box-shadow:0 4px 24px rgba(13,61,46,.08);
+    border-top:6px solid var(--brand-gold);
+  }
+  nav.toc h2{
+    color:var(--brand-dark); font-size:1.35rem;
+    margin-bottom:20px; display:flex; align-items:center; gap:10px;
+  }
+  nav.toc ol{
+    list-style:none; display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:6px; counter-reset:toc;
+  }
+  nav.toc ol li{counter-increment:toc}
+  nav.toc a{
+    color:var(--text); text-decoration:none;
+    padding:10px 14px; display:flex; align-items:center;
+    gap:10px; border-radius:10px;
+    border-left:4px solid transparent;
+    transition:.2s; font-weight:500; font-size:.9rem;
+  }
+  nav.toc a:hover{
+    background:var(--brand-light); border-left-color:var(--brand-gold);
+    color:var(--brand-dark); transform:translateX(4px);
+  }
+  nav.toc a::before{
+    content:counter(toc);
+    background:var(--subcity); color:#fff;
+    width:26px; height:26px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.78rem; flex-shrink:0;
+  }
+
+  /* ============ MAIN ============ */
+  main{max-width:1180px; margin:auto; padding:0 22px 80px}
+  section{
+    background:#fff; margin:28px 0; padding:34px 38px;
+    border-radius:16px; box-shadow:0 4px 20px rgba(13,61,46,.06);
+    border-left:7px solid var(--brand-dark);
+    scroll-margin-top:130px;
+  }
+  section:nth-of-type(3n+1){border-left-color:var(--brand-dark)}
+  section:nth-of-type(3n+2){border-left-color:var(--brand-gold)}
+  section:nth-of-type(3n+3){border-left-color:var(--subcity)}
+  section h2{
+    color:var(--brand-dark); font-size:1.45rem; margin-bottom:18px;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    padding-bottom:14px; border-bottom:2px dashed var(--border);
+  }
+  section h2 .icon{
+    background:linear-gradient(135deg,var(--subcity),#a78bfa);
+    color:#fff; width:48px; height:48px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem; flex-shrink:0;
+    box-shadow:0 4px 12px rgba(124,58,237,.35);
+    border:2px solid var(--brand-gold);
+  }
+  section h3{
+    color:var(--brand-green); margin:28px 0 14px;
+    font-size:1.18rem; display:flex; align-items:center; gap:8px;
+  }
+  section h3::before{content:"▸"; color:var(--brand-gold); font-size:1.4rem}
+  p{margin-bottom:14px; color:#334155; font-size:.97rem}
+
+  /* ============ PERMISSION CARD ============ */
+  .permission{
+    background:#fff; border:2px solid var(--border);
+    border-radius:14px; padding:26px 30px; margin:28px 0;
+    border-left:6px solid var(--subcity);
+    box-shadow:0 4px 16px rgba(13,61,46,.06);
+    transition:.25s;
+  }
+  .permission:hover{
+    box-shadow:0 8px 28px rgba(13,61,46,.12);
+    border-left-width:10px;
+  }
+  .permission .perm-header{
+    display:flex; align-items:flex-start; gap:14px;
+    padding-bottom:14px; border-bottom:2px dashed var(--border);
+    margin-bottom:18px;
+  }
+  .permission .perm-num{
+    background:linear-gradient(135deg,var(--subcity),#a78bfa);
+    color:#fff; min-width:44px; height:44px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:1.05rem; flex-shrink:0;
+    box-shadow:0 3px 10px rgba(124,58,237,.4);
+  }
+  .permission .perm-title{
+    color:var(--subcity); font-size:1.15rem; font-weight:800;
+    margin-bottom:4px;
+  }
+  .permission .perm-sub{
+    color:var(--muted); font-size:.85rem; font-style:italic;
+  }
+
+  .info-block{
+    background:var(--brand-light); border-radius:10px;
+    padding:14px 18px; margin-bottom:16px;
+    border-left:4px solid var(--brand-gold);
+  }
+  .info-block strong{color:var(--brand-dark); display:block; margin-bottom:4px}
+  .info-block ul{margin-left:20px; margin-top:6px; font-size:.93rem}
+  .info-block li{margin-bottom:4px}
+
+  .menu-path{
+    background:#0f172a; color:#c4b5fd; padding:12px 16px;
+    border-radius:8px; font-family:'Consolas',monospace;
+    font-size:.88rem; margin:12px 0;
+    border-left:4px solid var(--brand-gold);
+  }
+  .menu-path::before{content:"📍 "; margin-right:4px}
+
+  ol.steps{list-style:none; padding:0; margin:16px 0}
+  ol.steps > li{
+    display:flex; align-items:flex-start; gap:14px;
+    margin-bottom:14px; padding:14px 18px;
+    background:var(--brand-light); border-radius:12px;
+    border-left:5px solid var(--brand-gold);
+    transition:.2s;
+  }
+  ol.steps > li:hover{background:#dcefe2; transform:translateX(4px)}
+  ol.steps > li .step-badge{
+    background:linear-gradient(135deg,var(--subcity),#a78bfa);
+    color:#fff; min-width:34px; height:34px; border-radius:50%;
+    font-weight:800; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; font-size:.95rem;
+    box-shadow:0 3px 10px rgba(124,58,237,.4);
+  }
+  ol.steps > li .step-text{flex:1; font-size:.96rem}
+  ol.steps > li .step-text strong{
+    color:var(--brand-dark); display:block;
+    margin-bottom:4px; font-size:1rem;
+  }
+  ol.steps > li .step-text code{
+    background:#0d3d2e; color:#c4b5fd; padding:2px 8px;
+    border-radius:5px; font-size:.85em;
+  }
+
+  .outcome{
+    background:linear-gradient(90deg,#ecfdf5,#f0fdf4);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--success);
+  }
+  .outcome strong{color:var(--success); display:block; margin-bottom:6px}
+  .outcome ul{margin-left:20px; font-size:.93rem}
+  .outcome li{margin-bottom:4px}
+
+  .mistakes{
+    background:linear-gradient(90deg,#fffbeb,#fef3c7);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--warn);
+  }
+  .mistakes strong{color:#b45309; display:block; margin-bottom:6px}
+  .mistakes ul{margin-left:20px; font-size:.93rem}
+  .mistakes li{margin-bottom:4px}
+
+  .troubleshoot{
+    background:linear-gradient(90deg,#fef2f2,#fee2e2);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--error);
+  }
+  .troubleshoot strong{color:var(--error); display:block; margin-bottom:6px}
+  .troubleshoot ul{margin-left:20px; font-size:.93rem}
+  .troubleshoot li{margin-bottom:6px}
+  .troubleshoot code{
+    background:#7f1d1d; color:#fecaca; padding:2px 8px;
+    border-radius:5px; font-size:.85em;
+  }
+
+  /* ============ CALLOUTS ============ */
+  .callout{
+    padding:16px 20px; border-radius:12px; margin:20px 0;
+    border-left:5px solid; display:flex; gap:14px; align-items:flex-start;
+    font-size:.94rem;
+  }
+  .callout .co-icon{font-size:1.5rem; flex-shrink:0}
+  .callout strong{display:block; margin-bottom:4px; font-size:1rem}
+  .callout.tip{background:linear-gradient(90deg,#ecfdf5,#f0fdf4); border-color:var(--success)}
+  .callout.tip strong{color:var(--success)}
+  .callout.warn{background:linear-gradient(90deg,#fffbeb,#fef3c7); border-color:var(--warn)}
+  .callout.warn strong{color:#b45309}
+  .callout.danger{background:linear-gradient(90deg,#fef2f2,#fee2e2); border-color:var(--error)}
+  .callout.danger strong{color:var(--error)}
+  .callout.info{background:linear-gradient(90deg,#eff6ff,#e0f2fe); border-color:var(--info)}
+  .callout.info strong{color:var(--info)}
+  .callout.purple{background:linear-gradient(90deg,#f5f3ff,#ede9fe); border-color:var(--purple)}
+  .callout.purple strong{color:var(--purple)}
+
+  /* ============ BUTTON MOCK ============ */
+  .btn-mock{
+    display:inline-block; padding:6px 16px; border-radius:8px;
+    font-weight:700; font-size:.82rem; margin:2px 4px;
+    color:#fff; box-shadow:0 3px 8px rgba(0,0,0,.15);
+  }
+  .btn-mock.primary{background:linear-gradient(135deg,var(--subcity),#a78bfa)}
+  .btn-mock.success{background:linear-gradient(135deg,var(--success),#22c55e)}
+  .btn-mock.warn{background:linear-gradient(135deg,var(--warn),var(--brand-gold-2)); color:#000}
+  .btn-mock.danger{background:linear-gradient(135deg,var(--error),#ef4444)}
+  .btn-mock.gold{background:linear-gradient(135deg,var(--brand-gold),var(--brand-gold-2)); color:var(--brand-dark)}
+  .btn-mock.gray{background:#64748b}
+
+  /* ============ SCREENSHOT ============ */
+  .screenshot{
+    background:linear-gradient(135deg,#f5f3ff,#ede9fe);
+    border:3px dashed var(--brand-gold);
+    border-radius:14px; padding:36px 24px; text-align:center;
+    margin:20px 0; color:var(--brand-dark);
+  }
+  .screenshot .s-icon{font-size:3rem; margin-bottom:10px; display:block}
+  .screenshot strong{display:block; font-size:1.05rem; margin-bottom:6px; color:var(--brand-dark)}
+  .screenshot small{color:var(--muted); font-size:.83rem}
+
+  /* ============ SEARCH HIGHLIGHT ============ */
+  .hl{background:#fde047; padding:1px 3px; border-radius:3px; font-weight:600}
+  .hidden{display:none !important}
+  #noResult{
+    text-align:center; padding:60px 20px; color:var(--error);
+    font-weight:700; font-size:1.15rem; display:none;
+  }
+
+  /* ============ TOP BUTTON ============ */
+  #toTop{
+    position:fixed; right:22px; bottom:22px; z-index:150;
+    background:linear-gradient(135deg,var(--subcity),#a78bfa);
+    color:#fff; border:2px solid var(--brand-gold);
+    width:54px; height:54px; border-radius:50%;
+    font-size:1.3rem; cursor:pointer; display:none;
+    box-shadow:0 6px 20px rgba(124,58,237,.5);
+    transition:.25s;
+  }
+  #toTop:hover{transform:translateY(-4px) scale(1.08)}
+
+  /* ============ FOOTER ============ */
+  footer{
+    background:linear-gradient(135deg,#0d3d2e,#051e16);
+    color:#cbd5e1; text-align:center; padding:46px 24px; margin-top:60px;
+    border-top:4px solid var(--brand-gold);
+  }
+  footer .f-title{
+    color:var(--brand-gold); font-weight:800;
+    font-size:1.15rem; margin-bottom:10px;
+  }
+  footer p{font-size:.88rem; opacity:.85; margin:4px 0; color:#cbd5e1}
+
+  @media (max-width:640px){
+    header.hero h1{font-size:1.5rem}
+    section{padding:22px 20px}
+    .permission{padding:20px 22px}
+    nav.toc ol{grid-template-columns:1fr}
+    .search-bar{top:46px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="top-bar">
+  <div class="brand">
+    <span class="seal">🛡️</span>
+    <span>Peace Keepers · User Manual</span>
+  </div>
+  <span class="role-badge">🟣 SUB CITY SYSTEM ADMIN</span>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <span class="seal-big">⚙️</span>
+  <h1>Peace Keepers — Sub City System Admin Guide</h1>
+  <h2>Role-Based User Manual · Part 3 of 10</h2>
+  <p class="lead">A complete step-by-step guide for the Sub City System Admin user type. You are the technical administrator of one sub-city — managing users, verifying data quality, and handling bulk registration.</p>
+  <div class="badges">
+    <span class="badge gold">Sub City System Admin</span>
+    <span class="badge">11 Permissions</span>
+    <span class="badge">Step-by-Step</span>
+    <span class="badge">English</span>
+  </div>
+</header>
+
+<!-- ============ SEARCH ============ -->
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="🔍 Search this guide… (e.g. 'user', 'encoding', 'bulk')" oninput="searchManual()">
+  <button onclick="clearSearch()">Clear</button>
+  <span class="search-stats" id="stats"></span>
+</div>
+
+<!-- ============ TOC ============ -->
+<nav class="toc">
+  <h2>📖 Table of Contents — Sub City System Admin</h2>
+  <ol>
+    <li><a href="#about">What You Can Do</a></li>
+    <li><a href="#login">Log In to the System</a></li>
+    <li><a href="#dashboard">Open the Dashboard</a></li>
+    <li><a href="#update-account">Update Your Account</a></li>
+    <li><a href="#change-pin">Change Your PIN</a></li>
+    <li><a href="#system-overview">System Overview</a></li>
+    <li><a href="#office-com">Office Communication</a></li>
+    <li><a href="#view-sms">View SMS</a></li>
+    <li><a href="#user-mgmt">User Management</a></li>
+    <li><a href="#create-user">Create a New User</a></li>
+    <li><a href="#edit-user">Edit a User</a></li>
+    <li><a href="#encoding">Encoding Converter</a></li>
+    <li><a href="#bulk-reg">Bulk Registration</a></li>
+    <li><a href="#dev-support">Developer Support</a></li>
+    <li><a href="#logout">How to Log Out</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <h2><span class="icon">⚙️</span>1. What You Can Do as Sub City System Admin</h2>
+
+  <p>As <strong>Sub City System Admin</strong>, you are the technical administrator for one sub-city. You manage the users, data quality, and bulk operations within your sub-city — but you do not see or affect other sub-cities.</p>
+
+  <div class="callout purple">
+    <span class="co-icon">🔒</span>
+    <div>
+      <strong>Your scope: one sub-city</strong>
+      Your permissions are limited to the sub-city you're assigned to. You cannot view, edit, or manage data belonging to other sub-cities. When you create users, they must belong to your sub-city.
+    </div>
+  </div>
+
+  <h3>Your 11 Permissions</h3>
+
+  <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:.93rem">
+    <tr style="background:linear-gradient(135deg,var(--subcity),#a78bfa); color:#fff">
+      <th style="padding:12px 16px; text-align:left">#</th>
+      <th style="padding:12px 16px; text-align:left">Permission</th>
+      <th style="padding:12px 16px; text-align:left">What it does</th>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">1</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Log In</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Access the system</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">2</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Dashboard</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">See your sub-city overview</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">3</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Update Account</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Edit your own profile</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">4</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Change PIN</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Update your login PIN</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">5</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>System Overview</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Sub-city technical stats</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">6</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Office Communication</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Internal messages</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">7</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>View SMS</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">See SMS history</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">8</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>User Management</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Create/edit/delete users in your sub-city</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">9</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Encoding Converter</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Fix scrambled Amharic text</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">10</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Bulk Registration</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Register many officers at once</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">11</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Developer Support</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Contact support</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px">12</td>
+      <td style="padding:10px 16px"><strong>Log Out</strong></td>
+      <td style="padding:10px 16px">End your session</td>
+    </tr>
+  </table>
+
+  <div class="callout warn">
+    <span class="co-icon">⚠️</span>
+    <div>
+      <strong>What you cannot do</strong>
+      You cannot modify <strong>security-category</strong> settings (only Super Admin can). You also cannot restore backups, manage system settings above your sub-city, or approve certificates.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1. LOGIN ============ -->
+<section id="login">
+  <h2><span class="icon">🔐</span>2. Log In to the System</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">1</div>
+      <div>
+        <div class="perm-title">Log In</div>
+        <div class="perm-sub">Required for every session</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Opens the system with your Sub City System Admin identity so you can access sub-city tools.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Your username (given by the Super Admin)</li>
+        <li>Your PIN (6+ digits)</li>
+        <li>A modern browser and internet connection</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">https://www.aapskeeper.gov.et</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open your browser</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Go to the login page</strong>Type <code>www.aapskeeper.gov.et</code> and press Enter.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click the Username field</strong></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type your username</strong>Exactly as given.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click the PIN field</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Type your PIN</strong>Each digit shows as a dot.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Click Login</strong><span class="btn-mock primary">➜ Login</span></div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Wait for the dashboard</strong>Loads in 2–5 seconds.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You land on the Dashboard</li>
+        <li>Your location label shows <em>your sub-city</em></li>
+        <li>The left menu shows Sub City System Admin options</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Invalid username or PIN"</code> → Check spelling</li>
+        <li><code>"Account locked"</code> → Wait 15 minutes</li>
+        <li>Page won't load → Refresh (F5), try another browser</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. DASHBOARD ============ -->
+<section id="dashboard">
+  <h2><span class="icon">📊</span>3. Open the Dashboard</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">2</div>
+      <div>
+        <div class="perm-title">View the Dashboard</div>
+        <div class="perm-sub">Your home page with sub-city stats</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows a summary of your sub-city — the number of officers, cases, pending items, and system status, all limited to your sub-city.
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Log in</strong>Follow the previous section.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>You land on Dashboard</strong>No click needed.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Note your location label</strong>Top of the page shows your sub-city name.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Read the stat cards</strong>Peace keepers, cases, pending items — all for your sub-city.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click any card</strong>Drills into details.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You see your sub-city's numbers at a glance</li>
+        <li>You can drill in from any card</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. UPDATE ACCOUNT ============ -->
+<section id="update-account">
+  <h2><span class="icon">⚙️</span>4. Update Your Account</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">3</div>
+      <div>
+        <div class="perm-title">Update Your Personal Information</div>
+        <div class="perm-sub">Your name, photo, phone, email</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Update Account</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Update Account"</strong>The Account page opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Review prefilled fields</strong></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Change what you need</strong>Name, Gender, DOB, Phone, Email, Department, Responsibility.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Upload a new photo (optional)</strong><span class="btn-mock gray">📎 Choose File</span></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click Save</strong><span class="btn-mock success">✓ Save Changes</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your new details appear everywhere</li>
+        <li>Change is logged in Activity Management</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. CHANGE PIN ============ -->
+<section id="change-pin">
+  <h2><span class="icon">🔑</span>5. Change Your PIN</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">4</div>
+      <div>
+        <div class="perm-title">Change Your PIN</div>
+        <div class="perm-sub">Recommended every 3 months</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Update Account → Change PIN section</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open Update Account</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Scroll to Change PIN</strong>Fields: Previous PIN, New PIN, Confirm PIN.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Type your current PIN</strong></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type the new PIN</strong>At least 6 digits.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Retype in Confirm PIN</strong>Must match exactly.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click Save</strong><span class="btn-mock success">✓ Save</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Log out and log back in</strong>Confirms the change worked.</div></li>
+    </ol>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Previous PIN incorrect"</code> → Try again carefully</li>
+        <li><code>"PIN too short"</code> → At least 6 digits</li>
+        <li>Forgot current PIN → Use "Forgot PIN" on the login page</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. SYSTEM OVERVIEW ============ -->
+<section id="system-overview">
+  <h2><span class="icon">📈</span>6. System Overview</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">5</div>
+      <div>
+        <div class="perm-title">View System Overview</div>
+        <div class="perm-sub">Technical statistics for your sub-city</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows technical statistics about your sub-city's data: total users by role, total peace keepers, total cases, active sessions, and other metrics. Unlike the Dashboard (which is business-focused), this is technical/operational.
+    </div>
+
+    <div class="menu-path">Left menu → System Overview</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "System Overview"</strong>The overview page opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Read the summary cards</strong>Total Users, Total Peace Keepers, Total Cases, Active Sessions.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Review the tables</strong>Breakdown by role, by status, by ketena.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Check for anomalies</strong>Unusual counts or inactive users.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Use this to plan</strong>Decide which areas need more users.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You have an operational picture of your sub-city</li>
+        <li>You can spot data problems before they grow</li>
+      </ul>
+    </div>
+
+    <div class="callout tip">
+      <span class="co-icon">💡</span>
+      <div>
+        <strong>Useful for auditing</strong>
+        If the number of "Active" users is far less than "Total Users", many accounts may need cleanup.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. OFFICE COMM ============ -->
+<section id="office-com">
+  <h2><span class="icon">✉️</span>7. Office Communication</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">6</div>
+      <div>
+        <div class="perm-title">Send Internal Messages</div>
+        <div class="perm-sub">One-to-one messaging inside the system</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you send messages to other system users. Unlike SMS (which goes to phones), internal messages stay inside the Peace Keepers system.
+    </div>
+
+    <div class="menu-path">Left menu → Office Communication</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Office Communication"</strong>Your Inbox opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click Compose</strong><span class="btn-mock primary">➕ Compose</span></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Choose the recipient</strong>Search by name or username.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type a subject</strong></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Type the message</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Attach a file (optional)</strong><span class="btn-mock gray">📎 Attach</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Click Send</strong><span class="btn-mock success">✓ Send</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Recipient gets a notification</li>
+        <li>Message appears in their Inbox</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">7</div>
+      <div>
+        <div class="perm-title">Read &amp; Reply to Messages</div>
+        <div class="perm-sub">Keep up with your inbox</div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open Office Communication</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click any message</strong>Full message opens.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Read and Reply</strong><span class="btn-mock primary">↩ Reply</span></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type and click Send</strong></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Optional: Delete a message</strong><span class="btn-mock danger">🗑️ Delete</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 7. VIEW SMS ============ -->
+<section id="view-sms">
+  <h2><span class="icon">💬</span>8. View SMS</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">8</div>
+      <div>
+        <div class="perm-title">View SMS History</div>
+        <div class="perm-sub">See SMS sent from your sub-city</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows the log of SMS sent from your sub-city — who sent it, to whom, when, and its status.
+    </div>
+
+    <div class="menu-path">Left menu → View SMS</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "View SMS"</strong>The SMS history opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Search by keyword</strong>Find a specific message.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Filter by status</strong>Pending / Sent / Failed / Rejected.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Click any row</strong>Full message opens.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Read the delivery report</strong>See how many recipients got it.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You can audit any SMS sent from your sub-city</li>
+        <li>You can investigate delivery failures</li>
+      </ul>
+    </div>
+
+    <div class="callout warn">
+      <span class="co-icon">⚠️</span>
+      <div>
+        <strong>View only</strong>
+        You can see SMS history but you cannot send SMS. Only City Admin, Sub City Admin, and District Admin can send SMS.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. USER MGMT ============ -->
+<section id="user-mgmt">
+  <h2><span class="icon">👥</span>9. User Management</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">9</div>
+      <div>
+        <div class="perm-title">View the User List for Your Sub-City</div>
+        <div class="perm-sub">See every user in your sub-city</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows all users in your sub-city — their names, roles, districts, and statuses. You can manage users only within your sub-city.
+    </div>
+
+    <div class="menu-path">Left menu → User Management</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "User Management"</strong>The list loads for your sub-city only.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Read the columns</strong>Username, Name, User Type, District, Status.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Search</strong>Type name or username.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Filter</strong>By User Type or Status.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click any row</strong>See full profile.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You see all users in your sub-city</li>
+        <li>You can manage (edit/create) them</li>
+      </ul>
+    </div>
+
+    <div class="callout purple">
+      <span class="co-icon">🔒</span>
+      <div>
+        <strong>Only your sub-city</strong>
+        Users assigned to other sub-cities do not appear here. You cannot modify them.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. CREATE USER ============ -->
+<section id="create-user">
+  <h2><span class="icon">➕</span>10. Create a New User</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">10</div>
+      <div>
+        <div class="perm-title">Create a New User in Your Sub-City</div>
+        <div class="perm-sub">Add Sub City Admin, Staff, Ketena, or District roles</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Adds a new user account assigned to your sub-city. The user will have access only within your sub-city.
+    </div>
+
+    <div class="info-block">
+      <strong>Roles you can create</strong>
+      <ul>
+        <li>Sub City Admin</li>
+        <li>Sub City Staff</li>
+        <li>District System Admin</li>
+        <li>District Admin</li>
+        <li>Staff</li>
+        <li>Ketena</li>
+        <li>Block (if applicable)</li>
+      </ul>
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Their full name</li>
+        <li>Their phone number (10 digits, starts with 09)</li>
+        <li>Their email (optional)</li>
+        <li>The role they should have</li>
+        <li>A temporary PIN</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → User Management → "Create New User"</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open User Management</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click "Create New User"</strong><span class="btn-mock primary">➕ Create New User</span></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Type the username</strong>Unique, lowercase, no spaces. E.g. <code>sara.m</code></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type the full name</strong></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Choose the User Type</strong>Options: Sub City Admin, Sub City Staff, District System Admin, District Admin, Staff, Ketena.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Type and confirm the PIN</strong>At least 6 digits.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Type the phone number</strong>Format: <code>0912345678</code></div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Type the email (optional)</strong></div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Sub City is auto-set to your sub-city</strong>You cannot change this.</div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Choose the District</strong>If applicable.</div></li>
+      <li><span class="step-badge">11</span><div class="step-text"><strong>Click "Create User"</strong><span class="btn-mock success">✓ Create User</span></div></li>
+      <li><span class="step-badge">12</span><div class="step-text"><strong>Confirm the success message</strong>"User created successfully"</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The new user appears in the User Management list</li>
+        <li>They can log in immediately with the PIN you set</li>
+        <li>They should change PIN on first login</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Duplicate username — the system will reject it</li>
+        <li>Wrong User Type — hard to fix later</li>
+        <li>Weak PIN — at least 6 digits</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Username already exists"</code> → Pick a different username</li>
+        <li><code>"PIN too short"</code> → Use 6+ digits</li>
+        <li><code>"Phone number invalid"</code> → 10 digits, starts with 09</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. EDIT USER ============ -->
+<section id="edit-user">
+  <h2><span class="icon">✏️</span>11. Edit a User</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">11</div>
+      <div>
+        <div class="perm-title">Edit an Existing User</div>
+        <div class="perm-sub">Change name, role, district, or status</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you update any field of a user in your sub-city — including changing their role, moving them to a different district, or changing their status.
+    </div>
+
+    <div class="menu-path">Left menu → User Management → click user → Edit</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open User Management</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Find the user</strong>Search or scroll.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click the pencil ✏️ icon</strong><span class="btn-mock gold">✏️ Edit</span></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Update the fields</strong>Name, Gender, Phone, Email, Identity No, District, Ketena, Blok, Role, Status, Department, Responsibility.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Change User Type if needed</strong>Use the dropdown.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Change Status if needed</strong>Options: Active, Pending, Inactive.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Click Save Changes</strong><span class="btn-mock success">✓ Save Changes</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The user's profile updates immediately</li>
+        <li>If you changed their role, their menu changes next login</li>
+        <li>If you set them Inactive, they cannot log in</li>
+      </ul>
+    </div>
+
+    <div class="callout purple">
+      <span class="co-icon">🔒</span>
+      <div>
+        <strong>Within your sub-city only</strong>
+        You can only edit users assigned to your sub-city. Users from other sub-cities cannot be edited.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. ENCODING CONVERTER ============ -->
+<section id="encoding">
+  <h2><span class="icon">🔄</span>12. Encoding Converter</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">12</div>
+      <div>
+        <div class="perm-title">Fix Scrambled Amharic Text</div>
+        <div class="perm-sub">Convert between text encodings</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      A utility that fixes text that appears scrambled (e.g. <code>á‰ áˆ›</code> instead of <code>አማርኛ</code>). Useful for data imported from older systems that used a different text encoding.
+    </div>
+
+    <div class="menu-path">Left menu → Encoding Converter</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Encoding Converter"</strong>The converter page opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Choose input method</strong>Two options:
+        <ul style="margin-left:20px; margin-top:6px">
+          <li>Paste text directly</li>
+          <li>Upload a file (.txt, .csv, .json)</li>
+        </ul>
+      </div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Paste text or upload file</strong>If pasting, use the "Paste Data" box. If uploading, click <span class="btn-mock gray">📎 Choose File</span>.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Choose source encoding</strong>Options: UTF-8, Windows-1252, ISO-8859-1, Ethiopic Legacy.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Choose target encoding</strong>Usually UTF-8.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click Convert</strong><span class="btn-mock primary">🔄 Convert</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Preview side-by-side</strong>See original vs converted text.</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Click Copy or Download</strong>Get the converted text.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You have readable Amharic text</li>
+        <li>You can paste the corrected text back into the system</li>
+      </ul>
+    </div>
+
+    <div class="callout tip">
+      <span class="co-icon">💡</span>
+      <div>
+        <strong>Common use cases</strong>
+        <ul style="margin-left:20px; margin-top:6px">
+          <li>Old data from another system appears as gibberish</li>
+          <li>CSV files from Excel show "??????" for Amharic</li>
+          <li>SMS logs show garbled characters</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. BULK REGISTRATION ============ -->
+<section id="bulk-reg">
+  <h2><span class="icon">📤</span>13. Bulk Registration</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">13</div>
+      <div>
+        <div class="perm-title">Register Many Peace Keepers at Once</div>
+        <div class="perm-sub">Upload a file instead of typing each one</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you register many peace keepers in one go by uploading a CSV or Excel file. Perfect for onboarding a batch of new recruits.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>A CSV or Excel file with one row per officer</li>
+        <li>Columns: Full Name, ID, Phone, Area, Ketena</li>
+        <li>File size under 10 MB</li>
+        <li>No blank rows</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → Bulk Registration</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Prepare your CSV file</strong>Open Excel or a text editor. Create columns matching the required fields.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Example CSV structure:</strong>
+        <div style="background:#0f172a; color:#7dd3fc; padding:12px; border-radius:8px; font-family:Consolas,monospace; font-size:.85rem; margin:10px 0">
+FullName,IdentityNo,Phone,Area,Ketena<br>
+Abebe Kebede,1234567890,0912345678,Bole,Ketena 04<br>
+Sara Mekonnen,1234567891,0912345679,Bole,Ketena 04
+        </div>
+      </div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Start with 3 rows first</strong>Test that the format works before uploading the full file.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Click "Bulk Registration"</strong>in the left menu.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click "Choose File"</strong><span class="btn-mock gray">📎 Choose File</span></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Select your CSV or Excel file</strong>from your computer.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Click "Upload &amp; Validate"</strong><span class="btn-mock primary">📤 Upload &amp; Validate</span></div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Wait for validation</strong>The system checks each row.</div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Review the preview table</strong>Valid rows appear green, invalid rows appear red with the reason.</div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Fix any errors and re-upload</strong>If rows are red, fix in Excel and upload again.</div></li>
+      <li><span class="step-badge">11</span><div class="step-text"><strong>Click "Confirm &amp; Save All"</strong><span class="btn-mock success">✓ Confirm &amp; Save All</span></div></li>
+      <li><span class="step-badge">12</span><div class="step-text"><strong>Read the final summary</strong>"Saved: 47 — Failed: 3" with details.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>All valid officers are registered</li>
+        <li>They appear in the View Peace Keepers list</li>
+        <li>Failed rows are logged with reasons</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Column headers not matching exactly</li>
+        <li>Blank rows in the file</li>
+        <li>Date format wrong (should be dd/mm/yyyy)</li>
+        <li>Duplicates — same ID twice in the file</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Column headers not found"</code> → Check spelling, must match exactly</li>
+        <li><code>"Duplicate ID"</code> → Remove the duplicate row</li>
+        <li><code>"File too large"</code> → Split into smaller files under 10 MB</li>
+        <li><code>"Invalid phone number"</code> → Must be 10 digits</li>
+      </ul>
+    </div>
+
+    <div class="callout purple">
+      <span class="co-icon">🎯</span>
+      <div>
+        <strong>Sub-city restricted</strong>
+        Every officer you register via bulk upload is assigned to your sub-city. You cannot bulk-register officers for other sub-cities.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. DEV SUPPORT ============ -->
+<section id="dev-support">
+  <h2><span class="icon">🛠️</span>14. Developer Support</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">14</div>
+      <div>
+        <div class="perm-title">Contact Developer Support</div>
+        <div class="perm-sub">Report bugs and request features</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Developer Support</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Developer Support"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Type a Subject</strong></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Choose Priority</strong>Low / Medium / High / Critical.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Describe in detail</strong>What you were doing, what happened, what you expected.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Attach a screenshot (optional)</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click Submit</strong><span class="btn-mock primary">📤 Submit Request</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Note your tracking number</strong></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your request enters the developer queue</li>
+        <li>You can track it on the same page</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14. LOGOUT ============ -->
+<section id="logout">
+  <h2><span class="icon">🚪</span>15. How to Log Out</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">15</div>
+      <div>
+        <div class="perm-title">Log Out Safely</div>
+        <div class="perm-sub">Especially on shared computers</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Top-right corner → your name → Logout</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click your name top-right</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click "Logout"</strong><span class="btn-mock danger">🚪 Logout</span></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Wait for the login page</strong></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Optional: close the tab</strong></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your session is terminated</li>
+        <li>Your account is safe on a shared computer</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section>
+  <h2><span class="icon">🎉</span>Sub City System Admin Guide Complete</h2>
+
+  <p>You have now read the complete Sub City System Admin guide. You know how to:</p>
+
+  <ul style="margin-left:24px; margin-top:8px">
+    <li>Log in and navigate the dashboard</li>
+    <li>Update your account and change your PIN</li>
+    <li>View system overview statistics for your sub-city</li>
+    <li>Send internal messages</li>
+    <li>View SMS history</li>
+    <li>Manage users within your sub-city</li>
+    <li>Create and edit users</li>
+    <li>Fix scrambled Amharic text with the encoding converter</li>
+    <li>Bulk-register many peace keepers at once</li>
+    <li>Contact developer support</li>
+    <li>Log out safely</li>
+  </ul>
+
+  <div class="callout gold" style="background:linear-gradient(90deg,#fef9e7,#fef3c7); border-color:var(--brand-gold)">
+    <span class="co-icon">📘</span>
+    <div>
+      <strong style="color:#92620a">Part 3 of 10 · Sub City System Admin Guide Complete</strong>
+      <span style="color:#475569">Next: Part 4 — Sub City Admin Guide</span>
+    </div>
+  </div>
+</section>
+
+<div id="noResult">❌ No matching sections — try a different keyword.</div>
+
+</main>
+
+<button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Top">↑</button>
+
+<footer>
+  <div class="f-title">🛡️ Peace Keepers — Sub City System Admin Guide</div>
+  <p>Addis Ababa City Peace &amp; Security Administration Bureau · Internal Use Only</p>
+  <p style="margin-top:14px;opacity:.6;font-size:.8rem">© 2026 · Part 3 of 10</p>
+</footer>
+
+<script>
+/* ============ SEARCH ============ */
+let originalHTML = new Map();
+document.querySelectorAll('main section').forEach((sec,i)=>originalHTML.set(i, sec.innerHTML));
+
+function escapeReg(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+
+function searchManual(){
+  const q = document.getElementById('searchInput').value.trim();
+  const sections = document.querySelectorAll('main section');
+  const noRes = document.getElementById('noResult');
+  const stats = document.getElementById('stats');
+  let visible = 0;
+  const kw = q.toLowerCase();
+
+  sections.forEach((sec, i)=>{
+    sec.innerHTML = originalHTML.get(i);
+    if(!kw){ sec.classList.remove('hidden'); visible++; return; }
+    const text = sec.innerText.toLowerCase();
+    if(text.includes(kw)){
+      sec.classList.remove('hidden'); visible++;
+      highlightNode(sec, kw);
+    } else sec.classList.add('hidden');
+  });
+
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if(target && target.classList.contains('hidden')) a.style.opacity='.3';
+    else a.style.opacity='1';
+  });
+
+  noRes.style.display = (kw && visible === 0) ? 'block' : 'none';
+  stats.textContent = kw ? (visible + ' section(s) match') : '';
+}
+
+function highlightNode(node, kw){
+  const regex = new RegExp('('+escapeReg(kw)+')','gi');
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => {
+      if(!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const p = n.parentNode.nodeName;
+      if(p==='SCRIPT'||p==='STYLE'||p==='CODE'||p==='PRE') return NodeFilter.FILTER_REJECT;
+      return regex.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const targets=[];
+  while(walker.nextNode()) targets.push(walker.currentNode);
+  targets.forEach(t=>{
+    const span = document.createElement('span');
+    span.innerHTML = t.nodeValue.replace(regex,'<span class="hl">$1</span>');
+    t.parentNode.replaceChild(span, t);
+  });
+}
+
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  searchManual();
+  document.getElementById('searchInput').focus();
+}
+
+const toTop = document.getElementById('toTop');
+window.addEventListener('scroll', ()=>{
+  toTop.style.display = window.scrollY > 400 ? 'block' : 'none';
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='/' && document.activeElement.tagName!=='INPUT'){
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+  if(e.key==='Escape') clearSearch();
+});
+</script>
+
+</body>
+</html>
