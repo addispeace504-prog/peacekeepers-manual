@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peace Keepers — Ketena Guide</title>
+<style>
+  :root{
+    --brand-dark:#0d3d2e; --brand-green:#1a5c3f; --brand-light:#e8f5ec;
+    --brand-gold:#c9a227; --brand-gold-2:#e0b83a; --card:#ffffff;
+    --text:#1a1a1a; --muted:#64748b; --border:#e2e8f0; --bg:#f4f7f5;
+    --error:#dc2626; --success:#16a34a; --info:#2563eb; --warn:#f59e0b;
+    --purple:#7c3aed; --ketena:#4f46e5; --ketena-accent:#818cf8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Segoe UI','Inter',system-ui,sans-serif;
+    background:var(--bg); color:var(--text);
+    line-height:1.75; font-size:15px;
+  }
+
+  /* ============ TOP BAR ============ */
+  .top-bar{
+    position:sticky; top:0; z-index:300;
+    background:var(--brand-dark); color:#fff;
+    padding:10px 22px; display:flex; justify-content:space-between;
+    align-items:center; flex-wrap:wrap; gap:10px;
+    box-shadow:0 4px 18px rgba(13,61,46,.35);
+    border-bottom:3px solid var(--brand-gold);
+  }
+  .top-bar .brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:.95rem}
+  .top-bar .brand .seal{
+    width:32px; height:32px; border-radius:50%;
+    background:radial-gradient(circle,#4f46e5 0%,#3730a3 60%,#0d3d2e 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1rem; border:2px solid var(--brand-gold);
+  }
+  .top-bar .role-badge{
+    background:var(--ketena); color:#fff; padding:5px 14px;
+    border-radius:20px; font-weight:700; font-size:.82rem;
+    letter-spacing:.5px;
+  }
+
+  /* ============ HERO ============ */
+  header.hero{
+    background:
+      radial-gradient(circle at 20% 30%, rgba(201,162,39,.28), transparent 55%),
+      radial-gradient(circle at 80% 70%, rgba(79,70,229,.55), transparent 55%),
+      linear-gradient(135deg,#0d3d2e 0%,#3730a3 60%,#0d3d2e 100%);
+    color:#fff; padding:60px 24px 70px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  header.hero .seal-big{
+    font-size:5rem; margin-bottom:14px; display:block;
+    filter:drop-shadow(0 6px 20px rgba(0,0,0,.5));
+    animation:float 3.5s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  header.hero h1{
+    font-size:2rem; margin-bottom:10px; letter-spacing:.3px;
+    text-shadow:0 4px 20px rgba(0,0,0,.4); font-weight:800;
+  }
+  header.hero h2{font-size:1.15rem; font-weight:400; opacity:.92; margin-bottom:6px}
+  header.hero p.lead{
+    max-width:780px; margin:18px auto 0; font-size:1rem;
+    opacity:.92; line-height:1.75;
+  }
+  header.hero .badges{
+    display:flex; gap:8px; justify-content:center;
+    flex-wrap:wrap; margin-top:24px;
+  }
+  header.hero .badge{
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.28);
+    backdrop-filter:blur(8px); padding:6px 16px; border-radius:24px;
+    font-weight:600; font-size:.82rem;
+  }
+  header.hero .badge.gold{
+    background:var(--brand-gold); color:var(--brand-dark);
+    border-color:var(--brand-gold); font-weight:800;
+  }
+
+  /* ============ SEARCH ============ */
+  .search-bar{
+    position:sticky; top:52px; z-index:200;
+    background:rgba(255,255,255,.98); backdrop-filter:blur(10px);
+    padding:12px 22px; box-shadow:0 4px 18px rgba(13,61,46,.08);
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    border-bottom:3px solid var(--brand-gold);
+  }
+  .search-bar input{
+    flex:1; min-width:240px; padding:11px 20px 11px 44px;
+    border:2px solid var(--border); border-radius:30px;
+    font-size:.95rem; outline:none; transition:.25s;
+    background:#f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E") no-repeat 16px center;
+  }
+  .search-bar input:focus{
+    border-color:var(--brand-green); background-color:#fff;
+    box-shadow:0 0 0 4px rgba(26,92,63,.12);
+  }
+  .search-bar button{
+    background:linear-gradient(135deg,var(--brand-dark),var(--brand-green));
+    color:#fff; border:none; padding:11px 22px; border-radius:30px;
+    font-weight:700; cursor:pointer; transition:.25s; font-size:.9rem;
+  }
+  .search-bar button:hover{transform:translateY(-2px)}
+  .search-stats{font-size:.82rem; color:var(--muted); font-weight:600}
+
+  /* ============ TOC ============ */
+  nav.toc{
+    max-width:1180px; margin:22px auto; padding:30px 34px;
+    background:#fff; border-radius:16px;
+    box-shadow:0 4px 24px rgba(13,61,46,.08);
+    border-top:6px solid var(--brand-gold);
+  }
+  nav.toc h2{color:var(--brand-dark); font-size:1.35rem; margin-bottom:20px; display:flex; align-items:center; gap:10px}
+  nav.toc ol{
+    list-style:none; display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:6px; counter-reset:toc;
+  }
+  nav.toc ol li{counter-increment:toc}
+  nav.toc a{
+    color:var(--text); text-decoration:none;
+    padding:10px 14px; display:flex; align-items:center;
+    gap:10px; border-radius:10px;
+    border-left:4px solid transparent; transition:.2s;
+    font-weight:500; font-size:.9rem;
+  }
+  nav.toc a:hover{background:var(--brand-light); border-left-color:var(--brand-gold); color:var(--brand-dark); transform:translateX(4px)}
+  nav.toc a::before{
+    content:counter(toc);
+    background:var(--ketena); color:#fff;
+    width:26px; height:26px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.78rem; flex-shrink:0;
+  }
+
+  /* ============ MAIN ============ */
+  main{max-width:1180px; margin:auto; padding:0 22px 80px}
+  section{
+    background:#fff; margin:28px 0; padding:34px 38px;
+    border-radius:16px; box-shadow:0 4px 20px rgba(13,61,46,.06);
+    border-left:7px solid var(--brand-dark);
+    scroll-margin-top:130px;
+  }
+  section:nth-of-type(3n+1){border-left-color:var(--brand-dark)}
+  section:nth-of-type(3n+2){border-left-color:var(--brand-gold)}
+  section:nth-of-type(3n+3){border-left-color:var(--ketena-accent)}
+  section h2{
+    color:var(--brand-dark); font-size:1.45rem; margin-bottom:18px;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    padding-bottom:14px; border-bottom:2px dashed var(--border);
+  }
+  section h2 .icon{
+    background:linear-gradient(135deg,var(--ketena),var(--ketena-accent));
+    color:#fff; width:48px; height:48px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem; flex-shrink:0;
+    box-shadow:0 4px 12px rgba(79,70,229,.35);
+    border:2px solid var(--brand-gold);
+  }
+  section h3{
+    color:var(--brand-green); margin:28px 0 14px;
+    font-size:1.18rem; display:flex; align-items:center; gap:8px;
+  }
+  section h3::before{content:"▸"; color:var(--brand-gold); font-size:1.4rem}
+  p{margin-bottom:14px; color:#334155; font-size:.97rem}
+
+  /* ============ PERMISSION CARD ============ */
+  .permission{
+    background:#fff; border:2px solid var(--border);
+    border-radius:14px; padding:26px 30px; margin:28px 0;
+    border-left:6px solid var(--ketena);
+    box-shadow:0 4px 16px rgba(13,61,46,.06);
+    transition:.25s;
+  }
+  .permission:hover{box-shadow:0 8px 28px rgba(13,61,46,.12); border-left-width:10px}
+  .permission .perm-header{
+    display:flex; align-items:flex-start; gap:14px;
+    padding-bottom:14px; border-bottom:2px dashed var(--border);
+    margin-bottom:18px;
+  }
+  .permission .perm-num{
+    background:linear-gradient(135deg,var(--ketena),var(--ketena-accent));
+    color:#fff; min-width:44px; height:44px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:1.05rem; flex-shrink:0;
+    box-shadow:0 3px 10px rgba(79,70,229,.4);
+  }
+  .permission .perm-title{color:var(--ketena); font-size:1.15rem; font-weight:800; margin-bottom:4px}
+  .permission .perm-sub{color:var(--muted); font-size:.85rem; font-style:italic}
+
+  .info-block{
+    background:var(--brand-light); border-radius:10px;
+    padding:14px 18px; margin-bottom:16px;
+    border-left:4px solid var(--brand-gold);
+  }
+  .info-block strong{color:var(--brand-dark); display:block; margin-bottom:4px}
+  .info-block ul{margin-left:20px; margin-top:6px; font-size:.93rem}
+  .info-block li{margin-bottom:4px}
+
+  .menu-path{
+    background:#0f172a; color:#c7d2fe; padding:12px 16px;
+    border-radius:8px; font-family:'Consolas',monospace;
+    font-size:.88rem; margin:12px 0;
+    border-left:4px solid var(--brand-gold);
+  }
+  .menu-path::before{content:"📍 "; margin-right:4px}
+
+  ol.steps{list-style:none; padding:0; margin:16px 0}
+  ol.steps > li{
+    display:flex; align-items:flex-start; gap:14px;
+    margin-bottom:14px; padding:14px 18px;
+    background:var(--brand-light); border-radius:12px;
+    border-left:5px solid var(--brand-gold);
+    transition:.2s;
+  }
+  ol.steps > li:hover{background:#dcefe2; transform:translateX(4px)}
+  ol.steps > li .step-badge{
+    background:linear-gradient(135deg,var(--ketena),var(--ketena-accent));
+    color:#fff; min-width:34px; height:34px; border-radius:50%;
+    font-weight:800; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; font-size:.95rem;
+    box-shadow:0 3px 10px rgba(79,70,229,.4);
+  }
+  ol.steps > li .step-text{flex:1; font-size:.96rem}
+  ol.steps > li .step-text strong{color:var(--brand-dark); display:block; margin-bottom:4px; font-size:1rem}
+  ol.steps > li .step-text code{
+    background:#0d3d2e; color:#c7d2fe; padding:2px 8px;
+    border-radius:5px; font-size:.85em;
+  }
+
+  .outcome{
+    background:linear-gradient(90deg,#ecfdf5,#f0fdf4);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--success);
+  }
+  .outcome strong{color:var(--success); display:block; margin-bottom:6px}
+  .outcome ul{margin-left:20px; font-size:.93rem}
+  .outcome li{margin-bottom:4px}
+
+  .mistakes{
+    background:linear-gradient(90deg,#fffbeb,#fef3c7);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--warn);
+  }
+  .mistakes strong{color:#b45309; display:block; margin-bottom:6px}
+  .mistakes ul{margin-left:20px; font-size:.93rem}
+  .mistakes li{margin-bottom:4px}
+
+  .troubleshoot{
+    background:linear-gradient(90deg,#fef2f2,#fee2e2);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--error);
+  }
+  .troubleshoot strong{color:var(--error); display:block; margin-bottom:6px}
+  .troubleshoot ul{margin-left:20px; font-size:.93rem}
+  .troubleshoot li{margin-bottom:6px}
+  .troubleshoot code{background:#7f1d1d; color:#fecaca; padding:2px 8px; border-radius:5px; font-size:.85em}
+
+  /* ============ CALLOUTS ============ */
+  .callout{
+    padding:16px 20px; border-radius:12px; margin:20px 0;
+    border-left:5px solid; display:flex; gap:14px; align-items:flex-start;
+    font-size:.94rem;
+  }
+  .callout .co-icon{font-size:1.5rem; flex-shrink:0}
+  .callout strong{display:block; margin-bottom:4px; font-size:1rem}
+  .callout.tip{background:linear-gradient(90deg,#ecfdf5,#f0fdf4); border-color:var(--success)}
+  .callout.tip strong{color:var(--success)}
+  .callout.warn{background:linear-gradient(90deg,#fffbeb,#fef3c7); border-color:var(--warn)}
+  .callout.warn strong{color:#b45309}
+  .callout.danger{background:linear-gradient(90deg,#fef2f2,#fee2e2); border-color:var(--error)}
+  .callout.danger strong{color:var(--error)}
+  .callout.info{background:linear-gradient(90deg,#eff6ff,#e0f2fe); border-color:var(--info)}
+  .callout.info strong{color:var(--info)}
+  .callout.indigo{background:linear-gradient(90deg,#eef2ff,#e0e7ff); border-color:var(--ketena)}
+  .callout.indigo strong{color:var(--ketena)}
+
+  /* ============ BUTTON MOCK ============ */
+  .btn-mock{
+    display:inline-block; padding:6px 16px; border-radius:8px;
+    font-weight:700; font-size:.82rem; margin:2px 4px;
+    color:#fff; box-shadow:0 3px 8px rgba(0,0,0,.15);
+  }
+  .btn-mock.primary{background:linear-gradient(135deg,var(--ketena),var(--ketena-accent))}
+  .btn-mock.success{background:linear-gradient(135deg,var(--success),#22c55e)}
+  .btn-mock.warn{background:linear-gradient(135deg,var(--warn),var(--brand-gold-2)); color:#000}
+  .btn-mock.danger{background:linear-gradient(135deg,var(--error),#ef4444)}
+  .btn-mock.gold{background:linear-gradient(135deg,var(--brand-gold),var(--brand-gold-2)); color:var(--brand-dark)}
+  .btn-mock.gray{background:#64748b}
+
+  /* ============ SCREENSHOT ============ */
+  .screenshot{
+    background:linear-gradient(135deg,#eef2ff,#e0e7ff);
+    border:3px dashed var(--brand-gold);
+    border-radius:14px; padding:36px 24px; text-align:center;
+    margin:20px 0; color:var(--brand-dark);
+  }
+  .screenshot .s-icon{font-size:3rem; margin-bottom:10px; display:block}
+  .screenshot strong{display:block; font-size:1.05rem; margin-bottom:6px; color:var(--brand-dark)}
+  .screenshot small{color:var(--muted); font-size:.83rem}
+
+  /* ============ SEARCH HIGHLIGHT ============ */
+  .hl{background:#fde047; padding:1px 3px; border-radius:3px; font-weight:600}
+  .hidden{display:none !important}
+  #noResult{text-align:center; padding:60px 20px; color:var(--error); font-weight:700; font-size:1.15rem; display:none}
+
+  /* ============ TOP BUTTON ============ */
+  #toTop{
+    position:fixed; right:22px; bottom:22px; z-index:150;
+    background:linear-gradient(135deg,var(--ketena),var(--ketena-accent));
+    color:#fff; border:2px solid var(--brand-gold);
+    width:54px; height:54px; border-radius:50%;
+    font-size:1.3rem; cursor:pointer; display:none;
+    box-shadow:0 6px 20px rgba(79,70,229,.5);
+    transition:.25s;
+  }
+  #toTop:hover{transform:translateY(-4px) scale(1.08)}
+
+  /* ============ FOOTER ============ */
+  footer{
+    background:linear-gradient(135deg,#0d3d2e,#051e16);
+    color:#cbd5e1; text-align:center; padding:46px 24px; margin-top:60px;
+    border-top:4px solid var(--brand-gold);
+  }
+  footer .f-title{color:var(--brand-gold); font-weight:800; font-size:1.15rem; margin-bottom:10px}
+  footer p{font-size:.88rem; opacity:.85; margin:4px 0; color:#cbd5e1}
+
+  @media (max-width:640px){
+    header.hero h1{font-size:1.5rem}
+    section{padding:22px 20px}
+    .permission{padding:20px 22px}
+    nav.toc ol{grid-template-columns:1fr}
+    .search-bar{top:46px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="top-bar">
+  <div class="brand">
+    <span class="seal">🛡️</span>
+    <span>Peace Keepers · User Manual</span>
+  </div>
+  <span class="role-badge">🟪 KETENA</span>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <span class="seal-big">📍</span>
+  <h1>Peace Keepers — Ketena Guide</h1>
+  <h2>Role-Based User Manual · Part 9 of 10</h2>
+  <p class="lead">Complete step-by-step guide for the Ketena user type. You register officers, register crimes, and record attendance within your own ketena.</p>
+  <div class="badges">
+    <span class="badge gold">Ketena Guide</span>
+    <span class="badge">13 Permissions</span>
+    <span class="badge">Every Step Documented</span>
+    <span class="badge">English</span>
+  </div>
+</header>
+
+<!-- ============ SEARCH ============ -->
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="🔍 Search this guide… (e.g. 'register', 'attendance', 'community')" oninput="searchManual()">
+  <button onclick="clearSearch()">Clear</button>
+  <span class="search-stats" id="stats"></span>
+</div>
+
+<!-- ============ TOC ============ -->
+<nav class="toc">
+  <h2>📖 Table of Contents — Ketena</h2>
+  <ol>
+    <li><a href="#about">What You Can Do</a></li>
+    <li><a href="#login">Log In to the System</a></li>
+    <li><a href="#dashboard">Open the Dashboard</a></li>
+    <li><a href="#update-account">Update Your Account</a></li>
+    <li><a href="#change-pin">Change Your PIN</a></li>
+    <li><a href="#view-pk">View Peace Keepers</a></li>
+    <li><a href="#search-pk">Search &amp; Filter Peace Keepers</a></li>
+    <li><a href="#view-pk-detail">View a Peace Keeper's Full Profile</a></li>
+    <li><a href="#view-crimes">View Crime Cases</a></li>
+    <li><a href="#search-crimes">Search &amp; Filter Crime Cases</a></li>
+    <li><a href="#view-crime-detail">View a Crime Case File</a></li>
+    <li><a href="#attendance-insert">Attendance Insertion</a></li>
+    <li><a href="#attendance-data">Attendance Data</a></li>
+    <li><a href="#register-pk">Register a Peace Keeper</a></li>
+    <li><a href="#register-crime">Register a Crime Case</a></li>
+    <li><a href="#community-submit">Submit Community Discussion Report</a></li>
+    <li><a href="#community-view">View Community Reports</a></li>
+    <li><a href="#dev-support">Developer Support</a></li>
+    <li><a href="#logout">How to Log Out</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <h2><span class="icon">📍</span>1. What You Can Do as Ketena User</h2>
+
+  <p>As a <strong>Ketena User</strong>, you are a data entry officer for your own ketena (neighborhood). You register peace keepers, register crime cases, and record attendance — all limited to your ketena.</p>
+
+  <div class="callout indigo">
+    <span class="co-icon">🔒</span>
+    <div>
+      <strong>Your scope: one ketena</strong>
+      Your permissions are limited to the ketena you're assigned to. You cannot view or manage data from other ketenas, districts, or sub-cities.
+    </div>
+  </div>
+
+  <h3>Your 13 Permissions</h3>
+  <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:.93rem">
+    <tr style="background:linear-gradient(135deg,var(--ketena),var(--ketena-accent)); color:#fff">
+      <th style="padding:12px 16px; text-align:left">#</th>
+      <th style="padding:12px 16px; text-align:left">Permission</th>
+      <th style="padding:12px 16px; text-align:left">What it does</th>
+    </tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">1</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Log In</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Access the system</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px; border-bottom:1px solid var(--border)">2</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Dashboard</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Ketena overview</td></tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">3</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Update Account</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Edit your own profile</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px; border-bottom:1px solid var(--border)">4</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Change PIN</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Update your login PIN</td></tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">5</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>View Peace Keepers</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">See all officers in your ketena</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px; border-bottom:1px solid var(--border)">6</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>View Crime Cases</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">See all cases in your ketena</td></tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">7</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Attendance Insertion</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>⭐</strong> Record officer attendance</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px; border-bottom:1px solid var(--border)">8</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Attendance Data</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">View attendance records</td></tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">9</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Register Peace Keeper</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>⭐</strong> Add new officers in your ketena</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px; border-bottom:1px solid var(--border)">10</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Register Crime</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>⭐</strong> File new crime cases</td></tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">11</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Community Discussion Report</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Submit discussion reports</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px; border-bottom:1px solid var(--border)">12</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Community Reports</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">View submitted reports</td></tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">13</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Developer Support</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Contact support</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px">14</td><td style="padding:10px 16px"><strong>Log Out</strong></td><td style="padding:10px 16px">End your session</td></tr>
+  </table>
+
+  <div class="callout warn">
+    <span class="co-icon">⚠️</span>
+    <div>
+      <strong>What you cannot do</strong>
+      You cannot send SMS, manage users, approve certificates, request identity cards, or configure area settings. Those permissions belong to higher roles.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1. LOGIN ============ -->
+<section id="login">
+  <h2><span class="icon">🔐</span>2. Log In to the System</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">1</div>
+      <div>
+        <div class="perm-title">Log In</div>
+        <div class="perm-sub">Required for every session</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Opens the system with your Ketena identity so you can access ketena-level tools.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Your username (given by the administrator who created your account)</li>
+        <li>Your PIN (6+ digits)</li>
+        <li>A modern browser and internet connection</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">https://www.aapskeeper.gov.et</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open your browser</strong>Launch Chrome, Edge, Firefox, or Safari.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Go to the login page</strong>Type <code>www.aapskeeper.gov.et</code> and press Enter.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Wait for the page to load</strong>You'll see the Addis Ababa city seal and login form.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Click the Username field</strong></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Type your username</strong>Exactly as given.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click the PIN field</strong></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Type your PIN</strong>Each digit shows as a dot.</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Click Login</strong><span class="btn-mock primary">➜ Login</span></div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Wait for the dashboard</strong>Loads in 2–5 seconds.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You land on the Dashboard</li>
+        <li>Your location label shows your ketena</li>
+        <li>The left menu shows Ketena options</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Invalid username or PIN"</code> → Check spelling and caps</li>
+        <li><code>"Account locked"</code> → Wait 15 minutes</li>
+        <li>Page won't load → Refresh (F5), try another browser</li>
+        <li>Forgot PIN → Use "Forgot PIN" on the login page</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. DASHBOARD ============ -->
+<section id="dashboard">
+  <h2><span class="icon">📊</span>3. Open the Dashboard</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">2</div>
+      <div>
+        <div class="perm-title">View the Dashboard</div>
+        <div class="perm-sub">Your home page with ketena summary</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows a summary of your ketena — number of officers, cases, attendance today, and pending items.
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Log in</strong>Follow the previous section.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>You land on Dashboard automatically</strong></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Note your location label</strong>Top of page shows your ketena name.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Read the stat cards</strong>Peace keepers in your ketena, cases, attendance today.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click any card to drill in</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Return to Dashboard anytime</strong>Click <span class="btn-mock primary">🏠 Dashboard</span> at top of left menu.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You have a snapshot of your ketena at a glance</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. UPDATE ACCOUNT ============ -->
+<section id="update-account">
+  <h2><span class="icon">⚙️</span>4. Update Your Account</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">3</div>
+      <div>
+        <div class="perm-title">Update Your Personal Information</div>
+        <div class="perm-sub">Your name, photo, phone, email</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Update Account</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Update Account"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Review prefilled fields</strong>Your current details.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Change what you need</strong>Full Name, Gender, DOB, Birth Place, Phone, Email, Department, Responsibility.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Upload a new photo (optional)</strong><span class="btn-mock gray">📎 Choose File</span> — JPG/PNG, max 5 MB.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click Save</strong><span class="btn-mock success">✓ Save Changes</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your new details appear everywhere</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. CHANGE PIN ============ -->
+<section id="change-pin">
+  <h2><span class="icon">🔑</span>5. Change Your PIN</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">4</div>
+      <div>
+        <div class="perm-title">Change Your PIN</div>
+        <div class="perm-sub">Recommended every 3 months</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Update Account → Change PIN section</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open Update Account</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Scroll to Change PIN</strong>Fields: Previous PIN, New PIN, Confirm PIN.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Type your current PIN</strong></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type the new PIN</strong>At least 6 digits.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Retype in Confirm PIN</strong>Must match exactly.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click Save</strong><span class="btn-mock success">✓ Save</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Log out and log back in</strong>Confirms change worked.</div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 5. VIEW PK ============ -->
+<section id="view-pk">
+  <h2><span class="icon">👮</span>6. View Peace Keepers</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">5</div>
+      <div>
+        <div class="perm-title">View All Peace Keepers in Your Ketena</div>
+        <div class="perm-sub">Every officer assigned to your ketena</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → View Peace Keepers</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "View Peace Keepers"</strong>The list loads for your ketena only.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Read the columns</strong>Photo, Name, ID Number, Phone, Block, Status.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click any row</strong>Opens the full profile.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Use pagination</strong>Bottom of the list for more pages.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You see every officer in your ketena</li>
+      </ul>
+    </div>
+
+    <div class="callout indigo">
+      <span class="co-icon">🔒</span>
+      <div>
+        <strong>Your ketena only</strong>
+        Officers from other ketenas are not shown. You cannot view or edit them.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. SEARCH PK ============ -->
+<section id="search-pk">
+  <h2><span class="icon">🔎</span>7. Search &amp; Filter Peace Keepers</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">6</div>
+      <div>
+        <div class="perm-title">Find a Specific Peace Keeper</div>
+        <div class="perm-sub">Search by name, ID, phone, or block</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>Available search fields</strong>
+      <ul>
+        <li><strong>Search box</strong> — type name, ID, or phone</li>
+        <li><strong>Block filter</strong> — narrow to one block</li>
+        <li><strong>Status filter</strong> — Active / Inactive / On Leave / Suspended / Retired</li>
+        <li><strong>Round filter</strong> — deployment round</li>
+        <li><strong>Member Type filter</strong> — Peace Keepers, Volunteer, NGO, etc.</li>
+      </ul>
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open "View Peace Keepers"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Type in the search box</strong>Or pick filters from dropdowns.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click "Search"</strong><span class="btn-mock primary">🔍 Search</span></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Combine with filters</strong></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Review the filtered list</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click "Reset"</strong>to start over.</div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 7. PK DETAIL ============ -->
+<section id="view-pk-detail">
+  <h2><span class="icon">👤</span>8. View a Peace Keeper's Full Profile</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">7</div>
+      <div>
+        <div class="perm-title">Open an Officer's Profile</div>
+        <div class="perm-sub">See everything about one officer</div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open "View Peace Keepers"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Find the officer</strong>Using search or by scrolling.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click the officer's row</strong>A modal opens.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Read the sections</strong>Photo, name, ID, contact, emergency contact, service info, block, registration date.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click "Close" when done</strong></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 8. VIEW CRIMES ============ -->
+<section id="view-crimes">
+  <h2><span class="icon">📁</span>9. View Crime Cases</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">8</div>
+      <div>
+        <div class="perm-title">View All Crime Cases in Your Ketena</div>
+        <div class="perm-sub">Every case registered in your area</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → View Crime Cases</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "View Crime Cases"</strong>The list loads for your ketena only.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Read the columns</strong>Case Name, Crime Type, Location, Date, Status, Priority.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click any case row</strong>Opens the full case file.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Use pagination</strong>Bottom of the list for more pages.</div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 9. SEARCH CRIMES ============ -->
+<section id="search-crimes">
+  <h2><span class="icon">🔎</span>10. Search &amp; Filter Crime Cases</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">9</div>
+      <div>
+        <div class="perm-title">Find a Specific Crime Case</div>
+        <div class="perm-sub">Search by name, type, or status</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>Available search fields</strong>
+      <ul>
+        <li><strong>Search box</strong> — free-text</li>
+        <li><strong>Crime Type</strong></li>
+        <li><strong>Case Name</strong></li>
+        <li><strong>Status</strong></li>
+        <li><strong>Block</strong></li>
+        <li><strong>Priority</strong></li>
+        <li><strong>Date range</strong></li>
+      </ul>
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open "View Crime Cases"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Type a keyword</strong></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click "Search"</strong></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Apply additional filters</strong></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Set date range</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click "Apply Filters"</strong></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Review results</strong></div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Click "Reset"</strong>to start over.</div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 10. CRIME DETAIL ============ -->
+<section id="view-crime-detail">
+  <h2><span class="icon">📋</span>11. View a Crime Case File</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">10</div>
+      <div>
+        <div class="perm-title">Open a Case File</div>
+        <div class="perm-sub">See the full record of one crime case</div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open "View Crime Cases"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Find the case</strong></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click the case row</strong>A modal opens.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Read the sections</strong>Case name, description, date/time, block, officer, response, status, priority, attachments.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click "Close"</strong></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 11. ATTENDANCE INSERTION ============ -->
+<section id="attendance-insert">
+  <h2><span class="icon">📅</span>12. Attendance Insertion</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">11</div>
+      <div>
+        <div class="perm-title">Record Peace Keeper Attendance</div>
+        <div class="perm-sub">Mark who is present, late, or absent</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Records attendance for peace keepers in your ketena. You can record individuals, check in by QR, or upload a bulk file.
+    </div>
+
+    <div class="info-block">
+      <strong>Three attendance methods</strong>
+      <ul>
+        <li><strong>Individual</strong> — type the officer's name and mark status</li>
+        <li><strong>QR Check-In</strong> — scan the officer's ID card</li>
+        <li><strong>Bulk Upload</strong> — upload a CSV/Excel file for many officers at once</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → Attendance Insertion</div>
+
+    <h3 style="margin-top:22px; color:var(--ketena)">Method A — Individual Check-In</h3>
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Attendance Insertion"</strong>The form opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Type the officer's name in "attName"</strong>Dropdown suggests matches.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click the officer from the dropdown</strong>Their ID is auto-filled.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Set "attDate"</strong>Ethiopian calendar dd/mm/yyyy.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Set "attTime"</strong>24-hour format.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Choose "attStatus"</strong>Present / Late / Absent / On Leave.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Type "attNotes" (optional)</strong>Reason for late/absent.</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Click "Save Attendance"</strong><span class="btn-mock success">✓ Save</span></div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Confirm the success message</strong></div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Repeat for the next officer</strong>Form clears automatically.</div></li>
+    </ol>
+
+    <h3 style="margin-top:22px; color:var(--ketena)">Method B — QR Check-In</h3>
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Attendance Insertion"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Choose "QR Check-In"</strong></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Allow camera access</strong>If prompted, click "Allow".</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Point the camera at the QR code</strong>Hold steady 15–30 cm away.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>OR type the ID in "qrManualInput"</strong>If camera fails.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>System auto-fills</strong>qrMemberId, qrCheckInTime, qrCheckInDate, qrCheckInLocation.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Verify the officer's name</strong></div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Click "Confirm Check-In"</strong><span class="btn-mock success">✓ Confirm</span></div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Confirm the success message</strong></div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Scan the next officer</strong></div></li>
+    </ol>
+
+    <h3 style="margin-top:22px; color:var(--ketena)">Method C — Bulk Upload</h3>
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Prepare a CSV file</strong>Columns: AttDate, AttTime, AttName, AttId, Status, Notes.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Example CSV:</strong>
+        <div style="background:#0f172a; color:#c7d2fe; padding:12px; border-radius:8px; font-family:Consolas,monospace; font-size:.85rem; margin:10px 0">
+AttDate,AttTime,AttName,AttId,Status,Notes<br>
+15/05/2026,08:15,Abebe Kebede,12345,Present,<br>
+15/05/2026,08:45,Sara Mekonnen,12346,Late,Traffic
+        </div>
+      </div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click "Attendance Insertion" → "Bulk Upload"</strong></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Click "Choose File"</strong><span class="btn-mock gray">📎 Choose File</span></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Upload your CSV</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click "Upload &amp; Validate"</strong></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Review the preview</strong></div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Fix and re-upload</strong>If any rows are red.</div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Click "Confirm &amp; Save All"</strong><span class="btn-mock success">✓ Save All</span></div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Read the summary</strong></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Attendance records are saved</li>
+        <li>They appear in "Attendance Data"</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. ATTENDANCE DATA ============ -->
+<section id="attendance-data">
+  <h2><span class="icon">📊</span>13. Attendance Data</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">12</div>
+      <div>
+        <div class="perm-title">View Attendance Records</div>
+        <div class="perm-sub">See who was present, when, and where</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>Available filters</strong>
+      <ul>
+        <li><strong>attendanceSubCity</strong> — auto-set to yours</li>
+        <li><strong>attendanceDistrict</strong> — auto-set to yours</li>
+        <li><strong>attendanceKetena</strong> — auto-set to yours</li>
+        <li><strong>attendanceBlok</strong> — filter by block</li>
+        <li><strong>attendanceFromDate</strong> — start date</li>
+        <li><strong>attendanceToDate</strong> — end date</li>
+        <li><strong>attendanceShift</strong> — Morning / Afternoon / Night</li>
+        <li><strong>attendanceSearch</strong> — search by name or ID</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → Attendance Data</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Attendance Data"</strong>The list loads.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Set filters</strong>From Date, To Date, Block, Status, Shift.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click "Search"</strong><span class="btn-mock primary">🔍 Search</span></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Review the results table</strong>Date, Time, Name, ID, Block, Status, Notes.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click any row</strong>For more details.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Use pagination</strong></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Click "Print" or "Export"</strong>To save the report.</div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 13. REGISTER PK ============ -->
+<section id="register-pk">
+  <h2><span class="icon">➕</span>14. Register a Peace Keeper</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">13</div>
+      <div>
+        <div class="perm-title">Register a New Peace Keeper</div>
+        <div class="perm-sub">Add a new officer to your ketena</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Registers a new officer in the system. They get a unique system ID and appear in the officer list.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Officer's full name</li>
+        <li>Identity number (government ID)</li>
+        <li>Phone number (10 digits, starts with 09)</li>
+        <li>Email (optional)</li>
+        <li>Area (Sub City + Ketena) — auto-filled to yours</li>
+        <li>Address</li>
+        <li>Clear portrait photo (optional)</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → Register Peace Keeper</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Register Peace Keeper"</strong>The registration form opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Type the full name in "pkFullName"</strong>Complete legal name.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Type the identity number in "pkIdentityNo"</strong>Government-issued ID.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type the phone in "pkPhone"</strong>Format: <code>0912345678</code></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Type the email in "pkEmail" (optional)</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>"pkArea" is auto-filled</strong>To your Sub City.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>"pkKetena" is auto-filled</strong>To your ketena.</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Type "pkAddress" (optional)</strong>Full home address.</div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Upload a photo (optional)</strong>Click <span class="btn-mock gray">📎 Choose File</span> — JPG/PNG, max 5 MB.</div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Review all fields carefully</strong>ID and phone must be unique.</div></li>
+      <li><span class="step-badge">11</span><div class="step-text"><strong>Click "Register" or "Save"</strong><span class="btn-mock success">✓ Register</span></div></li>
+      <li><span class="step-badge">12</span><div class="step-text"><strong>Confirm the green success message</strong></div></li>
+      <li><span class="step-badge">13</span><div class="step-text"><strong>Note the new officer's system ID</strong></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The new officer appears in "View Peace Keepers"</li>
+        <li>They can be assigned to schedules by higher roles</li>
+      </ul>
+    </div>
+
+    <div class="callout indigo">
+      <span class="co-icon">🔒</span>
+      <div>
+        <strong>Your ketena only</strong>
+        Officers you register are assigned to your ketena. You cannot register officers for other ketenas.
+      </div>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Duplicate identity number</li>
+        <li>Wrong phone format</li>
+        <li>Missing full name</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Identity No already exists"</code> → Check for duplicate</li>
+        <li><code>"Phone number invalid"</code> → 10 digits, starts with 09</li>
+        <li><code>"File too large"</code> → Photo under 5 MB</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14. REGISTER CRIME ============ -->
+<section id="register-crime">
+  <h2><span class="icon">📁</span>15. Register a Crime Case</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">14</div>
+      <div>
+        <div class="perm-title">Register a New Crime Case</div>
+        <div class="perm-sub">File a formal incident report</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Records a new crime case in the system for your ketena.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Case title (short description)</li>
+        <li>Crime type (Theft / Assault / Fraud / Violence / Drug / Other)</li>
+        <li>Location details</li>
+        <li>Date of the incident</li>
+        <li>Full narrative of what happened</li>
+        <li>Any attachments (photos, documents)</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → Register Crime</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Register Crime"</strong>The crime form opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Type the case title in "crimeTitle"</strong>Short, descriptive name.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Choose "crimeType"</strong>From the dropdown: Theft / Assault / Fraud / Violence / Drug / Other.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type "crimeLocation"</strong>Exact location or landmark.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Set "crimeDate"</strong>Date of the incident.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Type "crimeDescription"</strong>Full narrative — who, what, when, where, how.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Type "crimeReporter" (optional)</strong>Name of the person who reported it.</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Attach evidence (optional)</strong>Click <span class="btn-mock gray">📎 Choose File</span> — photos, PDFs, up to 10 MB each.</div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Review all fields</strong>Make sure date and location are correct.</div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Click "Register Crime Case"</strong><span class="btn-mock success">✓ Register</span></div></li>
+      <li><span class="step-badge">11</span><div class="step-text"><strong>Confirm the success message</strong></div></li>
+      <li><span class="step-badge">12</span><div class="step-text"><strong>Note the assigned case number</strong>For future reference.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The case appears in "View Crime Cases"</li>
+        <li>District Admin and above can view it</li>
+      </ul>
+    </div>
+
+    <div class="callout indigo">
+      <span class="co-icon">🔒</span>
+      <div>
+        <strong>Your ketena only</strong>
+        Cases you register are tagged with your ketena. They appear in your list.
+      </div>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Wrong date format — use dd/mm/yyyy</li>
+        <li>Too short a description — write the full story</li>
+        <li>Not attaching available evidence</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Required field missing"</code> → Check red-highlighted fields</li>
+        <li><code>"Invalid date"</code> → Use dd/mm/yyyy format</li>
+        <li><code>"File too large"</code> → Under 10 MB per file</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15. COMMUNITY SUBMIT ============ -->
+<section id="community-submit">
+  <h2><span class="icon">🏘️</span>16. Submit Community Discussion Report</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">15</div>
+      <div>
+        <div class="perm-title">Submit a Community Discussion Report</div>
+        <div class="perm-sub">Record a meeting held with residents</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Records a formal community discussion — where, when, how many attended, what was discussed, and the outcome.
+    </div>
+
+    <div class="menu-path">Left menu → Community Discussion Report</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Community Discussion Report"</strong>The form opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Fill "Discussion Date"</strong>Ethiopian calendar dd/mm/yyyy.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Fill "Sub City"</strong>Auto-filled to yours.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Fill "District"</strong>Auto-filled to yours.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Fill "Ketena" and "Blok"</strong>Auto-filled to yours.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Type "Total Blocks"</strong>Number of blocks in your ketena.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Type expected attendance</strong>Male + Female. Total auto-calculates.</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Type actual attendance</strong>Male + Female. Total auto-calculates.</div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Review "Performance %"</strong>Auto-calculated.</div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Type "Blocks with Discussion"</strong></div></li>
+      <li><span class="step-badge">11</span><div class="step-text"><strong>Type "Discussion Not Held Blocks"</strong></div></li>
+      <li><span class="step-badge">12</span><div class="step-text"><strong>Review "Coverage %"</strong>Auto-calculated.</div></li>
+      <li><span class="step-badge">13</span><div class="step-text"><strong>Type positive points</strong>What went well.</div></li>
+      <li><span class="step-badge">14</span><div class="step-text"><strong>Type negative points</strong>Challenges faced.</div></li>
+      <li><span class="step-badge">15</span><div class="step-text"><strong>Type reconciliation actions</strong></div></li>
+      <li><span class="step-badge">16</span><div class="step-text"><strong>Type results achieved</strong></div></li>
+      <li><span class="step-badge">17</span><div class="step-text"><strong>Type problems encountered</strong></div></li>
+      <li><span class="step-badge">18</span><div class="step-text"><strong>Type one-sentence summary</strong></div></li>
+      <li><span class="step-badge">19</span><div class="step-text"><strong>Add community sectors (optional)</strong>Press Enter after each.</div></li>
+      <li><span class="step-badge">20</span><div class="step-text"><strong>Add sector offices (optional)</strong></div></li>
+      <li><span class="step-badge">21</span><div class="step-text"><strong>Add agenda items (optional)</strong></div></li>
+      <li><span class="step-badge">22</span><div class="step-text"><strong>Tick "Signed Attendance Sheet Attached"</strong>If applicable.</div></li>
+      <li><span class="step-badge">23</span><div class="step-text"><strong>Tick "Voice Recording or Minutes Attached"</strong>If applicable.</div></li>
+      <li><span class="step-badge">24</span><div class="step-text"><strong>Upload attachments</strong><span class="btn-mock gray">📎 Choose File</span></div></li>
+      <li><span class="step-badge">25</span><div class="step-text"><strong>Type approver name</strong></div></li>
+      <li><span class="step-badge">26</span><div class="step-text"><strong>Type approver role</strong></div></li>
+      <li><span class="step-badge">27</span><div class="step-text"><strong>Review all fields</strong></div></li>
+      <li><span class="step-badge">28</span><div class="step-text"><strong>Click "Submit Report"</strong><span class="btn-mock success">✓ Submit</span></div></li>
+      <li><span class="step-badge">29</span><div class="step-text"><strong>Confirm the success message</strong></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Report is submitted for review</li>
+        <li>Supervisors can see and act on it</li>
+        <li>You can view it later in "Community Reports"</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 16. COMMUNITY VIEW ============ -->
+<section id="community-view">
+  <h2><span class="icon">📄</span>17. View Community Reports</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">16</div>
+      <div>
+        <div class="perm-title">View Community Reports</div>
+        <div class="perm-sub">See reports submitted in your ketena</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Community Reports</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Community Reports"</strong>The list opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Read the columns</strong>Date, Location, Approver, Coverage %, Performance %.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Search or filter</strong>By date range, Block.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Click any report row</strong>Opens the full report.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Download attachments</strong>Click any file name.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Use pagination</strong>Bottom of the list.</div></li>
+    </ol>
+
+    <div class="callout indigo">
+      <span class="co-icon">🔒</span>
+      <div>
+        <strong>Your ketena only</strong>
+        Reports from other ketenas are not visible to you.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17. DEV SUPPORT ============ -->
+<section id="dev-support">
+  <h2><span class="icon">🛠️</span>18. Developer Support</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">17</div>
+      <div>
+        <div class="perm-title">Contact Developer Support</div>
+        <div class="perm-sub">Report bugs and request features</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Developer Support</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Developer Support"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Type a Subject</strong></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Choose Priority</strong>Low / Medium / High / Critical.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Describe in detail</strong></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Attach a screenshot (optional)</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click Submit</strong></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Note your tracking number</strong></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 18. LOGOUT ============ -->
+<section id="logout">
+  <h2><span class="icon">🚪</span>19. How to Log Out</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">18</div>
+      <div>
+        <div class="perm-title">Log Out Safely</div>
+        <div class="perm-sub">Especially on shared computers</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Top-right corner → your name → Logout</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click your name top-right</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click "Logout"</strong><span class="btn-mock danger">🚪 Logout</span></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Wait for the login page</strong></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Optional: close the tab</strong></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section>
+  <h2><span class="icon">🎉</span>Ketena Guide Complete</h2>
+
+  <p>You have now read the complete Ketena guide. You know how to:</p>
+
+  <ul style="margin-left:24px; margin-top:8px">
+    <li>Log in and navigate the ketena dashboard</li>
+    <li>Update your account and change your PIN</li>
+    <li>View, search, and filter peace keepers in your ketena</li>
+    <li>View, search, and filter crime cases in your ketena</li>
+    <li><strong>Record attendance</strong> — 3 methods (Individual, QR, Bulk)</li>
+    <li>View attendance data</li>
+    <li><strong>Register new peace keepers</strong> for your ketena</li>
+    <li><strong>Register new crime cases</strong> for your ketena</li>
+    <li>Submit community discussion reports</li>
+    <li>View submitted community reports</li>
+    <li>Contact developer support</li>
+    <li>Log out safely</li>
+  </ul>
+
+  <div class="callout gold" style="background:linear-gradient(90deg,#fef9e7,#fef3c7); border-color:var(--brand-gold)">
+    <span class="co-icon">📘</span>
+    <div>
+      <strong style="color:#92620a">Part 9 of 10 · Ketena Guide Complete</strong>
+      <span style="color:#475569">Next: Part 10 — Master Index + GitHub Deployment (final)</span>
+    </div>
+  </div>
+</section>
+
+<div id="noResult">❌ No matching sections — try a different keyword.</div>
+
+</main>
+
+<button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Top">↑</button>
+
+<footer>
+  <div class="f-title">🛡️ Peace Keepers — Ketena Guide</div>
+  <p>Addis Ababa City Peace &amp; Security Administration Bureau · Internal Use Only</p>
+  <p style="margin-top:14px;opacity:.6;font-size:.8rem">© 2026 · Part 9 of 10</p>
+</footer>
+
+<script>
+/* ============ SEARCH ============ */
+let originalHTML = new Map();
+document.querySelectorAll('main section').forEach((sec,i)=>originalHTML.set(i, sec.innerHTML));
+
+function escapeReg(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+
+function searchManual(){
+  const q = document.getElementById('searchInput').value.trim();
+  const sections = document.querySelectorAll('main section');
+  const noRes = document.getElementById('noResult');
+  const stats = document.getElementById('stats');
+  let visible = 0;
+  const kw = q.toLowerCase();
+
+  sections.forEach((sec, i)=>{
+    sec.innerHTML = originalHTML.get(i);
+    if(!kw){ sec.classList.remove('hidden'); visible++; return; }
+    const text = sec.innerText.toLowerCase();
+    if(text.includes(kw)){
+      sec.classList.remove('hidden'); visible++;
+      highlightNode(sec, kw);
+    } else sec.classList.add('hidden');
+  });
+
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if(target && target.classList.contains('hidden')) a.style.opacity='.3';
+    else a.style.opacity='1';
+  });
+
+  noRes.style.display = (kw && visible === 0) ? 'block' : 'none';
+  stats.textContent = kw ? (visible + ' section(s) match') : '';
+}
+
+function highlightNode(node, kw){
+  const regex = new RegExp('('+escapeReg(kw)+')','gi');
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => {
+      if(!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const p = n.parentNode.nodeName;
+      if(p==='SCRIPT'||p==='STYLE'||p==='CODE'||p==='PRE') return NodeFilter.FILTER_REJECT;
+      return regex.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const targets=[];
+  while(walker.nextNode()) targets.push(walker.currentNode);
+  targets.forEach(t=>{
+    const span = document.createElement('span');
+    span.innerHTML = t.nodeValue.replace(regex,'<span class="hl">$1</span>');
+    t.parentNode.replaceChild(span, t);
+  });
+}
+
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  searchManual();
+  document.getElementById('searchInput').focus();
+}
+
+const toTop = document.getElementById('toTop');
+window.addEventListener('scroll', ()=>{
+  toTop.style.display = window.scrollY > 400 ? 'block' : 'none';
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='/' && document.activeElement.tagName!=='INPUT'){
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+  if(e.key==='Escape') clearSearch();
+});
+</script>
+
+</body>
+</html>
