@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peace Keepers — City Admin Guide</title>
+<style>
+  :root{
+    --brand-dark:#0d3d2e;
+    --brand-green:#1a5c3f;
+    --brand-light:#e8f5ec;
+    --brand-gold:#c9a227;
+    --brand-gold-2:#e0b83a;
+    --card:#ffffff;
+    --text:#1a1a1a;
+    --muted:#64748b;
+    --border:#e2e8f0;
+    --bg:#f4f7f5;
+    --error:#dc2626;
+    --success:#16a34a;
+    --info:#2563eb;
+    --warn:#f59e0b;
+    --purple:#7c3aed;
+    --city:#1e40af;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Segoe UI','Inter',system-ui,sans-serif;
+    background:var(--bg); color:var(--text);
+    line-height:1.75; font-size:15px;
+  }
+
+  /* ============ TOP BAR ============ */
+  .top-bar{
+    position:sticky; top:0; z-index:300;
+    background:var(--brand-dark); color:#fff;
+    padding:10px 22px; display:flex; justify-content:space-between;
+    align-items:center; flex-wrap:wrap; gap:10px;
+    box-shadow:0 4px 18px rgba(13,61,46,.35);
+    border-bottom:3px solid var(--brand-gold);
+  }
+  .top-bar .brand{
+    display:flex; align-items:center; gap:10px;
+    font-weight:800; font-size:.95rem;
+  }
+  .top-bar .brand .seal{
+    width:32px; height:32px; border-radius:50%;
+    background:radial-gradient(circle,#1e40af 0%,#1e3a8a 60%,#0d3d2e 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1rem; border:2px solid var(--brand-gold);
+  }
+  .top-bar .role-badge{
+    background:var(--city); color:#fff; padding:5px 14px;
+    border-radius:20px; font-weight:700; font-size:.82rem;
+    letter-spacing:.5px;
+  }
+
+  /* ============ HERO ============ */
+  header.hero{
+    background:
+      radial-gradient(circle at 20% 30%, rgba(201,162,39,.28), transparent 55%),
+      radial-gradient(circle at 80% 70%, rgba(30,64,175,.55), transparent 55%),
+      linear-gradient(135deg,#0d3d2e 0%,#1e40af 60%,#0d3d2e 100%);
+    color:#fff; padding:60px 24px 70px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  header.hero .seal-big{
+    font-size:5rem; margin-bottom:14px; display:block;
+    filter:drop-shadow(0 6px 20px rgba(0,0,0,.5));
+    animation:float 3.5s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  header.hero h1{
+    font-size:2rem; margin-bottom:10px; letter-spacing:.3px;
+    text-shadow:0 4px 20px rgba(0,0,0,.4); font-weight:800;
+  }
+  header.hero h2{
+    font-size:1.15rem; font-weight:400; opacity:.92; margin-bottom:6px;
+  }
+  header.hero p.lead{
+    max-width:780px; margin:18px auto 0; font-size:1rem;
+    opacity:.92; line-height:1.75;
+  }
+  header.hero .badges{
+    display:flex; gap:8px; justify-content:center;
+    flex-wrap:wrap; margin-top:24px;
+  }
+  header.hero .badge{
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.28);
+    backdrop-filter:blur(8px); padding:6px 16px; border-radius:24px;
+    font-weight:600; font-size:.82rem;
+  }
+  header.hero .badge.gold{
+    background:var(--brand-gold); color:var(--brand-dark);
+    border-color:var(--brand-gold); font-weight:800;
+  }
+
+  /* ============ SEARCH ============ */
+  .search-bar{
+    position:sticky; top:52px; z-index:200;
+    background:rgba(255,255,255,.98); backdrop-filter:blur(10px);
+    padding:12px 22px; box-shadow:0 4px 18px rgba(13,61,46,.08);
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    border-bottom:3px solid var(--brand-gold);
+  }
+  .search-bar input{
+    flex:1; min-width:240px;
+    padding:11px 20px 11px 44px;
+    border:2px solid var(--border); border-radius:30px;
+    font-size:.95rem; outline:none; transition:.25s;
+    background:#f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E") no-repeat 16px center;
+  }
+  .search-bar input:focus{
+    border-color:var(--brand-green); background-color:#fff;
+    box-shadow:0 0 0 4px rgba(26,92,63,.12);
+  }
+  .search-bar button{
+    background:linear-gradient(135deg,var(--brand-dark),var(--brand-green));
+    color:#fff; border:none; padding:11px 22px; border-radius:30px;
+    font-weight:700; cursor:pointer; transition:.25s; font-size:.9rem;
+  }
+  .search-bar button:hover{transform:translateY(-2px)}
+  .search-stats{font-size:.82rem; color:var(--muted); font-weight:600}
+
+  /* ============ TOC ============ */
+  nav.toc{
+    max-width:1180px; margin:22px auto; padding:30px 34px;
+    background:#fff; border-radius:16px;
+    box-shadow:0 4px 24px rgba(13,61,46,.08);
+    border-top:6px solid var(--brand-gold);
+  }
+  nav.toc h2{
+    color:var(--brand-dark); font-size:1.35rem;
+    margin-bottom:20px; display:flex; align-items:center; gap:10px;
+  }
+  nav.toc ol{
+    list-style:none; display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:6px; counter-reset:toc;
+  }
+  nav.toc ol li{counter-increment:toc}
+  nav.toc a{
+    color:var(--text); text-decoration:none;
+    padding:10px 14px; display:flex; align-items:center;
+    gap:10px; border-radius:10px;
+    border-left:4px solid transparent;
+    transition:.2s; font-weight:500; font-size:.9rem;
+  }
+  nav.toc a:hover{
+    background:var(--brand-light); border-left-color:var(--brand-gold);
+    color:var(--brand-dark); transform:translateX(4px);
+  }
+  nav.toc a::before{
+    content:counter(toc);
+    background:var(--brand-dark); color:#fff;
+    width:26px; height:26px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.78rem; flex-shrink:0;
+  }
+
+  /* ============ MAIN ============ */
+  main{max-width:1180px; margin:auto; padding:0 22px 80px}
+  section{
+    background:#fff; margin:28px 0; padding:34px 38px;
+    border-radius:16px; box-shadow:0 4px 20px rgba(13,61,46,.06);
+    border-left:7px solid var(--brand-dark);
+    scroll-margin-top:130px;
+  }
+  section:nth-of-type(3n+1){border-left-color:var(--brand-dark)}
+  section:nth-of-type(3n+2){border-left-color:var(--brand-gold)}
+  section:nth-of-type(3n+3){border-left-color:var(--city)}
+  section h2{
+    color:var(--brand-dark); font-size:1.45rem; margin-bottom:18px;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    padding-bottom:14px; border-bottom:2px dashed var(--border);
+  }
+  section h2 .icon{
+    background:linear-gradient(135deg,var(--brand-dark),var(--city));
+    color:#fff; width:48px; height:48px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem; flex-shrink:0;
+    box-shadow:0 4px 12px rgba(30,64,175,.35);
+    border:2px solid var(--brand-gold);
+  }
+  section h3{
+    color:var(--brand-green); margin:28px 0 14px;
+    font-size:1.18rem; display:flex; align-items:center; gap:8px;
+  }
+  section h3::before{content:"▸"; color:var(--brand-gold); font-size:1.4rem}
+  p{margin-bottom:14px; color:#334155; font-size:.97rem}
+
+  /* ============ PERMISSION CARD ============ */
+  .permission{
+    background:#fff; border:2px solid var(--border);
+    border-radius:14px; padding:26px 30px; margin:28px 0;
+    border-left:6px solid var(--city);
+    box-shadow:0 4px 16px rgba(13,61,46,.06);
+    transition:.25s;
+  }
+  .permission:hover{
+    box-shadow:0 8px 28px rgba(13,61,46,.12);
+    border-left-width:10px;
+  }
+  .permission .perm-header{
+    display:flex; align-items:flex-start; gap:14px;
+    padding-bottom:14px; border-bottom:2px dashed var(--border);
+    margin-bottom:18px;
+  }
+  .permission .perm-num{
+    background:linear-gradient(135deg,var(--city),#3b82f6);
+    color:#fff; min-width:44px; height:44px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:1.05rem; flex-shrink:0;
+    box-shadow:0 3px 10px rgba(30,64,175,.4);
+  }
+  .permission .perm-title{
+    color:var(--city); font-size:1.15rem; font-weight:800;
+    margin-bottom:4px;
+  }
+  .permission .perm-sub{
+    color:var(--muted); font-size:.85rem; font-style:italic;
+  }
+
+  .info-block{
+    background:var(--brand-light); border-radius:10px;
+    padding:14px 18px; margin-bottom:16px;
+    border-left:4px solid var(--brand-gold);
+  }
+  .info-block strong{color:var(--brand-dark); display:block; margin-bottom:4px}
+  .info-block ul{margin-left:20px; margin-top:6px; font-size:.93rem}
+  .info-block li{margin-bottom:4px}
+
+  .menu-path{
+    background:#0f172a; color:#7dd3fc; padding:12px 16px;
+    border-radius:8px; font-family:'Consolas',monospace;
+    font-size:.88rem; margin:12px 0;
+    border-left:4px solid var(--brand-gold);
+  }
+  .menu-path::before{content:"📍 "; margin-right:4px}
+
+  ol.steps{list-style:none; padding:0; margin:16px 0}
+  ol.steps > li{
+    display:flex; align-items:flex-start; gap:14px;
+    margin-bottom:14px; padding:14px 18px;
+    background:var(--brand-light); border-radius:12px;
+    border-left:5px solid var(--brand-gold);
+    transition:.2s;
+  }
+  ol.steps > li:hover{background:#dcefe2; transform:translateX(4px)}
+  ol.steps > li .step-badge{
+    background:linear-gradient(135deg,var(--brand-dark),var(--city));
+    color:#fff; min-width:34px; height:34px; border-radius:50%;
+    font-weight:800; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; font-size:.95rem;
+    box-shadow:0 3px 10px rgba(30,64,175,.4);
+  }
+  ol.steps > li .step-text{flex:1; font-size:.96rem}
+  ol.steps > li .step-text strong{
+    color:var(--brand-dark); display:block;
+    margin-bottom:4px; font-size:1rem;
+  }
+  ol.steps > li .step-text code{
+    background:#0d3d2e; color:#7dd3fc; padding:2px 8px;
+    border-radius:5px; font-size:.85em;
+  }
+
+  .outcome{
+    background:linear-gradient(90deg,#ecfdf5,#f0fdf4);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--success);
+  }
+  .outcome strong{color:var(--success); display:block; margin-bottom:6px}
+  .outcome ul{margin-left:20px; font-size:.93rem}
+  .outcome li{margin-bottom:4px}
+
+  .mistakes{
+    background:linear-gradient(90deg,#fffbeb,#fef3c7);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--warn);
+  }
+  .mistakes strong{color:#b45309; display:block; margin-bottom:6px}
+  .mistakes ul{margin-left:20px; font-size:.93rem}
+  .mistakes li{margin-bottom:4px}
+
+  .troubleshoot{
+    background:linear-gradient(90deg,#fef2f2,#fee2e2);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--error);
+  }
+  .troubleshoot strong{color:var(--error); display:block; margin-bottom:6px}
+  .troubleshoot ul{margin-left:20px; font-size:.93rem}
+  .troubleshoot li{margin-bottom:6px}
+  .troubleshoot code{
+    background:#7f1d1d; color:#fecaca; padding:2px 8px;
+    border-radius:5px; font-size:.85em;
+  }
+
+  /* ============ CALLOUTS ============ */
+  .callout{
+    padding:16px 20px; border-radius:12px; margin:20px 0;
+    border-left:5px solid; display:flex; gap:14px; align-items:flex-start;
+    font-size:.94rem;
+  }
+  .callout .co-icon{font-size:1.5rem; flex-shrink:0}
+  .callout strong{display:block; margin-bottom:4px; font-size:1rem}
+  .callout.tip{background:linear-gradient(90deg,#ecfdf5,#f0fdf4); border-color:var(--success)}
+  .callout.tip strong{color:var(--success)}
+  .callout.warn{background:linear-gradient(90deg,#fffbeb,#fef3c7); border-color:var(--warn)}
+  .callout.warn strong{color:#b45309}
+  .callout.danger{background:linear-gradient(90deg,#fef2f2,#fee2e2); border-color:var(--error)}
+  .callout.danger strong{color:var(--error)}
+  .callout.info{background:linear-gradient(90deg,#eff6ff,#e0f2fe); border-color:var(--info)}
+  .callout.info strong{color:var(--info)}
+
+  /* ============ BUTTON MOCK ============ */
+  .btn-mock{
+    display:inline-block; padding:6px 16px; border-radius:8px;
+    font-weight:700; font-size:.82rem; margin:2px 4px;
+    color:#fff; box-shadow:0 3px 8px rgba(0,0,0,.15);
+  }
+  .btn-mock.primary{background:linear-gradient(135deg,var(--brand-dark),var(--city))}
+  .btn-mock.success{background:linear-gradient(135deg,var(--success),#22c55e)}
+  .btn-mock.warn{background:linear-gradient(135deg,var(--warn),var(--brand-gold-2)); color:#000}
+  .btn-mock.danger{background:linear-gradient(135deg,var(--error),#ef4444)}
+  .btn-mock.gold{background:linear-gradient(135deg,var(--brand-gold),var(--brand-gold-2)); color:var(--brand-dark)}
+  .btn-mock.gray{background:#64748b}
+
+  /* ============ SCREENSHOT ============ */
+  .screenshot{
+    background:linear-gradient(135deg,#f0fdf4,#ecfdf5);
+    border:3px dashed var(--brand-gold);
+    border-radius:14px; padding:36px 24px; text-align:center;
+    margin:20px 0; color:var(--brand-dark);
+  }
+  .screenshot .s-icon{font-size:3rem; margin-bottom:10px; display:block}
+  .screenshot strong{display:block; font-size:1.05rem; margin-bottom:6px; color:var(--brand-dark)}
+  .screenshot small{color:var(--muted); font-size:.83rem}
+
+  /* ============ SEARCH HIGHLIGHT ============ */
+  .hl{background:#fde047; padding:1px 3px; border-radius:3px; font-weight:600}
+  .hidden{display:none !important}
+  #noResult{
+    text-align:center; padding:60px 20px; color:var(--error);
+    font-weight:700; font-size:1.15rem; display:none;
+  }
+
+  /* ============ TOP BUTTON ============ */
+  #toTop{
+    position:fixed; right:22px; bottom:22px; z-index:150;
+    background:linear-gradient(135deg,var(--brand-dark),var(--city));
+    color:#fff; border:2px solid var(--brand-gold);
+    width:54px; height:54px; border-radius:50%;
+    font-size:1.3rem; cursor:pointer; display:none;
+    box-shadow:0 6px 20px rgba(30,64,175,.5);
+    transition:.25s;
+  }
+  #toTop:hover{transform:translateY(-4px) scale(1.08)}
+
+  /* ============ FOOTER ============ */
+  footer{
+    background:linear-gradient(135deg,#0d3d2e,#051e16);
+    color:#cbd5e1; text-align:center; padding:46px 24px; margin-top:60px;
+    border-top:4px solid var(--brand-gold);
+  }
+  footer .f-title{
+    color:var(--brand-gold); font-weight:800;
+    font-size:1.15rem; margin-bottom:10px;
+  }
+  footer p{font-size:.88rem; opacity:.85; margin:4px 0; color:#cbd5e1}
+
+  @media (max-width:640px){
+    header.hero h1{font-size:1.5rem}
+    section{padding:22px 20px}
+    .permission{padding:20px 22px}
+    nav.toc ol{grid-template-columns:1fr}
+    .search-bar{top:46px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="top-bar">
+  <div class="brand">
+    <span class="seal">🛡️</span>
+    <span>Peace Keepers · User Manual</span>
+  </div>
+  <span class="role-badge">🔵 CITY ADMIN</span>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <span class="seal-big">🌆</span>
+  <h1>Peace Keepers — City Admin Guide</h1>
+  <h2>Role-Based User Manual · Part 2 of 10</h2>
+  <p class="lead">A complete step-by-step guide for the City Admin user type. You see the entire city across all sub-cities and manage SMS, certificates, and analytics at city level.</p>
+  <div class="badges">
+    <span class="badge gold">City Admin Guide</span>
+    <span class="badge">18 Permissions</span>
+    <span class="badge">Step-by-Step</span>
+    <span class="badge">English</span>
+  </div>
+</header>
+
+<!-- ============ SEARCH ============ -->
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="🔍 Search this guide… (e.g. 'SMS', 'certificate', 'analytics')" oninput="searchManual()">
+  <button onclick="clearSearch()">Clear</button>
+  <span class="search-stats" id="stats"></span>
+</div>
+
+<!-- ============ TOC ============ -->
+<nav class="toc">
+  <h2>📖 Table of Contents — City Admin</h2>
+  <ol>
+    <li><a href="#about">What You Can Do as City Admin</a></li>
+    <li><a href="#login">Log In to the System</a></li>
+    <li><a href="#dashboard">Open the Dashboard</a></li>
+    <li><a href="#update-account">Update Your Account</a></li>
+    <li><a href="#change-pin">Change Your PIN</a></li>
+    <li><a href="#view-pk">View Peace Keepers</a></li>
+    <li><a href="#view-crimes">View Crime Cases</a></li>
+    <li><a href="#analyze-peace">Analyze Peace Keepers</a></li>
+    <li><a href="#analyze-crimes">Analyze Crimes</a></li>
+    <li><a href="#crime-geo">Crime Geo Location</a></li>
+    <li><a href="#send-sms">Send SMS</a></li>
+    <li><a href="#office-com">Office Communication</a></li>
+    <li><a href="#active-discussions">Active Discussions</a></li>
+    <li><a href="#call-history">Call History</a></li>
+    <li><a href="#request-cert">Request a Certificate</a></li>
+    <li><a href="#manage-cert">Manage Certificates</a></li>
+    <li><a href="#my-cert">My Certificates</a></li>
+    <li><a href="#dev-support">Developer Support</a></li>
+    <li><a href="#logout">How to Log Out</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <h2><span class="icon">🌆</span>1. What You Can Do as City Admin</h2>
+
+  <p>As <strong>City Admin</strong>, you have one of the two highest access levels in the system. You see the entire city across all sub-cities and can act on city-wide data.</p>
+
+  <div class="callout info">
+    <span class="co-icon">ℹ️</span>
+    <div>
+      <strong>Your scope</strong>
+      You see <strong>all sub-cities</strong> at once. When you analyze crime or view peace keepers, the data covers the entire Addis Ababa city area — not just one sub-city.
+    </div>
+  </div>
+
+  <h3>Your 18 Permissions</h3>
+
+  <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:.93rem">
+    <tr style="background:linear-gradient(135deg,var(--brand-dark),var(--city)); color:#fff">
+      <th style="padding:12px 16px; text-align:left">#</th>
+      <th style="padding:12px 16px; text-align:left">Permission</th>
+      <th style="padding:12px 16px; text-align:left">What it does</th>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">1</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Log In</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Access the system</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">2</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Dashboard</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">See the city-wide overview</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">3</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Update Account</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Edit your own profile</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">4</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Change PIN</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Update your login PIN</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">5</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>View Peace Keepers</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">See all officers in the city</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">6</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>View Crime Cases</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">See all cases in the city</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">7</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Analyze Peace Keepers</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Deployment analytics</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">8</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Analyze Crimes</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Crime pattern analytics</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">9</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Crime Geo Location</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">View crimes on a map</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">10</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Send SMS</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Send city-wide messages</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">11</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Office Communication</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Internal messages</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">12</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Active Discussions</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Join live discussions</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">13</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Call History</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">See past discussions</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">14</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Request Certificate</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Request a certificate</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">15</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Manage Certificates</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Approve/reject certificate requests</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">16</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>My Certificates</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">See your own certificate requests</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">17</td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Developer Support</strong></td>
+      <td style="padding:10px 16px; border-bottom:1px solid var(--border)">Contact support</td>
+    </tr>
+    <tr style="background:#fafcf9">
+      <td style="padding:10px 16px">18</td>
+      <td style="padding:10px 16px"><strong>Log Out</strong></td>
+      <td style="padding:10px 16px">End your session</td>
+    </tr>
+  </table>
+
+  <div class="callout warn">
+    <span class="co-icon">⚠️</span>
+    <div>
+      <strong>What you cannot do (unlike Super Admin)</strong>
+      You cannot manage users, restore backups, or change system settings. Those are Super Admin-only permissions.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1. LOGIN ============ -->
+<section id="login">
+  <h2><span class="icon">🔐</span>2. Log In to the System</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">1</div>
+      <div>
+        <div class="perm-title">Log In</div>
+        <div class="perm-sub">Required for every session</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Opens the system with your City Admin identity so you can access city-wide data and tools.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Your username (given by the Super Admin)</li>
+        <li>Your PIN (6+ digits)</li>
+        <li>A modern browser and internet connection</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">https://www.aapskeeper.gov.et</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open your browser</strong>Launch Chrome, Edge, Firefox, or Safari.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Go to the login page</strong>Type <code>www.aapskeeper.gov.et</code> and press Enter.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click the Username field</strong>A cursor appears.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type your username</strong>Exactly as given by the Super Admin.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click the PIN field</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Type your PIN</strong>Each digit shows as a dot.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Click Login</strong><span class="btn-mock primary">➜ Login</span></div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Wait for the dashboard</strong>Loads in 2–5 seconds.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You land on the Dashboard</li>
+        <li>The left menu shows City Admin options</li>
+        <li>Your name appears top-right</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Invalid username or PIN"</code> → Check spelling and caps</li>
+        <li><code>"Account locked"</code> → Wait 15 minutes</li>
+        <li>Page won't load → Refresh (F5), try another browser</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. DASHBOARD ============ -->
+<section id="dashboard">
+  <h2><span class="icon">📊</span>3. Open the Dashboard</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">2</div>
+      <div>
+        <div class="perm-title">View the City Admin Dashboard</div>
+        <div class="perm-sub">Your home page with city-wide summary</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows a city-wide overview — total peace keepers in the whole city, all crime cases, pending items, and system status.
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Log in</strong>Follow the previous section.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>You land on Dashboard</strong>No click needed.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Read the stat cards</strong>Total Peace Keepers, Total Cases, Pending Items, System Status.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Note the location label</strong>It shows <em>"All Sub-Cities"</em> — your view is city-wide.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click any card</strong>Drills into details.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You see the total picture across the city</li>
+        <li>Any sub-page is one click away</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. UPDATE ACCOUNT ============ -->
+<section id="update-account">
+  <h2><span class="icon">⚙️</span>4. Update Your Account</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">3</div>
+      <div>
+        <div class="perm-title">Update Your Personal Information</div>
+        <div class="perm-sub">Your name, photo, phone, email</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you update your own profile — name, photo, date of birth, phone, email, department, responsibility.
+    </div>
+
+    <div class="menu-path">Left menu → Update Account</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Update Account"</strong>The Account page opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Review prefilled fields</strong>Your current details are shown.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Change what you need</strong>Editable: Full Name, Gender, DOB, Birth Place, Phone, Email, Department, Responsibility.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Upload a new photo (optional)</strong><span class="btn-mock gray">📎 Choose File</span> — JPG or PNG, max 5 MB.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click Save</strong><span class="btn-mock success">✓ Save Changes</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your new details appear everywhere</li>
+        <li>The change is logged in Activity Management</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Changing phone without updating emergency contacts</li>
+        <li>Photo larger than 5 MB</li>
+        <li>Special characters in phone number (only digits)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. CHANGE PIN ============ -->
+<section id="change-pin">
+  <h2><span class="icon">🔑</span>5. Change Your PIN</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">4</div>
+      <div>
+        <div class="perm-title">Change Your PIN</div>
+        <div class="perm-sub">Recommended every 3 months</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Update Account → Change PIN section</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open Update Account</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Scroll to the Change PIN section</strong>Look for Previous PIN, New PIN, Confirm PIN.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Type your current PIN</strong>Proves it's really you.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type the new PIN</strong>At least 6 digits. No 123456.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Retype in Confirm PIN</strong>Must match exactly.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click Save</strong><span class="btn-mock success">✓ Save</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Log out and log back in</strong>Confirms the change worked.</div></li>
+    </ol>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Previous PIN incorrect"</code> → Try again carefully</li>
+        <li><code>"PIN too short"</code> → At least 6 digits</li>
+        <li>Forgot current PIN → Use "Forgot PIN" on the login page</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. VIEW PEACE KEEPERS ============ -->
+<section id="view-pk">
+  <h2><span class="icon">👮</span>6. View Peace Keepers</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">5</div>
+      <div>
+        <div class="perm-title">View All Peace Keepers in the City</div>
+        <div class="perm-sub">Every officer across every sub-city</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows all peace keepers registered in the entire city — not just one sub-city. You can search, filter, and view any officer's details.
+    </div>
+
+    <div class="menu-path">Left menu → View Peace Keepers</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "View Peace Keepers"</strong>The full list loads.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Read the columns</strong>Name, ID, Phone, Sub City, District, Ketena, Status.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Search by name or ID</strong>Type in the search box.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Apply filters</strong>Filter by Sub City, District, Ketena, Status, Member Type.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click any row</strong>A modal opens with full officer details.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Use pagination</strong>Scroll to bottom for more pages.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You see every officer in the city</li>
+        <li>You can view any officer's full profile</li>
+      </ul>
+    </div>
+
+    <div class="callout info">
+      <span class="co-icon">ℹ️</span>
+      <div>
+        <strong>View only</strong>
+        As City Admin, you can view but cannot edit or delete peace keepers. Those actions are reserved for district and sub-city administrators.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. VIEW CRIMES ============ -->
+<section id="view-crimes">
+  <h2><span class="icon">📁</span>7. View Crime Cases</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">6</div>
+      <div>
+        <div class="perm-title">View All Crime Cases in the City</div>
+        <div class="perm-sub">Every case across every sub-city</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows all crime cases recorded in the city. You can search, filter, and open any case file.
+    </div>
+
+    <div class="menu-path">Left menu → View Crime Cases</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "View Crime Cases"</strong>The case list loads.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Read the columns</strong>Case name, Type, Location, Date, Status, Priority.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Search</strong>Type a keyword in the search box.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Apply filters</strong>Filter by Sub City, District, Ketena, Status, Priority, Date range.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click any case row</strong>A modal opens with the full case file — description, location, officer, timeline, attachments.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Download attachments</strong>Click any file name to download photos or PDFs.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You can review any case file in the city</li>
+        <li>You can attach notes if needed</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. ANALYZE PEACE ============ -->
+<section id="analyze-peace">
+  <h2><span class="icon">📈</span>8. Analyze Peace Keepers</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">7</div>
+      <div>
+        <div class="perm-title">Analyze Peace Keeper Deployment</div>
+        <div class="perm-sub">See how officers are distributed across the city</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows charts and tables of how peace keepers are distributed — by sub-city, ketena, round, member type, and status. Use it to balance coverage and identify under-staffed areas.
+    </div>
+
+    <div class="menu-path">Left menu → Analyze Peace Keepers</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Analyze Peace Keepers"</strong>The analysis page opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Set filters (optional)</strong>Narrow by Sub City, District, Ketena, or Block.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Choose a grouping column</strong>Group by Sub City, Ketena, Round, Member Type, or Status.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Click Analyze</strong><span class="btn-mock primary">📊 Analyze</span></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Review the results table</strong>Group name, officer count, percentage.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Switch to Charts view</strong>See visual breakdown.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Export or Print</strong><span class="btn-mock gray">⬇️ Export</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You see the distribution of peace keepers city-wide</li>
+        <li>You can identify under-staffed areas</li>
+      </ul>
+    </div>
+
+    <div class="callout tip">
+      <span class="co-icon">💡</span>
+      <div>
+        <strong>Useful analysis recipe</strong>
+        Group by Sub City, then look for the smallest bar. If one sub-city has far fewer officers than others, consider requesting more resources there.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. ANALYZE CRIMES ============ -->
+<section id="analyze-crimes">
+  <h2><span class="icon">📊</span>9. Analyze Crimes</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">8</div>
+      <div>
+        <div class="perm-title">Analyze Crime Patterns City-Wide</div>
+        <div class="perm-sub">See which crimes are trending and where</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows crime patterns — by type, by sub-city, by ketena, by status, and over time. Helps you spot hot spots and trends.
+    </div>
+
+    <div class="menu-path">Left menu → Analyze Crimes</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Analyze Crimes"</strong>The analysis page opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Set the date range</strong>Start Date and End Date.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Optional filters</strong>Sub City, District, Ketena, Block.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Choose grouping</strong>Group by Case Type, Sub City, Ketena, or Status.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click Analyze</strong><span class="btn-mock primary">📊 Analyze</span></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Review the table and charts</strong>Counts and percentages per group.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Export the report</strong><span class="btn-mock gray">⬇️ Export</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You identify crime hotspots</li>
+        <li>You see emerging trends</li>
+        <li>You can plan resources accordingly</li>
+      </ul>
+    </div>
+
+    <div class="callout tip">
+      <span class="co-icon">💡</span>
+      <div>
+        <strong>Useful analysis recipes</strong>
+        <strong>Top crimes:</strong> group by Case Type, no filters — see what's most common.<br>
+        <strong>Hotspot:</strong> group by Ketena, filter Sub City = Bole — see which ketena has the most cases.<br>
+        <strong>Trend:</strong> use two different month ranges and compare counts.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. CRIME GEO ============ -->
+<section id="crime-geo">
+  <h2><span class="icon">🗺️</span>10. Crime Geo Location</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">9</div>
+      <div>
+        <div class="perm-title">View Crimes on a Map</div>
+        <div class="perm-sub">See where crimes happened city-wide</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Plots crime incidents on a map using their GPS coordinates. Each marker represents a case, and clicking it shows the details.
+    </div>
+
+    <div class="menu-path">Left menu → Crime Geo Location</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Crime Geo Location"</strong>The map loads.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Wait for markers to appear</strong>Each case with GPS coordinates shows as a pin.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Filter the map (optional)</strong>Filter by date range, Sub City, District, Status.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Zoom in or out</strong>Use the + / − buttons or scroll wheel.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click any marker</strong>A popup shows the case name, date, and status.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click "View Details"</strong>Opens the full case file.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You see the geographic distribution of crime</li>
+        <li>You can spot clusters and hotspots visually</li>
+      </ul>
+    </div>
+
+    <div class="callout warn">
+      <span class="co-icon">⚠️</span>
+      <div>
+        <strong>Cases without GPS don't appear</strong>
+        Only cases that were registered with GPS coordinates show on the map. Cases without GPS are still in the case list but not on the map.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. SEND SMS ============ -->
+<section id="send-sms">
+  <h2><span class="icon">💬</span>11. Send SMS</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">10</div>
+      <div>
+        <div class="perm-title">Send an SMS to Peace Keepers</div>
+        <div class="perm-sub">City-wide mass messaging</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Sends an SMS to selected peace keepers or groups. As City Admin, you can send to the entire city or a specific sub-city.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>The message text (max 160 characters per SMS)</li>
+        <li>Recipients — all officers, one sub-city, or individuals</li>
+        <li>A short subject line</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → Send SMS</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Send SMS"</strong>The SMS composer opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Choose recipients</strong>All Peace Keepers / Filter by Sub City / Individual search.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Tick the checkboxes</strong>Or click "Select All".</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type a subject</strong>Short title, e.g. "Monday meeting".</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Type the message</strong>Under 160 characters.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Choose SMS type</strong>Alert / Schedule / Announcement / Emergency.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Choose sender type</strong>Default or Name-Based.</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Set end date (if scheduled)</strong>Format dd/mm/yyyy.</div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Attach a file (optional)</strong><span class="btn-mock gray">📎 Attach</span></div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Click "Send to Approval"</strong><span class="btn-mock primary">📤 Send to Approval</span></div></li>
+      <li><span class="step-badge">11</span><div class="step-text"><strong>Confirm it's in the approval queue</strong>You'll see it listed with a "Pending" status.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The message appears in the approval queue</li>
+        <li>A supervisor approves it</li>
+        <li>Once approved, it sends automatically</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Sending to "All" when you meant one sub-city</li>
+        <li>Message over 160 characters (becomes multiple SMS)</li>
+        <li>No subject — hard to find later</li>
+      </ul>
+    </div>
+
+    <div class="callout tip">
+      <span class="co-icon">💡</span>
+      <div>
+        <strong>Can't send directly?</strong>
+        As City Admin, you can approve SMS as well — but the standard flow is to send to approval first so a supervisor can double-check before it goes out.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. OFFICE COMM ============ -->
+<section id="office-com">
+  <h2><span class="icon">✉️</span>12. Office Communication</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">11</div>
+      <div>
+        <div class="perm-title">Send Internal Messages</div>
+        <div class="perm-sub">One-to-one messaging inside the system</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you send messages to other system users. Unlike SMS (which goes to phones), internal messages stay inside the Peace Keepers system.
+    </div>
+
+    <div class="menu-path">Left menu → Office Communication</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Office Communication"</strong>Your Inbox opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click Compose</strong><span class="btn-mock primary">➕ Compose</span></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Choose the recipient</strong>Search by name or username.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type a subject</strong>Short title.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Type the message</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Attach a file (optional)</strong><span class="btn-mock gray">📎 Attach</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Click Send</strong><span class="btn-mock success">✓ Send</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Recipient gets a notification on their bell icon</li>
+        <li>Message appears in their Inbox</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">12</div>
+      <div>
+        <div class="perm-title">Read &amp; Reply to Messages</div>
+        <div class="perm-sub">Keep up with your inbox</div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open Office Communication</strong>Your Inbox loads.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click any message</strong>Full message opens.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Read and Reply</strong><span class="btn-mock primary">↩ Reply</span></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type and click Send</strong></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Optional: Delete a message</strong><span class="btn-mock danger">🗑️ Delete</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 12. ACTIVE DISCUSSIONS ============ -->
+<section id="active-discussions">
+  <h2><span class="icon">💬</span>13. Active Discussions</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">13</div>
+      <div>
+        <div class="perm-title">Join Live Discussions</div>
+        <div class="perm-sub">Voice or text discussions in real time</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows active discussions happening right now. You can join, listen, and contribute. Discussions are recorded in Call History afterward.
+    </div>
+
+    <div class="menu-path">Left menu → Active Discussions</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Active Discussions"</strong>See the list of live discussions.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Read the details</strong>Topic, participants, start time.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click "Join"</strong><span class="btn-mock primary">📞 Join</span></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Allow microphone access</strong>If prompted, click "Allow".</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Participate in the discussion</strong>Speak or type as allowed.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Leave when done</strong>Click "Leave" or close the window.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>OR start a new discussion</strong><span class="btn-mock primary">➕ Start Discussion</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You participate in real-time communication</li>
+        <li>The discussion is logged in Call History</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Joining without being invited to a private call</li>
+        <li>Background noise when joining — mute when not speaking</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. CALL HISTORY ============ -->
+<section id="call-history">
+  <h2><span class="icon">📞</span>14. Call History</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">14</div>
+      <div>
+        <div class="perm-title">View Call History</div>
+        <div class="perm-sub">Review past discussions</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows every past discussion — when it happened, who participated, how long it lasted, and the topic.
+    </div>
+
+    <div class="menu-path">Left menu → Call History</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Call History"</strong>The history list loads.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Read the columns</strong>Date, Time, Duration, Participants, Topic, Status.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Filter by status</strong>Active / Ended / Missed.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Search by name or topic</strong>Find a specific discussion.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click any row</strong>See full details — start/end time, GPS locations, participant list, attachments.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You can audit any past discussion</li>
+        <li>You have a record of who said what and when</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14. REQUEST CERT ============ -->
+<section id="request-cert">
+  <h2><span class="icon">📜</span>15. Request a Certificate</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">15</div>
+      <div>
+        <div class="perm-title">Request a Certificate</div>
+        <div class="perm-sub">For yourself or on behalf of someone</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Submits a certificate request to the system. The request goes through an approval flow and, once approved, can be printed.
+    </div>
+
+    <div class="menu-path">Left menu → Request Certificate</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Request Certificate"</strong>The request form opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Type the recipient's name</strong>Usually your own name.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Type the role/position</strong>For example "City Administrator".</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Select Sub City and District</strong>Your area.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Choose certificate type</strong>Good Conduct / Residence / Service.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Set Year and Date</strong>Format dd/mm/yyyy (Ethiopian).</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Type the reason</strong>Why the certificate is needed.</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Click Submit</strong><span class="btn-mock primary">📤 Submit Request</span></div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Note your tracking ID</strong>Use it to check status.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your request goes into the approval queue</li>
+        <li>You can track it in "My Certificates"</li>
+        <li>Once approved, you can print it</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15. MANAGE CERT ============ -->
+<section id="manage-cert">
+  <h2><span class="icon">✅</span>16. Manage Certificates</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">16</div>
+      <div>
+        <div class="perm-title">Approve or Reject Certificate Requests</div>
+        <div class="perm-sub">City-level approval</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      As City Admin, you're one of the approvers for certificate requests. You can approve or reject requests — particularly city-level ones.
+    </div>
+
+    <div class="menu-path">Left menu → Manage Certificates</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Manage Certificates"</strong>The list of pending requests opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Search or filter</strong>By name, type, or date range.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click any pending request</strong>A modal opens with all details.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Review the request carefully</strong>Check name, type, reason.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click Approve or Reject</strong><span class="btn-mock success">✓ Approve</span> or <span class="btn-mock danger">✗ Reject</span></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>If rejecting, type the reason</strong>Required for a proper record.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Confirm the result</strong>The applicant is notified automatically.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Approved: the certificate can be printed</li>
+        <li>Rejected: the applicant sees the reason</li>
+      </ul>
+    </div>
+
+    <div class="callout warn">
+      <span class="co-icon">⚠️</span>
+      <div>
+        <strong>You cannot approve your own certificate</strong>
+        If you requested a certificate for yourself, you can't approve it. A different City Admin or a Super Admin must approve it.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 16. MY CERT ============ -->
+<section id="my-cert">
+  <h2><span class="icon">📋</span>17. My Certificates</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">17</div>
+      <div>
+        <div class="perm-title">See Your Own Certificate Requests</div>
+        <div class="perm-sub">Track status of your requests</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows every certificate request you've submitted — with its current status (Pending, Approved, Rejected) and the ability to download or print approved ones.
+    </div>
+
+    <div class="menu-path">Left menu → My Certificates</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "My Certificates"</strong>Your request history opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Read the statuses</strong>Pending / Approved / Rejected.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click any row</strong>See full details and the certificate content if approved.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Click Print (if approved)</strong><span class="btn-mock gray">🖨️ Print</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You always know where your requests stand</li>
+        <li>Approved certificates can be printed right away</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17. DEV SUPPORT ============ -->
+<section id="dev-support">
+  <h2><span class="icon">🛠️</span>18. Developer Support</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">18</div>
+      <div>
+        <div class="perm-title">Contact Developer Support</div>
+        <div class="perm-sub">Report bugs and request features</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Opens a support form to report a bug, request a feature, or ask a technical question.
+    </div>
+
+    <div class="menu-path">Left menu → Developer Support</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Developer Support"</strong>The support page opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Type a Subject</strong>Short title of the issue.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Choose Priority</strong>Low / Medium / High / Critical.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Describe in detail</strong>What you were doing, what happened, what you expected.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Attach a screenshot (optional)</strong><span class="btn-mock gray">📎 Attach</span></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click Submit</strong><span class="btn-mock primary">📤 Submit Request</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Note your tracking number</strong></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your request enters the developer queue</li>
+        <li>You can track it on the same page</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Vague descriptions — "it doesn't work" tells nothing</li>
+        <li>Missing screenshots — one image saves 10 minutes</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 18. LOGOUT ============ -->
+<section id="logout">
+  <h2><span class="icon">🚪</span>19. How to Log Out</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">19</div>
+      <div>
+        <div class="perm-title">Log Out Safely</div>
+        <div class="perm-sub">Especially on shared computers</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Top-right corner → your name → Logout</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click your name in the top-right</strong>A dropdown appears.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click "Logout"</strong><span class="btn-mock danger">🚪 Logout</span></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Wait for the login page</strong>Usually 1–2 seconds.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Optional: close the tab</strong>Good practice.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your session is terminated</li>
+        <li>Your account is safe on a shared computer</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section>
+  <h2><span class="icon">🎉</span>City Admin Guide Complete</h2>
+
+  <p>You have now read the complete City Admin guide. You know how to:</p>
+
+  <ul style="margin-left:24px; margin-top:8px">
+    <li>Log in and navigate the city-wide dashboard</li>
+    <li>Update your account and change your PIN</li>
+    <li>View all peace keepers and crime cases in the city</li>
+    <li>Analyze crime patterns and officer deployment city-wide</li>
+    <li>See crime hotspots on a map</li>
+    <li>Send SMS messages to officers</li>
+    <li>Send internal messages</li>
+    <li>Join active discussions and view call history</li>
+    <li>Request, approve, and manage certificates</li>
+    <li>Contact developer support</li>
+    <li>Log out safely</li>
+  </ul>
+
+  <div class="callout gold" style="background:linear-gradient(90deg,#fef9e7,#fef3c7); border-color:var(--brand-gold)">
+    <span class="co-icon">📘</span>
+    <div>
+      <strong style="color:#92620a">Part 2 of 10 · City Admin Guide Complete</strong>
+      <span style="color:#475569">Next: Part 3 — Sub City System Admin Guide</span>
+    </div>
+  </div>
+</section>
+
+<div id="noResult">❌ No matching sections — try a different keyword.</div>
+
+</main>
+
+<button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Top">↑</button>
+
+<footer>
+  <div class="f-title">🛡️ Peace Keepers — City Admin Guide</div>
+  <p>Addis Ababa City Peace &amp; Security Administration Bureau · Internal Use Only</p>
+  <p style="margin-top:14px;opacity:.6;font-size:.8rem">© 2026 · Part 2 of 10</p>
+</footer>
+
+<script>
+/* ============ SEARCH ============ */
+let originalHTML = new Map();
+document.querySelectorAll('main section').forEach((sec,i)=>originalHTML.set(i, sec.innerHTML));
+
+function escapeReg(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+
+function searchManual(){
+  const q = document.getElementById('searchInput').value.trim();
+  const sections = document.querySelectorAll('main section');
+  const noRes = document.getElementById('noResult');
+  const stats = document.getElementById('stats');
+  let visible = 0;
+  const kw = q.toLowerCase();
+
+  sections.forEach((sec, i)=>{
+    sec.innerHTML = originalHTML.get(i);
+    if(!kw){ sec.classList.remove('hidden'); visible++; return; }
+    const text = sec.innerText.toLowerCase();
+    if(text.includes(kw)){
+      sec.classList.remove('hidden'); visible++;
+      highlightNode(sec, kw);
+    } else sec.classList.add('hidden');
+  });
+
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if(target && target.classList.contains('hidden')) a.style.opacity='.3';
+    else a.style.opacity='1';
+  });
+
+  noRes.style.display = (kw && visible === 0) ? 'block' : 'none';
+  stats.textContent = kw ? (visible + ' section(s) match') : '';
+}
+
+function highlightNode(node, kw){
+  const regex = new RegExp('('+escapeReg(kw)+')','gi');
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => {
+      if(!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const p = n.parentNode.nodeName;
+      if(p==='SCRIPT'||p==='STYLE'||p==='CODE'||p==='PRE') return NodeFilter.FILTER_REJECT;
+      return regex.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const targets=[];
+  while(walker.nextNode()) targets.push(walker.currentNode);
+  targets.forEach(t=>{
+    const span = document.createElement('span');
+    span.innerHTML = t.nodeValue.replace(regex,'<span class="hl">$1</span>');
+    t.parentNode.replaceChild(span, t);
+  });
+}
+
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  searchManual();
+  document.getElementById('searchInput').focus();
+}
+
+const toTop = document.getElementById('toTop');
+window.addEventListener('scroll', ()=>{
+  toTop.style.display = window.scrollY > 400 ? 'block' : 'none';
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='/' && document.activeElement.tagName!=='INPUT'){
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+  if(e.key==='Escape') clearSearch();
+});
+</script>
+
+</body>
+</html>
