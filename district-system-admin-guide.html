@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peace Keepers — District System Admin Guide</title>
+<style>
+  :root{
+    --brand-dark:#0d3d2e; --brand-green:#1a5c3f; --brand-light:#e8f5ec;
+    --brand-gold:#c9a227; --brand-gold-2:#e0b83a; --card:#ffffff;
+    --text:#1a1a1a; --muted:#64748b; --border:#e2e8f0; --bg:#f4f7f5;
+    --error:#dc2626; --success:#16a34a; --info:#2563eb; --warn:#f59e0b;
+    --purple:#7c3aed; --dsa:#ea580c; --dsa-accent:#fb923c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Segoe UI','Inter',system-ui,sans-serif;
+    background:var(--bg); color:var(--text);
+    line-height:1.75; font-size:15px;
+  }
+
+  /* ============ TOP BAR ============ */
+  .top-bar{
+    position:sticky; top:0; z-index:300;
+    background:var(--brand-dark); color:#fff;
+    padding:10px 22px; display:flex; justify-content:space-between;
+    align-items:center; flex-wrap:wrap; gap:10px;
+    box-shadow:0 4px 18px rgba(13,61,46,.35);
+    border-bottom:3px solid var(--brand-gold);
+  }
+  .top-bar .brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:.95rem}
+  .top-bar .brand .seal{
+    width:32px; height:32px; border-radius:50%;
+    background:radial-gradient(circle,#ea580c 0%,#c2410c 60%,#0d3d2e 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1rem; border:2px solid var(--brand-gold);
+  }
+  .top-bar .role-badge{
+    background:var(--dsa); color:#fff; padding:5px 14px;
+    border-radius:20px; font-weight:700; font-size:.82rem;
+    letter-spacing:.5px;
+  }
+
+  /* ============ HERO ============ */
+  header.hero{
+    background:
+      radial-gradient(circle at 20% 30%, rgba(201,162,39,.28), transparent 55%),
+      radial-gradient(circle at 80% 70%, rgba(234,88,12,.55), transparent 55%),
+      linear-gradient(135deg,#0d3d2e 0%,#c2410c 60%,#0d3d2e 100%);
+    color:#fff; padding:60px 24px 70px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  header.hero .seal-big{
+    font-size:5rem; margin-bottom:14px; display:block;
+    filter:drop-shadow(0 6px 20px rgba(0,0,0,.5));
+    animation:float 3.5s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  header.hero h1{
+    font-size:2rem; margin-bottom:10px; letter-spacing:.3px;
+    text-shadow:0 4px 20px rgba(0,0,0,.4); font-weight:800;
+  }
+  header.hero h2{font-size:1.15rem; font-weight:400; opacity:.92; margin-bottom:6px}
+  header.hero p.lead{
+    max-width:780px; margin:18px auto 0; font-size:1rem;
+    opacity:.92; line-height:1.75;
+  }
+  header.hero .badges{
+    display:flex; gap:8px; justify-content:center;
+    flex-wrap:wrap; margin-top:24px;
+  }
+  header.hero .badge{
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.28);
+    backdrop-filter:blur(8px); padding:6px 16px; border-radius:24px;
+    font-weight:600; font-size:.82rem;
+  }
+  header.hero .badge.gold{
+    background:var(--brand-gold); color:var(--brand-dark);
+    border-color:var(--brand-gold); font-weight:800;
+  }
+
+  /* ============ SEARCH ============ */
+  .search-bar{
+    position:sticky; top:52px; z-index:200;
+    background:rgba(255,255,255,.98); backdrop-filter:blur(10px);
+    padding:12px 22px; box-shadow:0 4px 18px rgba(13,61,46,.08);
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    border-bottom:3px solid var(--brand-gold);
+  }
+  .search-bar input{
+    flex:1; min-width:240px; padding:11px 20px 11px 44px;
+    border:2px solid var(--border); border-radius:30px;
+    font-size:.95rem; outline:none; transition:.25s;
+    background:#f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E") no-repeat 16px center;
+  }
+  .search-bar input:focus{
+    border-color:var(--brand-green); background-color:#fff;
+    box-shadow:0 0 0 4px rgba(26,92,63,.12);
+  }
+  .search-bar button{
+    background:linear-gradient(135deg,var(--brand-dark),var(--brand-green));
+    color:#fff; border:none; padding:11px 22px; border-radius:30px;
+    font-weight:700; cursor:pointer; transition:.25s; font-size:.9rem;
+  }
+  .search-bar button:hover{transform:translateY(-2px)}
+  .search-stats{font-size:.82rem; color:var(--muted); font-weight:600}
+
+  /* ============ TOC ============ */
+  nav.toc{
+    max-width:1180px; margin:22px auto; padding:30px 34px;
+    background:#fff; border-radius:16px;
+    box-shadow:0 4px 24px rgba(13,61,46,.08);
+    border-top:6px solid var(--brand-gold);
+  }
+  nav.toc h2{color:var(--brand-dark); font-size:1.35rem; margin-bottom:20px; display:flex; align-items:center; gap:10px}
+  nav.toc ol{
+    list-style:none; display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:6px; counter-reset:toc;
+  }
+  nav.toc ol li{counter-increment:toc}
+  nav.toc a{
+    color:var(--text); text-decoration:none;
+    padding:10px 14px; display:flex; align-items:center;
+    gap:10px; border-radius:10px;
+    border-left:4px solid transparent; transition:.2s;
+    font-weight:500; font-size:.9rem;
+  }
+  nav.toc a:hover{background:var(--brand-light); border-left-color:var(--brand-gold); color:var(--brand-dark); transform:translateX(4px)}
+  nav.toc a::before{
+    content:counter(toc);
+    background:var(--dsa); color:#fff;
+    width:26px; height:26px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.78rem; flex-shrink:0;
+  }
+
+  /* ============ MAIN ============ */
+  main{max-width:1180px; margin:auto; padding:0 22px 80px}
+  section{
+    background:#fff; margin:28px 0; padding:34px 38px;
+    border-radius:16px; box-shadow:0 4px 20px rgba(13,61,46,.06);
+    border-left:7px solid var(--brand-dark);
+    scroll-margin-top:130px;
+  }
+  section:nth-of-type(3n+1){border-left-color:var(--brand-dark)}
+  section:nth-of-type(3n+2){border-left-color:var(--brand-gold)}
+  section:nth-of-type(3n+3){border-left-color:var(--dsa-accent)}
+  section h2{
+    color:var(--brand-dark); font-size:1.45rem; margin-bottom:18px;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    padding-bottom:14px; border-bottom:2px dashed var(--border);
+  }
+  section h2 .icon{
+    background:linear-gradient(135deg,var(--dsa),var(--dsa-accent));
+    color:#fff; width:48px; height:48px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem; flex-shrink:0;
+    box-shadow:0 4px 12px rgba(234,88,12,.35);
+    border:2px solid var(--brand-gold);
+  }
+  section h3{
+    color:var(--brand-green); margin:28px 0 14px;
+    font-size:1.18rem; display:flex; align-items:center; gap:8px;
+  }
+  section h3::before{content:"▸"; color:var(--brand-gold); font-size:1.4rem}
+  p{margin-bottom:14px; color:#334155; font-size:.97rem}
+
+  /* ============ PERMISSION CARD ============ */
+  .permission{
+    background:#fff; border:2px solid var(--border);
+    border-radius:14px; padding:26px 30px; margin:28px 0;
+    border-left:6px solid var(--dsa);
+    box-shadow:0 4px 16px rgba(13,61,46,.06);
+    transition:.25s;
+  }
+  .permission:hover{box-shadow:0 8px 28px rgba(13,61,46,.12); border-left-width:10px}
+  .permission .perm-header{
+    display:flex; align-items:flex-start; gap:14px;
+    padding-bottom:14px; border-bottom:2px dashed var(--border);
+    margin-bottom:18px;
+  }
+  .permission .perm-num{
+    background:linear-gradient(135deg,var(--dsa),var(--dsa-accent));
+    color:#fff; min-width:44px; height:44px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:1.05rem; flex-shrink:0;
+    box-shadow:0 3px 10px rgba(234,88,12,.4);
+  }
+  .permission .perm-title{color:var(--dsa); font-size:1.15rem; font-weight:800; margin-bottom:4px}
+  .permission .perm-sub{color:var(--muted); font-size:.85rem; font-style:italic}
+
+  .info-block{
+    background:var(--brand-light); border-radius:10px;
+    padding:14px 18px; margin-bottom:16px;
+    border-left:4px solid var(--brand-gold);
+  }
+  .info-block strong{color:var(--brand-dark); display:block; margin-bottom:4px}
+  .info-block ul{margin-left:20px; margin-top:6px; font-size:.93rem}
+  .info-block li{margin-bottom:4px}
+
+  .menu-path{
+    background:#0f172a; color:#fdba74; padding:12px 16px;
+    border-radius:8px; font-family:'Consolas',monospace;
+    font-size:.88rem; margin:12px 0;
+    border-left:4px solid var(--brand-gold);
+  }
+  .menu-path::before{content:"📍 "; margin-right:4px}
+
+  ol.steps{list-style:none; padding:0; margin:16px 0}
+  ol.steps > li{
+    display:flex; align-items:flex-start; gap:14px;
+    margin-bottom:14px; padding:14px 18px;
+    background:var(--brand-light); border-radius:12px;
+    border-left:5px solid var(--brand-gold);
+    transition:.2s;
+  }
+  ol.steps > li:hover{background:#dcefe2; transform:translateX(4px)}
+  ol.steps > li .step-badge{
+    background:linear-gradient(135deg,var(--dsa),var(--dsa-accent));
+    color:#fff; min-width:34px; height:34px; border-radius:50%;
+    font-weight:800; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; font-size:.95rem;
+    box-shadow:0 3px 10px rgba(234,88,12,.4);
+  }
+  ol.steps > li .step-text{flex:1; font-size:.96rem}
+  ol.steps > li .step-text strong{color:var(--brand-dark); display:block; margin-bottom:4px; font-size:1rem}
+  ol.steps > li .step-text code{
+    background:#0d3d2e; color:#fdba74; padding:2px 8px;
+    border-radius:5px; font-size:.85em;
+  }
+
+  .outcome{
+    background:linear-gradient(90deg,#ecfdf5,#f0fdf4);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--success);
+  }
+  .outcome strong{color:var(--success); display:block; margin-bottom:6px}
+  .outcome ul{margin-left:20px; font-size:.93rem}
+  .outcome li{margin-bottom:4px}
+
+  .mistakes{
+    background:linear-gradient(90deg,#fffbeb,#fef3c7);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--warn);
+  }
+  .mistakes strong{color:#b45309; display:block; margin-bottom:6px}
+  .mistakes ul{margin-left:20px; font-size:.93rem}
+  .mistakes li{margin-bottom:4px}
+
+  .troubleshoot{
+    background:linear-gradient(90deg,#fef2f2,#fee2e2);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--error);
+  }
+  .troubleshoot strong{color:var(--error); display:block; margin-bottom:6px}
+  .troubleshoot ul{margin-left:20px; font-size:.93rem}
+  .troubleshoot li{margin-bottom:6px}
+  .troubleshoot code{background:#7f1d1d; color:#fecaca; padding:2px 8px; border-radius:5px; font-size:.85em}
+
+  /* ============ CALLOUTS ============ */
+  .callout{
+    padding:16px 20px; border-radius:12px; margin:20px 0;
+    border-left:5px solid; display:flex; gap:14px; align-items:flex-start;
+    font-size:.94rem;
+  }
+  .callout .co-icon{font-size:1.5rem; flex-shrink:0}
+  .callout strong{display:block; margin-bottom:4px; font-size:1rem}
+  .callout.tip{background:linear-gradient(90deg,#ecfdf5,#f0fdf4); border-color:var(--success)}
+  .callout.tip strong{color:var(--success)}
+  .callout.warn{background:linear-gradient(90deg,#fffbeb,#fef3c7); border-color:var(--warn)}
+  .callout.warn strong{color:#b45309}
+  .callout.danger{background:linear-gradient(90deg,#fef2f2,#fee2e2); border-color:var(--error)}
+  .callout.danger strong{color:var(--error)}
+  .callout.info{background:linear-gradient(90deg,#eff6ff,#e0f2fe); border-color:var(--info)}
+  .callout.info strong{color:var(--info)}
+  .callout.orange{background:linear-gradient(90deg,#fff7ed,#ffedd5); border-color:var(--dsa)}
+  .callout.orange strong{color:var(--dsa)}
+
+  /* ============ BUTTON MOCK ============ */
+  .btn-mock{
+    display:inline-block; padding:6px 16px; border-radius:8px;
+    font-weight:700; font-size:.82rem; margin:2px 4px;
+    color:#fff; box-shadow:0 3px 8px rgba(0,0,0,.15);
+  }
+  .btn-mock.primary{background:linear-gradient(135deg,var(--dsa),var(--dsa-accent))}
+  .btn-mock.success{background:linear-gradient(135deg,var(--success),#22c55e)}
+  .btn-mock.warn{background:linear-gradient(135deg,var(--warn),var(--brand-gold-2)); color:#000}
+  .btn-mock.danger{background:linear-gradient(135deg,var(--error),#ef4444)}
+  .btn-mock.gold{background:linear-gradient(135deg,var(--brand-gold),var(--brand-gold-2)); color:var(--brand-dark)}
+  .btn-mock.gray{background:#64748b}
+
+  /* ============ SCREENSHOT ============ */
+  .screenshot{
+    background:linear-gradient(135deg,#fff7ed,#ffedd5);
+    border:3px dashed var(--brand-gold);
+    border-radius:14px; padding:36px 24px; text-align:center;
+    margin:20px 0; color:var(--brand-dark);
+  }
+  .screenshot .s-icon{font-size:3rem; margin-bottom:10px; display:block}
+  .screenshot strong{display:block; font-size:1.05rem; margin-bottom:6px; color:var(--brand-dark)}
+  .screenshot small{color:var(--muted); font-size:.83rem}
+
+  /* ============ SEARCH HIGHLIGHT ============ */
+  .hl{background:#fde047; padding:1px 3px; border-radius:3px; font-weight:600}
+  .hidden{display:none !important}
+  #noResult{text-align:center; padding:60px 20px; color:var(--error); font-weight:700; font-size:1.15rem; display:none}
+
+  /* ============ TOP BUTTON ============ */
+  #toTop{
+    position:fixed; right:22px; bottom:22px; z-index:150;
+    background:linear-gradient(135deg,var(--dsa),var(--dsa-accent));
+    color:#fff; border:2px solid var(--brand-gold);
+    width:54px; height:54px; border-radius:50%;
+    font-size:1.3rem; cursor:pointer; display:none;
+    box-shadow:0 6px 20px rgba(234,88,12,.5);
+    transition:.25s;
+  }
+  #toTop:hover{transform:translateY(-4px) scale(1.08)}
+
+  /* ============ FOOTER ============ */
+  footer{
+    background:linear-gradient(135deg,#0d3d2e,#051e16);
+    color:#cbd5e1; text-align:center; padding:46px 24px; margin-top:60px;
+    border-top:4px solid var(--brand-gold);
+  }
+  footer .f-title{color:var(--brand-gold); font-weight:800; font-size:1.15rem; margin-bottom:10px}
+  footer p{font-size:.88rem; opacity:.85; margin:4px 0; color:#cbd5e1}
+
+  @media (max-width:640px){
+    header.hero h1{font-size:1.5rem}
+    section{padding:22px 20px}
+    .permission{padding:20px 22px}
+    nav.toc ol{grid-template-columns:1fr}
+    .search-bar{top:46px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="top-bar">
+  <div class="brand">
+    <span class="seal">🛡️</span>
+    <span>Peace Keepers · User Manual</span>
+  </div>
+  <span class="role-badge">🟧 DISTRICT SYSTEM ADMIN</span>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <span class="seal-big">⚙️</span>
+  <h1>Peace Keepers — District System Admin Guide</h1>
+  <h2>Role-Based User Manual · Part 6 of 10</h2>
+  <p class="lead">Complete step-by-step guide for the District System Admin. You are the technical administrator for one district — managing users, configuring area, and issuing identity cards.</p>
+  <div class="badges">
+    <span class="badge gold">District System Admin</span>
+    <span class="badge">11 Permissions</span>
+    <span class="badge">Every Step Documented</span>
+    <span class="badge">English</span>
+  </div>
+</header>
+
+<!-- ============ SEARCH ============ -->
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="🔍 Search this guide… (e.g. 'identity', 'user', 'area')" oninput="searchManual()">
+  <button onclick="clearSearch()">Clear</button>
+  <span class="search-stats" id="stats"></span>
+</div>
+
+<!-- ============ TOC ============ -->
+<nav class="toc">
+  <h2>📖 Table of Contents — District System Admin</h2>
+  <ol>
+    <li><a href="#about">What You Can Do</a></li>
+    <li><a href="#login">Log In to the System</a></li>
+    <li><a href="#dashboard">Open the Dashboard</a></li>
+    <li><a href="#update-account">Update Your Account</a></li>
+    <li><a href="#change-pin">Change Your PIN</a></li>
+    <li><a href="#office-com">Send Internal Messages</a></li>
+    <li><a href="#read-msg">Read &amp; Reply to Messages</a></li>
+    <li><a href="#view-sms">View SMS</a></li>
+    <li><a href="#id-cards">Manage Identity Cards — Overview</a></li>
+    <li><a href="#id-request">Request an Identity Card</a></li>
+    <li><a href="#id-approve">Approve or Reject an Identity Card</a></li>
+    <li><a href="#id-print">Print an Approved Identity Card</a></li>
+    <li><a href="#user-mgmt">User Management</a></li>
+    <li><a href="#create-user">Create a New User</a></li>
+    <li><a href="#edit-user">Edit a User</a></li>
+    <li><a href="#area-config">Configure Area</a></li>
+    <li><a href="#add-area">Add a New Area</a></li>
+    <li><a href="#edit-area">Edit an Area</a></li>
+    <li><a href="#settings">District Settings</a></li>
+    <li><a href="#dev-support">Developer Support</a></li>
+    <li><a href="#logout">How to Log Out</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <h2><span class="icon">⚙️</span>1. What You Can Do as District System Admin</h2>
+
+  <p>As <strong>District System Admin</strong>, you are the technical administrator for one district (woreda). You manage users, configure the geographic structure, and issue identity cards.</p>
+
+  <div class="callout orange">
+    <span class="co-icon">🔒</span>
+    <div>
+      <strong>Your scope: one district</strong>
+      Your permissions are limited to the district you're assigned to. You cannot view or manage data from other districts or sub-cities.
+    </div>
+  </div>
+
+  <h3>Your 11 Permissions</h3>
+  <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:.93rem">
+    <tr style="background:linear-gradient(135deg,var(--dsa),var(--dsa-accent)); color:#fff">
+      <th style="padding:12px 16px; text-align:left">#</th>
+      <th style="padding:12px 16px; text-align:left">Permission</th>
+      <th style="padding:12px 16px; text-align:left">What it does</th>
+    </tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">1</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Log In</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Access the system</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px; border-bottom:1px solid var(--border)">2</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Dashboard</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">District overview</td></tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">3</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Update Account</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Edit your own profile</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px; border-bottom:1px solid var(--border)">4</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Change PIN</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Update your login PIN</td></tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">5</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Office Communication</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Internal messaging</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px; border-bottom:1px solid var(--border)">6</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>View SMS</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">See SMS history</td></tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">7</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Manage Identity Cards</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>⭐ Unique to this role</strong> — request, approve, print</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px; border-bottom:1px solid var(--border)">8</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>User Management</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Create/edit users in your district</td></tr>
+    <tr><td style="padding:10px 16px; border-bottom:1px solid var(--border)">9</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Configure Area</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Manage area hierarchy</td></tr>
+    <tr style="background:#fafcf9"><td style="padding:10px 16px; border-bottom:1px solid var(--border)">10</td><td style="padding:10px 16px; border-bottom:1px solid var(--border)"><strong>Developer Support</strong></td><td style="padding:10px 16px; border-bottom:1px solid var(--border)">Contact support</td></tr>
+    <tr><td style="padding:10px 16px">11</td><td style="padding:10px 16px"><strong>Log Out</strong></td><td style="padding:10px 16px">End your session</td></tr>
+  </table>
+
+  <div class="callout warn">
+    <span class="co-icon">⚠️</span>
+    <div>
+      <strong>What you cannot do</strong>
+      You cannot modify <strong>security-category</strong> settings (only Super Admin can). You also cannot restore backups, manage SMS, or approve certificates.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1. LOGIN ============ -->
+<section id="login">
+  <h2><span class="icon">🔐</span>2. Log In to the System</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">1</div>
+      <div>
+        <div class="perm-title">Log In</div>
+        <div class="perm-sub">Required for every session</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Opens the system with your District System Admin identity so you can access district tools.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Your username (given by the administrator who created your account)</li>
+        <li>Your PIN (6+ digits)</li>
+        <li>A modern browser and internet connection</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">https://www.aapskeeper.gov.et</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open your browser</strong>Launch Chrome, Edge, Firefox, or Safari.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Go to the login page</strong>Type <code>www.aapskeeper.gov.et</code> and press Enter.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Wait for the page to load</strong>You'll see the Addis Ababa city seal and login form.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Click the Username field</strong>A cursor appears inside the box.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Type your username</strong>Exactly as given by your administrator.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click the PIN field</strong></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Type your PIN</strong>Each digit shows as a dot • • • • • •</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Click Login</strong><span class="btn-mock primary">➜ Login</span></div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Wait for the dashboard</strong>Loads in 2–5 seconds.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You land on the Dashboard</li>
+        <li>Your location label shows "District [your region]"</li>
+        <li>The left menu shows District System Admin options</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Invalid username or PIN"</code> → Check spelling and caps</li>
+        <li><code>"Account locked"</code> → Wait 15 minutes</li>
+        <li>Page won't load → Refresh (F5), try another browser</li>
+        <li>Forgot PIN → Use "Forgot PIN" on the login page</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. DASHBOARD ============ -->
+<section id="dashboard">
+  <h2><span class="icon">📊</span>3. Open the Dashboard</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">2</div>
+      <div>
+        <div class="perm-title">View the Dashboard</div>
+        <div class="perm-sub">Your home page with district summary</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows a summary of your district — number of officers, cases, pending items, and system status, all limited to your district.
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Log in</strong>Follow the previous section.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>You land on Dashboard automatically</strong></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Note your location label</strong>"District [your region]" at the top.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Read the stat cards</strong>Peace keepers, cases, users, identity cards pending.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click any card to drill in</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Return to Dashboard anytime</strong>Click <span class="btn-mock primary">🏠 Dashboard</span> at top of left menu.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You have a snapshot of your district at a glance</li>
+        <li>Any sub-page is one click away</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. UPDATE ACCOUNT ============ -->
+<section id="update-account">
+  <h2><span class="icon">⚙️</span>4. Update Your Account</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">3</div>
+      <div>
+        <div class="perm-title">Update Your Personal Information</div>
+        <div class="perm-sub">Your name, photo, phone, email</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Update Account</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Update Account"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Review prefilled fields</strong>Your current details.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Change what you need</strong>Full Name, Gender, DOB, Birth Place, Phone, Email, Department, Responsibility.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Upload a new photo (optional)</strong><span class="btn-mock gray">📎 Choose File</span> — JPG/PNG, max 5 MB.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click Save</strong><span class="btn-mock success">✓ Save Changes</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your new details appear everywhere</li>
+        <li>Change is logged in Activity Management</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. CHANGE PIN ============ -->
+<section id="change-pin">
+  <h2><span class="icon">🔑</span>5. Change Your PIN</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">4</div>
+      <div>
+        <div class="perm-title">Change Your PIN</div>
+        <div class="perm-sub">Recommended every 3 months</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Update Account → Change PIN section</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open Update Account</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Scroll to Change PIN</strong>Fields: Previous PIN, New PIN, Confirm PIN.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Type your current PIN</strong></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type the new PIN</strong>At least 6 digits.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Retype in Confirm PIN</strong>Must match exactly.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click Save</strong><span class="btn-mock success">✓ Save</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Log out and log back in</strong>Confirms change worked.</div></li>
+    </ol>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Previous PIN incorrect"</code> → Try again carefully</li>
+        <li><code>"PIN too short"</code> → At least 6 digits</li>
+        <li>Forgot current PIN → Use "Forgot PIN" on the login page</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. OFFICE COMM ============ -->
+<section id="office-com">
+  <h2><span class="icon">✉️</span>6. Send Internal Messages</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">5</div>
+      <div>
+        <div class="perm-title">Send an Internal Message</div>
+        <div class="perm-sub">One-to-one messaging inside the system</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you send messages to other system users. Unlike SMS (which goes to phones), internal messages stay inside the Peace Keepers system.
+    </div>
+
+    <div class="menu-path">Left menu → Office Communication</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Office Communication"</strong>Your Inbox opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click Compose</strong><span class="btn-mock primary">➕ Compose</span></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Choose the recipient</strong>Search by name or username.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type a subject</strong>Short title.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Type the message</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Attach a file (optional)</strong><span class="btn-mock gray">📎 Attach</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Click Send</strong><span class="btn-mock success">✓ Send</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Recipient gets a notification on their bell icon</li>
+        <li>Message appears in their Inbox</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. READ MESSAGES ============ -->
+<section id="read-msg">
+  <h2><span class="icon">📬</span>7. Read &amp; Reply to Messages</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">6</div>
+      <div>
+        <div class="perm-title">Read &amp; Reply to Messages</div>
+        <div class="perm-sub">Keep up with your inbox</div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open Office Communication</strong>Your Inbox loads.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click any message row</strong>Full message opens.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click "Reply" to respond</strong><span class="btn-mock primary">↩ Reply</span></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type your reply and click Send</strong></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Optional: Delete a message</strong><span class="btn-mock danger">🗑️ Delete</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 7. VIEW SMS ============ -->
+<section id="view-sms">
+  <h2><span class="icon">💬</span>8. View SMS</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">7</div>
+      <div>
+        <div class="perm-title">View SMS History</div>
+        <div class="perm-sub">See SMS sent from your district</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows the log of SMS sent from your district — who sent it, to whom, when, and its status.
+    </div>
+
+    <div class="menu-path">Left menu → View SMS</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "View SMS"</strong>The SMS history opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Search by keyword</strong>Find a specific message.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Filter by status</strong>Pending / Sent / Failed / Rejected.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Click any row</strong>Full message opens.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Read the delivery report</strong>See how many recipients got it.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You can audit any SMS sent from your district</li>
+        <li>You can investigate delivery failures</li>
+      </ul>
+    </div>
+
+    <div class="callout orange">
+      <span class="co-icon">⚠️</span>
+      <div>
+        <strong>View only</strong>
+        You can see SMS history but you cannot send SMS. Only City Admin, Sub City Admin, and District Admin can send SMS.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. ID CARDS OVERVIEW ============ -->
+<section id="id-cards">
+  <h2><span class="icon">🪪</span>9. Manage Identity Cards — Overview</h2>
+
+  <div class="info-block">
+    <strong>What this section does</strong>
+    This is the <strong>only role in the entire system that can manage Identity Cards</strong>. You can:
+    <ul>
+      <li>Request a new identity card</li>
+      <li>Approve or reject identity card requests</li>
+      <li>Print approved identity cards</li>
+      <li>Revoke an identity card if necessary</li>
+    </ul>
+  </div>
+
+  <div class="callout orange">
+    <span class="co-icon">⭐</span>
+    <div>
+      <strong>Unique permission</strong>
+      Only District System Admin has this permission. If you have any questions, contact your Super Admin or City Admin.
+    </div>
+  </div>
+
+  <h3>What is an Identity Card?</h3>
+  <p>An Identity Card is an official document issued to a peace keeper, staff member, or community member. It contains their photo, name, unique card number, and a QR code for verification. Cards are printed and can be verified in the field using the QR code.</p>
+</section>
+
+<!-- ============ 9. ID REQUEST ============ -->
+<section id="id-request">
+  <h2><span class="icon">📝</span>10. Request an Identity Card</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">8</div>
+      <div>
+        <div class="perm-title">Submit an Identity Card Request</div>
+        <div class="perm-sub">For a peace keeper, staff member, or citizen</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Submits a request for a new identity card. The request goes to the approval queue and, once approved, the card can be printed.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Applicant's full name</li>
+        <li>Applicant's role (Peace Keeper / Staff / Citizen)</li>
+        <li>Applicant's Sub City and District</li>
+        <li>Applicant's Ketena and Blok</li>
+        <li>Event name (if applicable)</li>
+        <li>Event year and date</li>
+        <li>Reason for the request</li>
+        <li>Clear portrait photo (JPG/PNG, max 5 MB)</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → Manage Identity Cards → "New Request"</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Manage Identity Cards"</strong>The Identity Card page opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click "New Identity Card Request"</strong><span class="btn-mock primary">➕ New Request</span></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Type "Recipient Name"</strong>Applicant's full legal name.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type "Recipient Role"</strong>For example "Peace Keeper", "Staff", "Citizen".</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Select "Recipient Sub City"</strong>From the dropdown.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Select "Recipient District"</strong>From the dropdown.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Type "Recipient Ketena"</strong>Neighborhood (optional).</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Type "Recipient Blok"</strong>Block (optional).</div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Type "Event Name"</strong>If this is for a special event, enter its name.</div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Type "Event Year"</strong>Ethiopian calendar year.</div></li>
+      <li><span class="step-badge">11</span><div class="step-text"><strong>Set "Event Date"</strong>Use the date picker.</div></li>
+      <li><span class="step-badge">12</span><div class="step-text"><strong>Type "Reason"</strong>Why the card is needed (required).</div></li>
+      <li><span class="step-badge">13</span><div class="step-text"><strong>Upload applicant's photo</strong>Click <span class="btn-mock gray">📎 Choose File</span> — JPG/PNG, max 5 MB, clear face.</div></li>
+      <li><span class="step-badge">14</span><div class="step-text"><strong>Review all fields</strong>Make sure everything is correct.</div></li>
+      <li><span class="step-badge">15</span><div class="step-text"><strong>Click "Submit Request"</strong><span class="btn-mock success">✓ Submit Request</span></div></li>
+      <li><span class="step-badge">16</span><div class="step-text"><strong>Note your tracking number</strong>Use it to follow the request.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Request appears in the "Pending" list</li>
+        <li>A supervisor or admin reviews it</li>
+        <li>Once approved, the card is generated as PDF</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Missing photo — cannot print without it</li>
+        <li>Photo blurry or too dark</li>
+        <li>Wrong Sub City / District</li>
+        <li>Missing reason field</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Photo required"</code> → Upload a JPG or PNG image</li>
+        <li><code>"File too large"</code> → Compress under 5 MB</li>
+        <li><code>"Recipient name required"</code> → Fill the required field</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. ID APPROVE ============ -->
+<section id="id-approve">
+  <h2><span class="icon">✅</span>11. Approve or Reject an Identity Card</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">9</div>
+      <div>
+        <div class="perm-title">Review Identity Card Requests</div>
+        <div class="perm-sub">Approve or reject pending requests</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you review every pending identity card request and either approve it (so the card is generated) or reject it (with a reason).
+    </div>
+
+    <div class="menu-path">Left menu → Manage Identity Cards</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Manage Identity Cards"</strong>The list of all requests opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Filter by status</strong>Use "Identity Card Status" dropdown: All / Pending / Approved / Rejected / Revoked.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Search for a specific request</strong>Type the name or ID in the search box.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Click any pending request</strong>A detail modal opens.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Review the request carefully</strong>Check: name, role, photo, reason, area.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click Approve or Reject</strong><span class="btn-mock success">✓ Approve</span> or <span class="btn-mock danger">✗ Reject</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>If rejecting, type a reason</strong>Required for a proper record.</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Confirm the action</strong>The applicant's status changes.</div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Approved cards appear in the "Approved" filter</strong></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Approved: the card is generated and ready to print</li>
+        <li>Rejected: the applicant sees the reason</li>
+      </ul>
+    </div>
+
+    <div class="callout orange">
+      <span class="co-icon">⚠️</span>
+      <div>
+        <strong>You cannot approve your own card</strong>
+        If you requested a card for yourself, a different District System Admin or a Sub City System Admin must approve it.
+      </div>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Approving without checking the photo</li>
+        <li>Rejecting without a clear reason</li>
+        <li>Approving duplicate requests for the same person</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. ID PRINT ============ -->
+<section id="id-print">
+  <h2><span class="icon">🖨️</span>12. Print an Approved Identity Card</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">10</div>
+      <div>
+        <div class="perm-title">Print an Approved Identity Card</div>
+        <div class="perm-sub">Generate the printable card PDF</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Opens an approved identity card and lets you print it — either to a physical printer or save as a PDF.
+    </div>
+
+    <div class="menu-path">Left menu → Manage Identity Cards → click approved card → Print</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open "Manage Identity Cards"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Filter by Status = Approved</strong>Use the dropdown.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Find the card you want to print</strong>Search by name.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Click the card row</strong>The preview modal opens.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Review the card preview</strong>Check photo, name, ID number, QR code.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click "Print"</strong><span class="btn-mock gray">🖨️ Print</span></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Choose your printer</strong>Or select "Save as PDF" to save a digital copy.</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Configure print settings</strong>Paper size, orientation (usually landscape).</div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Click Print</strong>The card prints on the physical printer.</div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Laminate the card (if applicable)</strong>For durability.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The card is printed in the correct format</li>
+        <li>The card can be handed to the applicant</li>
+        <li>The print action is logged</li>
+      </ul>
+    </div>
+
+    <div class="callout tip">
+      <span class="co-icon">💡</span>
+      <div>
+        <strong>Printing tips</strong>
+        Use a color printer. Print on card stock for durability. Laminate for outdoor use. Verify the QR code scans correctly before handing the card out.
+      </div>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Printing a rejected card — always confirm Status = Approved</li>
+        <li>Printing in low quality — the QR code may not scan</li>
+        <li>Forgetting to laminate</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. USER MGMT ============ -->
+<section id="user-mgmt">
+  <h2><span class="icon">👥</span>13. User Management</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">11</div>
+      <div>
+        <div class="perm-title">View the User List for Your District</div>
+        <div class="perm-sub">See every user in your district</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows all users in your district — their names, roles, and statuses. You can manage users only within your district.
+    </div>
+
+    <div class="menu-path">Left menu → User Management</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "User Management"</strong>The list loads for your district only.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Read the columns</strong>Username, Name, User Type, Sub City, District, Status.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Search</strong>Type name or username.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Filter</strong>By User Type or Status.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click any row</strong>See full profile.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You see all users in your district</li>
+        <li>You can manage (edit/create) them</li>
+      </ul>
+    </div>
+
+    <div class="callout orange">
+      <span class="co-icon">🔒</span>
+      <div>
+        <strong>Only your district</strong>
+        Users assigned to other districts or sub-cities do not appear here. You cannot modify them.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. CREATE USER ============ -->
+<section id="create-user">
+  <h2><span class="icon">➕</span>14. Create a New User</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">12</div>
+      <div>
+        <div class="perm-title">Create a New User in Your District</div>
+        <div class="perm-sub">Add Staff, Ketena, or Block roles</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Adds a new user account assigned to your district. The user will have access only within your district.
+    </div>
+
+    <div class="info-block">
+      <strong>Roles you can create</strong>
+      <ul>
+        <li>Staff</li>
+        <li>Ketena</li>
+        <li>Block (if applicable)</li>
+      </ul>
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Their full name</li>
+        <li>Their phone number (10 digits, starts with 09)</li>
+        <li>Their email (optional)</li>
+        <li>The role they should have</li>
+        <li>A temporary PIN (6+ digits)</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → User Management → "Create New User"</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open User Management</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click "Create New User"</strong><span class="btn-mock primary">➕ Create New User</span></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Type the username</strong>Unique, lowercase, no spaces. E.g. <code>kebede.t</code></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Type the full name</strong></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Choose the User Type</strong>Options: Staff, Ketena, Block.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Type and confirm the PIN</strong>At least 6 digits.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Type the phone number</strong>Format: <code>0912345678</code></div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Type the email (optional)</strong></div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Sub City and District are auto-set</strong>You cannot change these.</div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Choose the Ketena (if applicable)</strong>For Ketena or Block roles.</div></li>
+      <li><span class="step-badge">11</span><div class="step-text"><strong>Click "Create User"</strong><span class="btn-mock success">✓ Create User</span></div></li>
+      <li><span class="step-badge">12</span><div class="step-text"><strong>Confirm the success message</strong>"User created successfully"</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The new user appears in the User Management list</li>
+        <li>They can log in immediately with the PIN you set</li>
+        <li>They should change PIN on first login</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Duplicate username</li>
+        <li>Wrong User Type</li>
+        <li>Weak PIN</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Username already exists"</code> → Pick a different username</li>
+        <li><code>"PIN too short"</code> → Use 6+ digits</li>
+        <li><code>"Phone number invalid"</code> → 10 digits, starts with 09</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14. EDIT USER ============ -->
+<section id="edit-user">
+  <h2><span class="icon">✏️</span>15. Edit a User</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">13</div>
+      <div>
+        <div class="perm-title">Edit an Existing User</div>
+        <div class="perm-sub">Change name, role, ketena, or status</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → User Management → click user → Edit</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open User Management</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Find the user</strong>Search or scroll.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click the pencil ✏️ icon</strong><span class="btn-mock gold">✏️ Edit</span></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Update the fields</strong>Name, Gender, Phone, Email, Identity No, Ketena, Blok, Role, Status, Department, Responsibility.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Change User Type if needed</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Change Status if needed</strong>Options: Active, Pending, Inactive.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Click Save Changes</strong><span class="btn-mock success">✓ Save Changes</span></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>User's profile updates immediately</li>
+        <li>Role change takes effect on next login</li>
+        <li>If Inactive, they cannot log in</li>
+      </ul>
+    </div>
+
+    <div class="callout orange">
+      <span class="co-icon">🔒</span>
+      <div>
+        <strong>Within your district only</strong>
+        You can only edit users assigned to your district.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15. AREA CONFIG ============ -->
+<section id="area-config">
+  <h2><span class="icon">🗺️</span>16. Configure Area</h2>
+
+  <div class="info-block">
+    <strong>What this section does</strong>
+    Configure the geographic structure of your district: Ketenas, Blocks, sub-areas. This affects every dropdown in the system (officers, crimes, reports).
+  </div>
+
+  <div class="callout orange">
+    <span class="co-icon">⚠️</span>
+    <div>
+      <strong>Why Area Configuration matters</strong>
+      Every officer, crime case, and community report references the area structure you build here. Wrong values mean wrong data everywhere.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 16. ADD AREA ============ -->
+<section id="add-area">
+  <h2><span class="icon">➕</span>17. Add a New Area</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">14</div>
+      <div>
+        <div class="perm-title">Add a New Area to Your District</div>
+        <div class="perm-sub">Add a ketena or block</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Adds a new ketena or block within your district. Once added, it becomes available in all dropdowns throughout the system.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Name of the new area</li>
+        <li>Type (Ketena / Block / Sub-area)</li>
+        <li>Parent area (which district it belongs to)</li>
+        <li>Optional: coordinates, contact info</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → Configure Area → "Add Area"</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Configure Area"</strong>The area configuration page opens.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click "Add Area"</strong><span class="btn-mock primary">➕ Add Area</span></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Type "Area Name"</strong>Full name of the new area.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Choose "Area Type"</strong>Ketena / Block / Sub-area.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Select "Parent District"</strong>Auto-filled to your district.</div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Type "Area City"</strong>Usually Addis Ababa.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Type "Area Sub City"</strong>Auto-filled.</div></li>
+      <li><span class="step-badge">8</span><div class="step-text"><strong>Type "Area District"</strong>Auto-filled.</div></li>
+      <li><span class="step-badge">9</span><div class="step-text"><strong>Type "Area Ketena"</strong>Ketena name (required).</div></li>
+      <li><span class="step-badge">10</span><div class="step-text"><strong>Type "Area Block"</strong>Block name (required).</div></li>
+      <li><span class="step-badge">11</span><div class="step-text"><strong>Choose "Area Status"</strong>Active / Inactive.</div></li>
+      <li><span class="step-badge">12</span><div class="step-text"><strong>Click "Save"</strong><span class="btn-mock success">✓ Save</span></div></li>
+      <li><span class="step-badge">13</span><div class="step-text"><strong>Confirm the success message</strong></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The new area appears in all dropdowns throughout the system</li>
+        <li>Users can now assign officers/cases to it</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Duplicate names — check existing areas first</li>
+        <li>Typo in the name — this is hard to fix later</li>
+        <li>Wrong parent district</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Area already exists"</code> → Check the existing list</li>
+        <li><code>"Required field missing"</code> → Fill all required fields</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17. EDIT AREA ============ -->
+<section id="edit-area">
+  <h2><span class="icon">✏️</span>18. Edit an Area</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">15</div>
+      <div>
+        <div class="perm-title">Edit or Delete an Area</div>
+        <div class="perm-sub">Change name, status, or remove</div>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <span class="co-icon">🚨</span>
+      <div>
+        <strong>Before deleting an area</strong>
+        Check whether any officers, crimes, or reports reference this area. Deleting an area does NOT delete those records — they will show "Unknown" location. <strong>Safer: set Status to "Inactive" instead of deleting.</strong>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Configure Area → search → Edit or Delete</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Open "Configure Area"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Search for the area</strong>Type its name in the search box.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click the pencil ✏️ icon</strong>To edit.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Change the fields</strong>Name, status.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click Save</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>OR: Click the trash 🗑️ icon</strong>To delete.</div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Confirm deletion</strong>Type DELETE if prompted.</div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Edited: new name reflects everywhere</li>
+        <li>Deleted: area removed from all dropdowns</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 18. DISTRICT SETTINGS ============ -->
+<section id="settings">
+  <h2><span class="icon">⚙️</span>19. District Settings</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">16</div>
+      <div>
+        <div class="perm-title">Configure District Settings</div>
+        <div class="perm-sub">You cannot modify security settings</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you configure settings specific to your district. You can modify most categories, but <strong>security category</strong> settings are locked (only Super Admin can change those).
+    </div>
+
+    <div class="menu-path">Left menu → Settings (if visible)</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Settings" in the left menu</strong>If visible to your role.</div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Browse the categories</strong>General, Notifications, SMS Gateway, and more.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Click a category</strong>To see its settings.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Change the values you need</strong></div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Click Save</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Confirm the success message</strong></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>New settings take effect immediately</li>
+        <li>Change is logged in Activity Management</li>
+      </ul>
+    </div>
+
+    <div class="callout orange">
+      <span class="co-icon">🔒</span>
+      <div>
+        <strong>Security settings locked</strong>
+        If you try to change a security-category setting, the system will block you. Contact Super Admin if a security change is needed.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 19. DEV SUPPORT ============ -->
+<section id="dev-support">
+  <h2><span class="icon">🛠️</span>20. Developer Support</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">17</div>
+      <div>
+        <div class="perm-title">Contact Developer Support</div>
+        <div class="perm-sub">Report bugs and request features</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → Developer Support</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click "Developer Support"</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Type a Subject</strong>Short title.</div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Choose Priority</strong>Low / Medium / High / Critical.</div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Describe in detail</strong>What you were doing, what happened, what you expected.</div></li>
+      <li><span class="step-badge">5</span><div class="step-text"><strong>Attach a screenshot (optional)</strong></div></li>
+      <li><span class="step-badge">6</span><div class="step-text"><strong>Click Submit</strong></div></li>
+      <li><span class="step-badge">7</span><div class="step-text"><strong>Note your tracking number</strong></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Request enters the developer queue</li>
+        <li>You can track it on the same page</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 20. LOGOUT ============ -->
+<section id="logout">
+  <h2><span class="icon">🚪</span>21. How to Log Out</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">18</div>
+      <div>
+        <div class="perm-title">Log Out Safely</div>
+        <div class="perm-sub">Especially on shared computers</div>
+      </div>
+    </div>
+
+    <div class="menu-path">Top-right corner → your name → Logout</div>
+
+    <ol class="steps">
+      <li><span class="step-badge">1</span><div class="step-text"><strong>Click your name top-right</strong></div></li>
+      <li><span class="step-badge">2</span><div class="step-text"><strong>Click "Logout"</strong><span class="btn-mock danger">🚪 Logout</span></div></li>
+      <li><span class="step-badge">3</span><div class="step-text"><strong>Wait for the login page</strong></div></li>
+      <li><span class="step-badge">4</span><div class="step-text"><strong>Optional: close the tab</strong></div></li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Session terminated</li>
+        <li>Account safe on a shared computer</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section>
+  <h2><span class="icon">🎉</span>District System Admin Guide Complete</h2>
+
+  <p>You have now read the complete District System Admin guide. You know how to:</p>
+
+  <ul style="margin-left:24px; margin-top:8px">
+    <li>Log in and navigate the district dashboard</li>
+    <li>Update your account and change your PIN</li>
+    <li>Send and read internal messages</li>
+    <li>View SMS history</li>
+    <li><strong>Manage Identity Cards</strong> — the unique permission of your role</li>
+    <li>Request, approve, and print identity cards</li>
+    <li>Manage users within your district</li>
+    <li>Create and edit users</li>
+    <li>Configure the geographic structure of your district</li>
+    <li>Add and edit areas</li>
+    <li>Configure district settings (except security category)</li>
+    <li>Contact developer support</li>
+    <li>Log out safely</li>
+  </ul>
+
+  <div class="callout gold" style="background:linear-gradient(90deg,#fef9e7,#fef3c7); border-color:var(--brand-gold)">
+    <span class="co-icon">📘</span>
+    <div>
+      <strong style="color:#92620a">Part 6 of 10 · District System Admin Guide Complete</strong>
+      <span style="color:#475569">Next: Part 7 — District Admin Guide</span>
+    </div>
+  </div>
+</section>
+
+<div id="noResult">❌ No matching sections — try a different keyword.</div>
+
+</main>
+
+<button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Top">↑</button>
+
+<footer>
+  <div class="f-title">🛡️ Peace Keepers — District System Admin Guide</div>
+  <p>Addis Ababa City Peace &amp; Security Administration Bureau · Internal Use Only</p>
+  <p style="margin-top:14px;opacity:.6;font-size:.8rem">© 2026 · Part 6 of 10</p>
+</footer>
+
+<script>
+/* ============ SEARCH ============ */
+let originalHTML = new Map();
+document.querySelectorAll('main section').forEach((sec,i)=>originalHTML.set(i, sec.innerHTML));
+
+function escapeReg(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+
+function searchManual(){
+  const q = document.getElementById('searchInput').value.trim();
+  const sections = document.querySelectorAll('main section');
+  const noRes = document.getElementById('noResult');
+  const stats = document.getElementById('stats');
+  let visible = 0;
+  const kw = q.toLowerCase();
+
+  sections.forEach((sec, i)=>{
+    sec.innerHTML = originalHTML.get(i);
+    if(!kw){ sec.classList.remove('hidden'); visible++; return; }
+    const text = sec.innerText.toLowerCase();
+    if(text.includes(kw)){
+      sec.classList.remove('hidden'); visible++;
+      highlightNode(sec, kw);
+    } else sec.classList.add('hidden');
+  });
+
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if(target && target.classList.contains('hidden')) a.style.opacity='.3';
+    else a.style.opacity='1';
+  });
+
+  noRes.style.display = (kw && visible === 0) ? 'block' : 'none';
+  stats.textContent = kw ? (visible + ' section(s) match') : '';
+}
+
+function highlightNode(node, kw){
+  const regex = new RegExp('('+escapeReg(kw)+')','gi');
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => {
+      if(!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const p = n.parentNode.nodeName;
+      if(p==='SCRIPT'||p==='STYLE'||p==='CODE'||p==='PRE') return NodeFilter.FILTER_REJECT;
+      return regex.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const targets=[];
+  while(walker.nextNode()) targets.push(walker.currentNode);
+  targets.forEach(t=>{
+    const span = document.createElement('span');
+    span.innerHTML = t.nodeValue.replace(regex,'<span class="hl">$1</span>');
+    t.parentNode.replaceChild(span, t);
+  });
+}
+
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  searchManual();
+  document.getElementById('searchInput').focus();
+}
+
+const toTop = document.getElementById('toTop');
+window.addEventListener('scroll', ()=>{
+  toTop.style.display = window.scrollY > 400 ? 'block' : 'none';
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='/' && document.activeElement.tagName!=='INPUT'){
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+  if(e.key==='Escape') clearSearch();
+});
+</script>
+
+</body>
+</html>
