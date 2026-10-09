@@ -1,0 +1,2475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peace Keepers — Super Admin Guide</title>
+<style>
+  :root{
+    --brand-dark:#0d3d2e;
+    --brand-green:#1a5c3f;
+    --brand-light:#e8f5ec;
+    --brand-gold:#c9a227;
+    --brand-gold-2:#e0b83a;
+    --card:#ffffff;
+    --text:#1a1a1a;
+    --muted:#64748b;
+    --border:#e2e8f0;
+    --bg:#f4f7f5;
+    --error:#dc2626;
+    --success:#16a34a;
+    --info:#2563eb;
+    --warn:#f59e0b;
+    --purple:#7c3aed;
+    --super:#dc2626;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Segoe UI','Inter',system-ui,sans-serif;
+    background:var(--bg); color:var(--text);
+    line-height:1.75; font-size:15px;
+  }
+
+  /* ============ TOP BAR ============ */
+  .top-bar{
+    position:sticky; top:0; z-index:300;
+    background:var(--brand-dark); color:#fff;
+    padding:10px 22px; display:flex; justify-content:space-between;
+    align-items:center; flex-wrap:wrap; gap:10px;
+    box-shadow:0 4px 18px rgba(13,61,46,.35);
+    border-bottom:3px solid var(--brand-gold);
+  }
+  .top-bar .brand{
+    display:flex; align-items:center; gap:10px;
+    font-weight:800; font-size:.95rem;
+  }
+  .top-bar .brand .seal{
+    width:32px; height:32px; border-radius:50%;
+    background:radial-gradient(circle,#1e40af 0%,#1e3a8a 60%,#0d3d2e 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1rem; border:2px solid var(--brand-gold);
+  }
+  .top-bar .role-badge{
+    background:var(--super); color:#fff; padding:5px 14px;
+    border-radius:20px; font-weight:700; font-size:.82rem;
+    letter-spacing:.5px;
+  }
+
+  /* ============ HERO ============ */
+  header.hero{
+    background:
+      radial-gradient(circle at 20% 30%, rgba(201,162,39,.28), transparent 55%),
+      radial-gradient(circle at 80% 70%, rgba(26,92,63,.55), transparent 55%),
+      linear-gradient(135deg,#0d3d2e 0%,#1a5c3f 60%,#0d3d2e 100%);
+    color:#fff; padding:60px 24px 70px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  header.hero .seal-big{
+    font-size:5rem; margin-bottom:14px; display:block;
+    filter:drop-shadow(0 6px 20px rgba(0,0,0,.5));
+    animation:float 3.5s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  header.hero h1{
+    font-size:2rem; margin-bottom:10px; letter-spacing:.3px;
+    text-shadow:0 4px 20px rgba(0,0,0,.4); font-weight:800;
+  }
+  header.hero h2{
+    font-size:1.15rem; font-weight:400; opacity:.92; margin-bottom:6px;
+  }
+  header.hero p.lead{
+    max-width:780px; margin:18px auto 0; font-size:1rem;
+    opacity:.92; line-height:1.75;
+  }
+  header.hero .badges{
+    display:flex; gap:8px; justify-content:center;
+    flex-wrap:wrap; margin-top:24px;
+  }
+  header.hero .badge{
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.28);
+    backdrop-filter:blur(8px); padding:6px 16px; border-radius:24px;
+    font-weight:600; font-size:.82rem;
+  }
+  header.hero .badge.gold{
+    background:var(--brand-gold); color:var(--brand-dark);
+    border-color:var(--brand-gold); font-weight:800;
+  }
+
+  /* ============ SEARCH ============ */
+  .search-bar{
+    position:sticky; top:52px; z-index:200;
+    background:rgba(255,255,255,.98); backdrop-filter:blur(10px);
+    padding:12px 22px; box-shadow:0 4px 18px rgba(13,61,46,.08);
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    border-bottom:3px solid var(--brand-gold);
+  }
+  .search-bar input{
+    flex:1; min-width:240px;
+    padding:11px 20px 11px 44px;
+    border:2px solid var(--border); border-radius:30px;
+    font-size:.95rem; outline:none; transition:.25s;
+    background:#f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E") no-repeat 16px center;
+  }
+  .search-bar input:focus{
+    border-color:var(--brand-green); background-color:#fff;
+    box-shadow:0 0 0 4px rgba(26,92,63,.12);
+  }
+  .search-bar button{
+    background:linear-gradient(135deg,var(--brand-dark),var(--brand-green));
+    color:#fff; border:none; padding:11px 22px; border-radius:30px;
+    font-weight:700; cursor:pointer; transition:.25s; font-size:.9rem;
+  }
+  .search-bar button:hover{transform:translateY(-2px)}
+  .search-stats{font-size:.82rem; color:var(--muted); font-weight:600}
+
+  /* ============ TOC ============ */
+  nav.toc{
+    max-width:1180px; margin:22px auto; padding:30px 34px;
+    background:#fff; border-radius:16px;
+    box-shadow:0 4px 24px rgba(13,61,46,.08);
+    border-top:6px solid var(--brand-gold);
+  }
+  nav.toc h2{
+    color:var(--brand-dark); font-size:1.35rem;
+    margin-bottom:20px; display:flex; align-items:center; gap:10px;
+  }
+  nav.toc ol{
+    list-style:none; display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:6px; counter-reset:toc;
+  }
+  nav.toc ol li{counter-increment:toc}
+  nav.toc a{
+    color:var(--text); text-decoration:none;
+    padding:10px 14px; display:flex; align-items:center;
+    gap:10px; border-radius:10px;
+    border-left:4px solid transparent;
+    transition:.2s; font-weight:500; font-size:.9rem;
+  }
+  nav.toc a:hover{
+    background:var(--brand-light); border-left-color:var(--brand-gold);
+    color:var(--brand-dark); transform:translateX(4px);
+  }
+  nav.toc a::before{
+    content:counter(toc);
+    background:var(--brand-dark); color:#fff;
+    width:26px; height:26px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.78rem; flex-shrink:0;
+  }
+
+  /* ============ MAIN ============ */
+  main{max-width:1180px; margin:auto; padding:0 22px 80px}
+  section{
+    background:#fff; margin:28px 0; padding:34px 38px;
+    border-radius:16px; box-shadow:0 4px 20px rgba(13,61,46,.06);
+    border-left:7px solid var(--brand-dark);
+    scroll-margin-top:130px;
+  }
+  section:nth-of-type(3n+1){border-left-color:var(--brand-dark)}
+  section:nth-of-type(3n+2){border-left-color:var(--brand-gold)}
+  section:nth-of-type(3n+3){border-left-color:var(--purple)}
+  section h2{
+    color:var(--brand-dark); font-size:1.45rem; margin-bottom:18px;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    padding-bottom:14px; border-bottom:2px dashed var(--border);
+  }
+  section h2 .icon{
+    background:linear-gradient(135deg,var(--brand-dark),var(--brand-green));
+    color:#fff; width:48px; height:48px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem; flex-shrink:0;
+    box-shadow:0 4px 12px rgba(13,61,46,.35);
+    border:2px solid var(--brand-gold);
+  }
+  section h3{
+    color:var(--brand-green); margin:28px 0 14px;
+    font-size:1.18rem; display:flex; align-items:center; gap:8px;
+  }
+  section h3::before{content:"▸"; color:var(--brand-gold); font-size:1.4rem}
+  p{margin-bottom:14px; color:#334155; font-size:.97rem}
+
+  /* ============ PERMISSION CARD ============ */
+  .permission{
+    background:#fff; border:2px solid var(--border);
+    border-radius:14px; padding:26px 30px; margin:28px 0;
+    border-left:6px solid var(--super);
+    box-shadow:0 4px 16px rgba(13,61,46,.06);
+    transition:.25s;
+  }
+  .permission:hover{
+    box-shadow:0 8px 28px rgba(13,61,46,.12);
+    border-left-width:10px;
+  }
+  .permission .perm-header{
+    display:flex; align-items:flex-start; gap:14px;
+    padding-bottom:14px; border-bottom:2px dashed var(--border);
+    margin-bottom:18px;
+  }
+  .permission .perm-num{
+    background:linear-gradient(135deg,var(--super),#ef4444);
+    color:#fff; min-width:44px; height:44px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:1.05rem; flex-shrink:0;
+    box-shadow:0 3px 10px rgba(220,38,38,.4);
+  }
+  .permission .perm-title{
+    color:var(--super); font-size:1.15rem; font-weight:800;
+    margin-bottom:4px;
+  }
+  .permission .perm-sub{
+    color:var(--muted); font-size:.85rem; font-style:italic;
+  }
+
+  .info-block{
+    background:var(--brand-light); border-radius:10px;
+    padding:14px 18px; margin-bottom:16px;
+    border-left:4px solid var(--brand-gold);
+  }
+  .info-block strong{color:var(--brand-dark); display:block; margin-bottom:4px}
+  .info-block ul{margin-left:20px; margin-top:6px; font-size:.93rem}
+  .info-block li{margin-bottom:4px}
+
+  .menu-path{
+    background:#0f172a; color:#7dd3fc; padding:12px 16px;
+    border-radius:8px; font-family:'Consolas',monospace;
+    font-size:.88rem; margin:12px 0;
+    border-left:4px solid var(--brand-gold);
+  }
+  .menu-path::before{content:"📍 "; margin-right:4px}
+
+  ol.steps{list-style:none; padding:0; margin:16px 0}
+  ol.steps > li{
+    display:flex; align-items:flex-start; gap:14px;
+    margin-bottom:14px; padding:14px 18px;
+    background:var(--brand-light); border-radius:12px;
+    border-left:5px solid var(--brand-gold);
+    transition:.2s;
+  }
+  ol.steps > li:hover{background:#dcefe2; transform:translateX(4px)}
+  ol.steps > li .step-badge{
+    background:linear-gradient(135deg,var(--brand-dark),var(--brand-green));
+    color:#fff; min-width:34px; height:34px; border-radius:50%;
+    font-weight:800; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; font-size:.95rem;
+    box-shadow:0 3px 10px rgba(13,61,46,.4);
+  }
+  ol.steps > li .step-text{flex:1; font-size:.96rem}
+  ol.steps > li .step-text strong{
+    color:var(--brand-dark); display:block;
+    margin-bottom:4px; font-size:1rem;
+  }
+  ol.steps > li .step-text code{
+    background:#0d3d2e; color:#7dd3fc; padding:2px 8px;
+    border-radius:5px; font-size:.85em;
+  }
+
+  .outcome{
+    background:linear-gradient(90deg,#ecfdf5,#f0fdf4);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--success);
+  }
+  .outcome strong{color:var(--success); display:block; margin-bottom:6px}
+  .outcome ul{margin-left:20px; font-size:.93rem}
+  .outcome li{margin-bottom:4px}
+
+  .mistakes{
+    background:linear-gradient(90deg,#fffbeb,#fef3c7);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--warn);
+  }
+  .mistakes strong{color:#b45309; display:block; margin-bottom:6px}
+  .mistakes ul{margin-left:20px; font-size:.93rem}
+  .mistakes li{margin-bottom:4px}
+
+  .troubleshoot{
+    background:linear-gradient(90deg,#fef2f2,#fee2e2);
+    border-radius:10px; padding:14px 18px; margin:16px 0;
+    border-left:5px solid var(--error);
+  }
+  .troubleshoot strong{color:var(--error); display:block; margin-bottom:6px}
+  .troubleshoot ul{margin-left:20px; font-size:.93rem}
+  .troubleshoot li{margin-bottom:6px}
+  .troubleshoot code{
+    background:#7f1d1d; color:#fecaca; padding:2px 8px;
+    border-radius:5px; font-size:.85em;
+  }
+
+  /* ============ CALLOUTS ============ */
+  .callout{
+    padding:16px 20px; border-radius:12px; margin:20px 0;
+    border-left:5px solid; display:flex; gap:14px; align-items:flex-start;
+    font-size:.94rem;
+  }
+  .callout .co-icon{font-size:1.5rem; flex-shrink:0}
+  .callout strong{display:block; margin-bottom:4px; font-size:1rem}
+  .callout.tip{background:linear-gradient(90deg,#ecfdf5,#f0fdf4); border-color:var(--success)}
+  .callout.tip strong{color:var(--success)}
+  .callout.warn{background:linear-gradient(90deg,#fffbeb,#fef3c7); border-color:var(--warn)}
+  .callout.warn strong{color:#b45309}
+  .callout.danger{background:linear-gradient(90deg,#fef2f2,#fee2e2); border-color:var(--error)}
+  .callout.danger strong{color:var(--error)}
+  .callout.info{background:linear-gradient(90deg,#eff6ff,#e0f2fe); border-color:var(--info)}
+  .callout.info strong{color:var(--info)}
+
+  /* ============ BUTTON MOCK ============ */
+  .btn-mock{
+    display:inline-block; padding:6px 16px; border-radius:8px;
+    font-weight:700; font-size:.82rem; margin:2px 4px;
+    color:#fff; box-shadow:0 3px 8px rgba(0,0,0,.15);
+  }
+  .btn-mock.primary{background:linear-gradient(135deg,var(--brand-dark),var(--brand-green))}
+  .btn-mock.success{background:linear-gradient(135deg,var(--success),#22c55e)}
+  .btn-mock.warn{background:linear-gradient(135deg,var(--warn),var(--brand-gold-2)); color:#000}
+  .btn-mock.danger{background:linear-gradient(135deg,var(--error),#ef4444)}
+  .btn-mock.gold{background:linear-gradient(135deg,var(--brand-gold),var(--brand-gold-2)); color:var(--brand-dark)}
+  .btn-mock.gray{background:#64748b}
+
+  /* ============ SCREENSHOT ============ */
+  .screenshot{
+    background:linear-gradient(135deg,#f0fdf4,#ecfdf5);
+    border:3px dashed var(--brand-gold);
+    border-radius:14px; padding:36px 24px; text-align:center;
+    margin:20px 0; color:var(--brand-dark);
+  }
+  .screenshot .s-icon{font-size:3rem; margin-bottom:10px; display:block}
+  .screenshot strong{display:block; font-size:1.05rem; margin-bottom:6px; color:var(--brand-dark)}
+  .screenshot small{color:var(--muted); font-size:.83rem}
+
+  /* ============ ROLE TABLE ============ */
+  .field-table{
+    width:100%; border-collapse:separate; border-spacing:0;
+    margin:18px 0; border-radius:12px; overflow:hidden;
+    box-shadow:0 2px 14px rgba(13,61,46,.08);
+    font-size:.9rem;
+  }
+  .field-table thead th{
+    background:linear-gradient(135deg,var(--brand-dark),var(--brand-green));
+    color:#fff; padding:14px 16px; text-align:left;
+    font-weight:700; font-size:.82rem;
+    text-transform:uppercase; letter-spacing:.5px;
+    border-bottom:3px solid var(--brand-gold);
+  }
+  .field-table tbody td{
+    padding:13px 16px; border-bottom:1px solid var(--border);
+    vertical-align:top; background:#fff;
+  }
+  .field-table tbody tr:last-child td{border-bottom:none}
+  .field-table tbody tr:nth-child(even) td{background:#fafcf9}
+  .field-table tbody tr:hover td{background:var(--brand-light)}
+  .field-table td.field-name{
+    font-weight:700; color:var(--brand-dark); min-width:180px;
+  }
+
+  /* ============ SEARCH HIGHLIGHT ============ */
+  .hl{background:#fde047; padding:1px 3px; border-radius:3px; font-weight:600}
+  .hidden{display:none !important}
+  #noResult{
+    text-align:center; padding:60px 20px; color:var(--error);
+    font-weight:700; font-size:1.15rem; display:none;
+  }
+
+  /* ============ TOP BUTTON ============ */
+  #toTop{
+    position:fixed; right:22px; bottom:22px; z-index:150;
+    background:linear-gradient(135deg,var(--brand-dark),var(--brand-green));
+    color:#fff; border:2px solid var(--brand-gold);
+    width:54px; height:54px; border-radius:50%;
+    font-size:1.3rem; cursor:pointer; display:none;
+    box-shadow:0 6px 20px rgba(13,61,46,.5);
+    transition:.25s;
+  }
+  #toTop:hover{transform:translateY(-4px) scale(1.08)}
+
+  /* ============ FOOTER ============ */
+  footer{
+    background:linear-gradient(135deg,#0d3d2e,#051e16);
+    color:#cbd5e1; text-align:center; padding:46px 24px; margin-top:60px;
+    border-top:4px solid var(--brand-gold);
+  }
+  footer .f-title{
+    color:var(--brand-gold); font-weight:800;
+    font-size:1.15rem; margin-bottom:10px;
+  }
+  footer p{font-size:.88rem; opacity:.85; margin:4px 0; color:#cbd5e1}
+
+  @media (max-width:640px){
+    header.hero h1{font-size:1.5rem}
+    section{padding:22px 20px}
+    .permission{padding:20px 22px}
+    nav.toc ol{grid-template-columns:1fr}
+    .search-bar{top:46px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="top-bar">
+  <div class="brand">
+    <span class="seal">🛡️</span>
+    <span>Peace Keepers · User Manual</span>
+  </div>
+  <span class="role-badge">🔴 SUPER ADMIN</span>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <span class="seal-big">👑</span>
+  <h1>Peace Keepers — Super Admin Guide</h1>
+  <h2>Role-Based User Manual · Part 1 of 10</h2>
+  <p class="lead">A complete step-by-step guide for the Super Admin user type. Every permission is explained click by click, with real examples from the system.</p>
+  <div class="badges">
+    <span class="badge gold">Super Admin Guide</span>
+    <span class="badge">12 Permissions</span>
+    <span class="badge">Step-by-Step</span>
+    <span class="badge">English</span>
+  </div>
+</header>
+
+<!-- ============ SEARCH ============ -->
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="🔍 Search this guide… (e.g. 'create user', 'backup', 'settings')" oninput="searchManual()">
+  <button onclick="clearSearch()">Clear</button>
+  <span class="search-stats" id="stats"></span>
+</div>
+
+<!-- ============ TOC ============ -->
+<nav class="toc">
+  <h2>📖 Table of Contents</h2>
+  <ol>
+    <li><a href="#welcome">Welcome &amp; What This Manual Covers</a></li>
+    <li><a href="#user-types">The 9 User Types (Overview)</a></li>
+    <li><a href="#login">How to Log In (Everyone)</a></li>
+    <li><a href="#admin-dashboard">Open the Dashboard</a></li>
+    <li><a href="#update-account">Update Your Account</a></li>
+    <li><a href="#change-pin">Change Your PIN</a></li>
+    <li><a href="#office-com">Office Communication</a></li>
+    <li><a href="#view-sms">View SMS</a></li>
+    <li><a href="#user-mgmt">User Management</a></li>
+    <li><a href="#create-user">Create a New User</a></li>
+    <li><a href="#edit-user">Edit a User</a></li>
+    <li><a href="#delete-user">Delete a User</a></li>
+    <li><a href="#activity-mgmt">Activity Management</a></li>
+    <li><a href="#data-mgmt">Data Management</a></li>
+    <li><a href="#backups">Database Backups</a></li>
+    <li><a href="#create-backup">Create a Backup</a></li>
+    <li><a href="#restore-backup">Restore from Backup</a></li>
+    <li><a href="#system-settings">System Settings</a></li>
+    <li><a href="#dev-support">Developer Support</a></li>
+    <li><a href="#logout">How to Log Out</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ 1. WELCOME ============ -->
+<section id="welcome">
+  <h2><span class="icon">🎯</span>1. Welcome &amp; What This Manual Covers</h2>
+
+  <p>Welcome to the <strong>Super Admin Guide</strong> — the most complete manual in the Peace Keepers series. As Super Admin, you have access to every part of the system. This guide shows you exactly how to use each permission, step by step.</p>
+
+  <div class="callout info">
+    <span class="co-icon">ℹ️</span>
+    <div>
+      <strong>Who this guide is for</strong>
+      Only users whose account type is set to <strong>Super Admin</strong>. If your account type is something else (City, District, Staff, etc.), you should read the guide that matches your role.
+    </div>
+  </div>
+
+  <h3>What You'll Learn</h3>
+  <ul style="margin-left:22px">
+    <li>How to log in and navigate the dashboard</li>
+    <li>How to update your own account and PIN</li>
+    <li>How to communicate with other users (Office Communication, SMS)</li>
+    <li>How to create, edit, and delete users of every type</li>
+    <li>How to review activity logs for accountability</li>
+    <li>How to manage system data</li>
+    <li>How to create and restore database backups</li>
+    <li>How to configure system-wide settings</li>
+    <li>How to contact developer support</li>
+  </ul>
+
+  <div class="callout tip">
+    <span class="co-icon">💡</span>
+    <div>
+      <strong>How to use this guide</strong>
+      Every permission is presented as a card. Read the "What it does" first, then follow the steps. If something goes wrong, look for the red "If something goes wrong" section at the bottom of the card.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. USER TYPES ============ -->
+<section id="user-types">
+  <h2><span class="icon">👥</span>2. The 9 User Types (Overview)</h2>
+
+  <p>The Peace Keepers system supports 9 different user types. Each one has a specific set of permissions based on their role and location in the administrative hierarchy.</p>
+
+  <table class="field-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>User Type</th>
+        <th>Scope</th>
+        <th>Summary</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td class="field-name">Super Admin</td>
+        <td>City-wide + system</td>
+        <td>Full access to everything. Manages users, backups, and system settings.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td class="field-name">City Admin</td>
+        <td>City-wide</td>
+        <td>Full access to data. Manages SMS, certificates, and sees all sub-cities.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td class="field-name">Sub City System Admin</td>
+        <td>One sub-city</td>
+        <td>Technical admin of a sub-city. Manages users within their sub-city.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td class="field-name">Sub City Admin</td>
+        <td>One sub-city</td>
+        <td>Executive admin of a sub-city. Approves certificates, sends SMS.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td class="field-name">Sub City</td>
+        <td>One sub-city</td>
+        <td>Sub-city user. Views data and submits community reports.</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td class="field-name">District System Admin</td>
+        <td>One district</td>
+        <td>Technical admin of a district. Manages users and identity cards.</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td class="field-name">District Admin</td>
+        <td>One district</td>
+        <td>District executive. Manages schedules, attendance, and officers.</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td class="field-name">Staff</td>
+        <td>Assigned area</td>
+        <td>Day-to-day data entry. Registers officers and crimes.</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td class="field-name">Ketena</td>
+        <td>One ketena</td>
+        <td>Neighborhood-level user. Registers officers and crimes for their ketena.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <span class="co-icon">⚠️</span>
+    <div>
+      <strong>You are Super Admin</strong>
+      Your account has the highest level of access. Every permission in the other 8 guides is also available to you. This guide documents your exclusive permissions plus the shared ones.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. LOGIN ============ -->
+<section id="login">
+  <h2><span class="icon">🔐</span>3. How to Log In</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">1</div>
+      <div>
+        <div class="perm-title">Log In to the System</div>
+        <div class="perm-sub">Required for every session</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Opens the system with your identity so you can access your role's features. Without logging in, no page works.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Your <strong>username</strong> (given by the administrator who created your account)</li>
+        <li>Your <strong>PIN</strong> (6+ digit number)</li>
+        <li>A modern browser (Chrome, Edge, Firefox, or Safari)</li>
+        <li>Internet connection</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">https://www.aapskeeper.gov.et</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Open your browser</strong>
+          Launch Chrome, Edge, Firefox, or Safari on your computer or phone.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Go to the login page</strong>
+          Type <code>www.aapskeeper.gov.et</code> in the address bar and press Enter.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Wait for the page to load</strong>
+          You'll see the Addis Ababa city seal, green background, and the login form.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Click the Username field</strong>
+          A cursor appears inside the box.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Type your username</strong>
+          For example: <code>SUPER_AD</code> (exactly as your administrator gave it)
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Click the PIN field</strong>
+          A cursor appears inside the box.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">7</span>
+        <div class="step-text">
+          <strong>Type your PIN</strong>
+          Each digit shows as a dot • • • • • •
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">8</span>
+        <div class="step-text">
+          <strong>Click the Login button</strong>
+          <span class="btn-mock primary">➜ Login</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">9</span>
+        <div class="step-text">
+          <strong>Wait for the dashboard</strong>
+          After 2–5 seconds, the dashboard opens.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You're on the Dashboard page</li>
+        <li>Your name appears in the top-right corner</li>
+        <li>The left menu shows Super Admin options</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Typing the PIN with wrong digits — dots are your only feedback</li>
+        <li>Adding spaces before or after the username</li>
+        <li>Using Caps Lock when it isn't needed</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Invalid username or PIN"</code> → Check spelling and caps. Try again.</li>
+        <li><code>"Account locked"</code> → Wait 15 minutes before retrying.</li>
+        <li>Page won't load → Check internet. Refresh with F5. Try another browser.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. DASHBOARD ============ -->
+<section id="admin-dashboard">
+  <h2><span class="icon">📊</span>4. Open the Dashboard</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">2</div>
+      <div>
+        <div class="perm-title">View the Super Admin Dashboard</div>
+        <div class="perm-sub">Your home page with a summary of everything</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows a high-level overview: total peace keepers, total crime cases, pending items, and system status. Also gives you quick access to all your permissions.
+    </div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Log in</strong>
+          Follow the previous section if you're not already logged in.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>You land on Dashboard automatically</strong>
+          No click needed — the dashboard is the default home page.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Read the stat cards</strong>
+          You'll see cards with numbers (Total Peace Keepers, Total Cases, etc.).
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Click the sidebar menu to explore</strong>
+          The left menu shows all your permissions.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Return to Dashboard anytime</strong>
+          Click <span class="btn-mock primary">🏠 Dashboard</span> at the top of the left menu.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You can see system-wide numbers at a glance</li>
+        <li>Any menu item is one click away</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Thinking the dashboard is read-only — you can click any card to drill in</li>
+        <li>Missing important warnings at the top — always read the red banner if it appears</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. UPDATE ACCOUNT ============ -->
+<section id="update-account">
+  <h2><span class="icon">⚙️</span>5. Update Your Account</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">3</div>
+      <div>
+        <div class="perm-title">Update Your Personal Information</div>
+        <div class="perm-sub">Your name, photo, phone, email</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you update your own profile — your name, photo, date of birth, phone number, email, department, and responsibility. Changes take effect immediately.
+    </div>
+
+    <div class="menu-path">Left menu → Update Account</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "Update Account" in the left menu</strong>
+          The Account page opens with your current details.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Review the prefilled fields</strong>
+          All fields show what the system currently has for you.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Change what you need</strong>
+          Editable fields:
+          <ul style="margin-left:20px; margin-top:6px">
+            <li>Full Name</li>
+            <li>Gender</li>
+            <li>Date of Birth</li>
+            <li>Birth Place</li>
+            <li>Telephone</li>
+            <li>Email</li>
+            <li>Department</li>
+            <li>Responsibility</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Upload a new photo if needed</strong>
+          Click <span class="btn-mock gray">📎 Choose File</span> and select a JPG or PNG under 5 MB.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Click Save</strong>
+          <span class="btn-mock success">✓ Save Changes</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Confirm the green success message</strong>
+          "Profile updated successfully"
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your new details appear everywhere your name is shown</li>
+        <li>The change is logged in Activity Management</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Changing phone without updating emergency contacts</li>
+        <li>Uploading a photo larger than 5 MB</li>
+        <li>Using special characters in the phone number (only digits allowed)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. CHANGE PIN ============ -->
+<section id="change-pin">
+  <h2><span class="icon">🔑</span>6. Change Your PIN</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">4</div>
+      <div>
+        <div class="perm-title">Change Your PIN</div>
+        <div class="perm-sub">Recommended every 3 months</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Updates your login PIN. You must know your current PIN to set a new one.
+    </div>
+
+    <div class="menu-path">Left menu → Update Account → Change PIN section</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Open Update Account</strong>
+          Click "Update Account" in the left menu.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Scroll to the Change PIN section</strong>
+          Look for three fields labeled Previous PIN, New PIN, Confirm PIN.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Type your current PIN in "Previous PIN"</strong>
+          This proves the change is really you.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Type your new PIN in "New PIN"</strong>
+          Use at least 6 digits, no 123456 or 111111.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Retype it in "Confirm PIN"</strong>
+          Both must match exactly.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Click Save</strong>
+          <span class="btn-mock success">✓ Save</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">7</span>
+        <div class="step-text">
+          <strong>Log out and log back in with the new PIN</strong>
+          This confirms the change worked.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your old PIN stops working immediately</li>
+        <li>Your new PIN is required for every future login</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Forgetting the new PIN right after changing</li>
+        <li>Reusing a PIN from another system</li>
+        <li>Choosing a PIN based on birth year or phone number</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Previous PIN incorrect"</code> → Try again, carefully</li>
+        <li><code>"PIN too short"</code> → Use at least 6 digits</li>
+        <li>Forgot your current PIN → Use "Forgot PIN" on the login page</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. OFFICE COMMUNICATION ============ -->
+<section id="office-com">
+  <h2><span class="icon">✉️</span>7. Office Communication</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">5</div>
+      <div>
+        <div class="perm-title">Send Internal Messages</div>
+        <div class="perm-sub">One-to-one messaging inside the system</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you send messages to other system users. Unlike SMS (which goes to phones), internal messages stay inside the Peace Keepers system.
+    </div>
+
+    <div class="menu-path">Left menu → Office Communication</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "Office Communication"</strong>
+          The Inbox page opens.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Click "Compose" or the ✏️ button</strong>
+          <span class="btn-mock primary">➕ Compose</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Choose the recipient</strong>
+          Search by name or username in the "To" field.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Type a subject</strong>
+          Short title, e.g. "Monday meeting request".
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Type the message</strong>
+          Full text of what you want to say.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Attach a file (optional)</strong>
+          Click <span class="btn-mock gray">📎 Attach</span> for photos or PDFs.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">7</span>
+        <div class="step-text">
+          <strong>Click Send</strong>
+          <span class="btn-mock success">✓ Send</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">8</span>
+        <div class="step-text">
+          <strong>Confirm the message is sent</strong>
+          The message appears in your Sent folder.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The recipient gets a notification on their bell icon</li>
+        <li>The message appears in their Inbox</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Sending without a subject — hard to find later</li>
+        <li>Long attachments — keep under 10 MB</li>
+        <li>Typing a wrong recipient — double-check the name</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">6</div>
+      <div>
+        <div class="perm-title">Read &amp; Reply to Messages</div>
+        <div class="perm-sub">Keep up with your inbox</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Opens messages sent to you and lets you reply.
+    </div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "Office Communication"</strong>
+          Your Inbox loads.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Click any message row</strong>
+          The full message opens.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Read the content</strong>
+          See sender, subject, body, and any attachments.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Click "Reply" to respond</strong>
+          <span class="btn-mock primary">↩ Reply</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Type your reply and click Send</strong>
+          The reply goes back to the same thread.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Optional: Delete a message</strong>
+          Click <span class="btn-mock danger">🗑️ Delete</span> to remove it from your inbox.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your reply shows in the sender's inbox</li>
+        <li>Deleted messages disappear from your view</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. VIEW SMS ============ -->
+<section id="view-sms">
+  <h2><span class="icon">💬</span>8. View SMS</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">7</div>
+      <div>
+        <div class="perm-title">View SMS History</div>
+        <div class="perm-sub">See every SMS sent in the system</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows a complete log of every SMS sent — who sent it, to whom, when, and its status (sent, pending, failed).
+    </div>
+
+    <div class="menu-path">Left menu → View SMS</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "View SMS" in the left menu</strong>
+          The SMS history page opens.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Use the search box</strong>
+          Type a keyword to find a specific message.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Filter by status</strong>
+          Use the status dropdown: All / Pending / Sent / Failed / Rejected.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Click any row</strong>
+          The full message opens with recipients, subject, body, and timestamp.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Read the delivery report</strong>
+          See how many recipients received the SMS and how many failed.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You can audit any SMS sent by any user</li>
+        <li>You can investigate failed deliveries</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Assuming "Sent" means "Delivered" — check the delivery count</li>
+        <li>Filtering too narrowly — clear filters if nothing shows</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. USER MANAGEMENT ============ -->
+<section id="user-mgmt">
+  <h2><span class="icon">👥</span>9. User Management</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">8</div>
+      <div>
+        <div class="perm-title">View the User List</div>
+        <div class="perm-sub">See every user in the system</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows every user account — their name, role, area, and status.
+    </div>
+
+    <div class="menu-path">Left menu → User Management</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "User Management" in the left menu</strong>
+          The list of all users loads.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Read the columns</strong>
+          Username, Full Name, User Type, Sub City, District, Status.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Use search</strong>
+          Type in the search box to find users by name, username, or phone.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Apply filters</strong>
+          Filter by User Type or Status using the dropdowns.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Click any row</strong>
+          A modal opens with the full user profile.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You can see all users at a glance</li>
+        <li>You can click any user to view or edit them</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. CREATE USER ============ -->
+<section id="create-user">
+  <h2><span class="icon">➕</span>10. Create a New User</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">9</div>
+      <div>
+        <div class="perm-title">Create a New User</div>
+        <div class="perm-sub">Add any of the 9 user types</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Adds a brand-new user account to the system. You can create users of any role: City, Sub City System Admin, Sub City Admin, Sub City, District System Admin, District, Staff, Ketena, or another Super Admin.
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>The user's full name</li>
+        <li>Their phone number (10 digits, starts with 09)</li>
+        <li>Their email (optional but recommended)</li>
+        <li>The role they should have</li>
+        <li>A temporary PIN (6+ digits)</li>
+        <li>Their assigned area (Sub City, District)</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → User Management → "Create New User" button</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "User Management"</strong>
+          The user list opens.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Click "Create New User"</strong>
+          <span class="btn-mock primary">➕ Create New User</span>
+          A modal form opens.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Type the username</strong>
+          Unique, lowercase, no spaces. E.g. <code>abebe.k</code>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Type the full name</strong>
+          Complete legal name.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Choose the User Type</strong>
+          Dropdown with 9 options:
+          <ul style="margin-left:20px; margin-top:6px">
+            <li>Super Admin</li>
+            <li>City Admin</li>
+            <li>Sub City System Admin</li>
+            <li>Sub City Admin</li>
+            <li>Sub City</li>
+            <li>District System Admin</li>
+            <li>District Admin</li>
+            <li>Staff</li>
+            <li>Ketena</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Type and confirm the PIN</strong>
+          At least 6 digits, same value in both boxes.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">7</span>
+        <div class="step-text">
+          <strong>Type the phone number</strong>
+          Format: <code>0912345678</code>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">8</span>
+        <div class="step-text">
+          <strong>Type the email (optional)</strong>
+          E.g. <code>abebe@aaps.gov.et</code>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">9</span>
+        <div class="step-text">
+          <strong>Choose the Sub City</strong>
+          If the user is assigned to a sub-city.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">10</span>
+        <div class="step-text">
+          <strong>Choose the District</strong>
+          If the user is assigned to a district.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">11</span>
+        <div class="step-text">
+          <strong>Click "Create User"</strong>
+          <span class="btn-mock success">✓ Create User</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">12</span>
+        <div class="step-text">
+          <strong>Confirm the green success message</strong>
+          "User created successfully"
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The new user appears in the User Management list</li>
+        <li>They can log in immediately with the PIN you set</li>
+        <li>They should change their PIN on first login</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Duplicate username — the system will reject it</li>
+        <li>Wrong User Type — hard to fix later</li>
+        <li>Weak PIN — must be at least 6 digits</li>
+        <li>Skipping Sub City for sub-city users</li>
+      </ul>
+    </div>
+
+    <div class="troubleshoot">
+      <strong>🚨 If something goes wrong</strong>
+      <ul>
+        <li><code>"Username already exists"</code> → pick a different username</li>
+        <li><code>"PIN too short"</code> → use 6+ digits</li>
+        <li><code>"Phone number invalid"</code> → must be 10 digits, starts with 09</li>
+        <li><code>"Email invalid"</code> → must contain @ and a domain</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. EDIT USER ============ -->
+<section id="edit-user">
+  <h2><span class="icon">✏️</span>11. Edit a User</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">10</div>
+      <div>
+        <div class="perm-title">Edit an Existing User</div>
+        <div class="perm-sub">Change name, role, area, or status</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you update any field of any user — including changing their role, moving them to a different area, or changing their status.
+    </div>
+
+    <div class="menu-path">Left menu → User Management → click user → Edit</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Open User Management</strong>
+          Click it in the left menu.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Find the user</strong>
+          Use search or scroll the list.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Click the pencil ✏️ icon on their row</strong>
+          <span class="btn-mock gold">✏️ Edit</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Update the fields you need</strong>
+          Editable: Full Name, Gender, Phone, Email, Identity No, Sub City, District, Ketena, Blok, Role, Status, Department, Responsibility.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Change the User Type if needed</strong>
+          Use the "User Type" dropdown.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Change the Status if needed</strong>
+          Options: Active, Pending, Inactive.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">7</span>
+        <div class="step-text">
+          <strong>Click "Save Changes"</strong>
+          <span class="btn-mock success">✓ Save Changes</span>
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The user's profile updates immediately</li>
+        <li>If you changed their role, their menu changes next time they log in</li>
+        <li>If you changed their status to Inactive, they can no longer log in</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Changing a role without telling the user</li>
+        <li>Making someone Inactive without a reason</li>
+        <li>Removing their sub-city/district assignment</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. DELETE USER ============ -->
+<section id="delete-user">
+  <h2><span class="icon">🗑️</span>12. Delete a User</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">11</div>
+      <div>
+        <div class="perm-title">Delete a User Account</div>
+        <div class="perm-sub">Permanent — cannot be undone</div>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <span class="co-icon">🚨</span>
+      <div>
+        <strong>Deleting is permanent</strong>
+        Deleted users cannot be recovered except by restoring a backup. If a user has left temporarily, set their status to <strong>Inactive</strong> instead.
+      </div>
+    </div>
+
+    <div class="menu-path">Left menu → User Management → click user → Delete</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Open User Management</strong>
+          Click it in the left menu.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Find the user</strong>
+          Use search or scroll.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Click the trash 🗑️ icon on their row</strong>
+          <span class="btn-mock danger">🗑️ Delete</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>A confirmation modal opens</strong>
+          It shows the user's name and warns that the action is permanent.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Type DELETE in the confirmation box</strong>
+          Uppercase letters, exactly "DELETE".
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Click "Confirm Delete"</strong>
+          <span class="btn-mock danger">🗑️ Confirm Delete</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">7</span>
+        <div class="step-text">
+          <strong>Confirm the success message</strong>
+          "User deleted successfully"
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>The user disappears from the list</li>
+        <li>Their session is terminated</li>
+        <li>The action is logged in Activity Management</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Deleting instead of making Inactive</li>
+        <li>Deleting a user who is still active in an investigation</li>
+        <li>Deleting your own account (the system prevents this)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. ACTIVITY MGMT ============ -->
+<section id="activity-mgmt">
+  <h2><span class="icon">📜</span>13. Activity Management</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">12</div>
+      <div>
+        <div class="perm-title">View Activity Logs</div>
+        <div class="perm-sub">Audit trail of every action in the system</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Shows a complete log of every action taken in the system — who logged in, who created what, who edited, who deleted. The log is permanent and cannot be edited.
+    </div>
+
+    <div class="info-block">
+      <strong>Filters available</strong>
+      <ul>
+        <li>Date range (from / to)</li>
+        <li>Action type: Login / Insert / Update / Delete</li>
+        <li>User name (who did the action)</li>
+        <li>Table name (which data was affected)</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → Activity Management</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "Activity Management" in the left menu</strong>
+          The log viewer opens.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Set the date range</strong>
+          Choose "From Date" and "To Date".
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Optional: choose Action Type</strong>
+          Login / Insert / Update / Delete.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Optional: choose User Name</strong>
+          Focus on one person's activity.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Optional: choose Table Name</strong>
+          Filter by data type (peace keepers, crime cases, users, etc.)
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Click Search</strong>
+          <span class="btn-mock primary">🔍 Search</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">7</span>
+        <div class="step-text">
+          <strong>Review the results</strong>
+          Each row shows: Time, User, Action, Table, Record ID, IP address.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">8</span>
+        <div class="step-text">
+          <strong>Click any row to see full details</strong>
+          You'll see old values and new values for updates.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">9</span>
+        <div class="step-text">
+          <strong>Click "Export" for a copy</strong>
+          <span class="btn-mock gray">⬇️ Export</span>
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You have a full audit trail</li>
+        <li>You can investigate suspicious activity</li>
+        <li>You can prove what happened when</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Filtering too narrowly and seeing nothing</li>
+        <li>Forgetting that logs include everyone (not just you)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14. DATA MGMT ============ -->
+<section id="data-mgmt">
+  <h2><span class="icon">📊</span>14. Data Management</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">13</div>
+      <div>
+        <div class="perm-title">Manage System Data</div>
+        <div class="perm-sub">View and export raw table data</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you view, filter, and export raw database table data. Useful for reports and audits that aren't covered by other pages.
+    </div>
+
+    <div class="menu-path">Left menu → Data Management</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "Data Management" in the left menu</strong>
+          The data viewer opens.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Choose a table from the dropdown</strong>
+          Examples: peace_keepers, crime_cases, users, attendance.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>View records</strong>
+          The first 100 records load automatically.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Use search or filters</strong>
+          Narrow down the records you want.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Export if needed</strong>
+          Click <span class="btn-mock gray">⬇️ Export CSV</span> for a downloadable copy.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>You have direct access to raw data</li>
+        <li>You can build custom reports</li>
+      </ul>
+    </div>
+
+    <div class="callout warn">
+      <span class="co-icon">⚠️</span>
+      <div>
+        <strong>Be careful with raw data</strong>
+        Data Management shows records exactly as stored. Never edit records here — always use the proper page (e.g. Peace Keeper Management) for changes so that validation rules apply.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15. BACKUPS ============ -->
+<section id="backups">
+  <h2><span class="icon">💾</span>15. Database Backups</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">14</div>
+      <div>
+        <div class="perm-title">Open Database Backups</div>
+        <div class="perm-sub">Where you create and restore backups</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Opens the backup management page. From here you can create new backups, view existing ones, download them, and restore from them.
+    </div>
+
+    <div class="menu-path">Left menu → Database Backups</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "Database Backups" in the left menu</strong>
+          The backup page opens.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Read the list</strong>
+          Each backup shows: date, size, status.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Notice the "Create New Backup" button</strong>
+          <span class="btn-mock primary">💾 Create New Backup</span>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 16. CREATE BACKUP ============ -->
+<section id="create-backup">
+  <h2><span class="icon">💾</span>16. Create a Backup</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">15</div>
+      <div>
+        <div class="perm-title">Create a New Backup</div>
+        <div class="perm-sub">Snapshot of everything, right now</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Takes a complete snapshot of all data in the system — every table, every record, every file reference. Can be restored later if anything goes wrong.
+    </div>
+
+    <div class="info-block">
+      <strong>Best practice</strong>
+      <ul>
+        <li>Create a backup every Sunday night</li>
+        <li>Always create one before major changes</li>
+        <li>Download a copy to external storage monthly</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → Database Backups → "Create New Backup"</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "Database Backups"</strong>
+          The backup list opens.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Click "Create New Backup"</strong>
+          <span class="btn-mock primary">💾 Create New Backup</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Wait for the progress bar</strong>
+          Small databases take 1–2 minutes. Large ones may take up to 10 minutes.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Wait for the completion message</strong>
+          "Backup completed successfully"
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Find the new backup in the list</strong>
+          It shows today's date and time.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Optional: Download for offsite storage</strong>
+          Click <span class="btn-mock gray">⬇️ Download</span> to save a copy to your computer.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>A new backup file appears in the list</li>
+        <li>The file is stored in <code>\backups\</code> on the server</li>
+        <li>You can restore from it any time</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Assuming the backup is offsite — it's still on the server</li>
+        <li>Deleting old backups before confirming new ones work</li>
+        <li>Forgetting that backups take time for large databases</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17. RESTORE BACKUP ============ -->
+<section id="restore-backup">
+  <h2><span class="icon">↺</span>17. Restore from Backup</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">16</div>
+      <div>
+        <div class="perm-title">Restore the Database from a Backup</div>
+        <div class="perm-sub">Replaces all current data</div>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <span class="co-icon">🚨</span>
+      <div>
+        <strong>This is the most dangerous action in the system</strong>
+        Restoring overwrites everything. Any data entered after the backup date will be permanently lost. Always notify your team before restoring. Only do this when it's truly necessary.
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>Before you start</strong>
+      <ul>
+        <li>Notify all users — they will lose access during the restore</li>
+        <li>Have the backup date ready</li>
+        <li>Create a fresh backup first (so nothing is lost)</li>
+        <li>Do it during off-hours (evening or weekend)</li>
+      </ul>
+    </div>
+
+    <div class="menu-path">Left menu → Database Backups → click backup → Restore</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Open "Database Backups"</strong>
+          See the list of available backups.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Find the backup you want to restore</strong>
+          Look for the date you need.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Click "Restore" on that row</strong>
+          <span class="btn-mock warn">↺ Restore</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Read the warning carefully</strong>
+          The system will ask you to confirm.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Type CONFIRM in the confirmation box</strong>
+          Or "RESTORE" — whichever the system asks for.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Click "Yes, Restore Now"</strong>
+          The restore begins.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">7</span>
+        <div class="step-text">
+          <strong>Wait for completion</strong>
+          This can take 5–15 minutes.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">8</span>
+        <div class="step-text">
+          <strong>Log out and log back in</strong>
+          The system will force a fresh session.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">9</span>
+        <div class="step-text">
+          <strong>Verify the data matches the backup date</strong>
+          Check a few recent records.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">10</span>
+        <div class="step-text">
+          <strong>Notify all users that the system is back online</strong>
+          They may need to re-login.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>All current data is replaced by the backup data</li>
+        <li>Any records created after the backup date are gone</li>
+        <li>The system resumes from the backup state</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Restoring during business hours — disrupts everyone</li>
+        <li>Not telling users — they'll be confused</li>
+        <li>Restoring without a current backup — data loss risk</li>
+        <li>Picking the wrong backup date</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 18. SYSTEM SETTINGS ============ -->
+<section id="system-settings">
+  <h2><span class="icon">⚙️</span>18. System Settings</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">17</div>
+      <div>
+        <div class="perm-title">Configure System Settings</div>
+        <div class="perm-sub">Only Super Admin can do this</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Lets you configure system-wide settings. Categories include general, security, notifications, SMS gateway, and others. You have access to <strong>all categories including security</strong> (Sub City and District System Admins cannot modify security settings).
+    </div>
+
+    <div class="menu-path">Left menu → System Settings</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "System Settings" in the left menu</strong>
+          The settings page opens.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Browse the categories</strong>
+          General, Security, Notifications, SMS Gateway, and more.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Click a category to expand it</strong>
+          Each category shows related settings.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Change the values you need</strong>
+          Each setting shows its current value and an input field.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Click "Save" for that category</strong>
+          <span class="btn-mock success">✓ Save Settings</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Confirm the success message</strong>
+          "Settings saved successfully"
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>New settings take effect immediately</li>
+        <li>The change is logged in Activity Management</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Changing security settings without understanding them</li>
+        <li>Disabling features that other users depend on</li>
+        <li>Forgetting to save after editing</li>
+      </ul>
+    </div>
+
+    <div class="callout warn">
+      <span class="co-icon">⚠️</span>
+      <div>
+        <strong>Coordinate with your team</strong>
+        System settings affect everyone. Before changing anything significant, notify other administrators so they know what to expect.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 19. DEV SUPPORT ============ -->
+<section id="dev-support">
+  <h2><span class="icon">🛠️</span>19. Developer Support</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">18</div>
+      <div>
+        <div class="perm-title">Contact Developer Support</div>
+        <div class="perm-sub">Report bugs and request features</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Opens a support form where you can report a bug, request a feature, or ask a technical question. Your message goes directly to the developer team.
+    </div>
+
+    <div class="menu-path">Left menu → Developer Support</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click "Developer Support" in the left menu</strong>
+          The support page opens.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Fill the "Subject" field</strong>
+          Short title — e.g. "Cannot save crime case".
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Choose a Priority</strong>
+          Low / Medium / High / Critical.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Describe the issue in detail</strong>
+          Include: what you were doing, what happened, what you expected.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">5</span>
+        <div class="step-text">
+          <strong>Attach a screenshot (optional)</strong>
+          Click <span class="btn-mock gray">📎 Attach</span> for images.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">6</span>
+        <div class="step-text">
+          <strong>Click Submit</strong>
+          <span class="btn-mock primary">📤 Submit Request</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">7</span>
+        <div class="step-text">
+          <strong>Note your tracking number</strong>
+          Use it to follow up.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your request appears in the developer queue</li>
+        <li>You can track its status on the same page</li>
+        <li>The team responds via the same channel</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Vague descriptions — "it doesn't work" tells nothing</li>
+        <li>Missing screenshots — one image saves 10 minutes</li>
+        <li>Choosing "Critical" for non-critical issues</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 20. LOGOUT ============ -->
+<section id="logout">
+  <h2><span class="icon">🚪</span>20. How to Log Out</h2>
+
+  <div class="permission">
+    <div class="perm-header">
+      <div class="perm-num">19</div>
+      <div>
+        <div class="perm-title">Log Out Safely</div>
+        <div class="perm-sub">Especially important on shared computers</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <strong>What it does</strong>
+      Ends your session and returns you to the login page. The next person to use the computer will not have access to your account.
+    </div>
+
+    <div class="menu-path">Top-right corner → your name → Logout</div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-badge">1</span>
+        <div class="step-text">
+          <strong>Click your name in the top-right corner</strong>
+          A dropdown menu appears.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">2</span>
+        <div class="step-text">
+          <strong>Click "Logout"</strong>
+          <span class="btn-mock danger">🚪 Logout</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">3</span>
+        <div class="step-text">
+          <strong>Wait for the login page to appear</strong>
+          Usually 1–2 seconds.
+        </div>
+      </li>
+      <li>
+        <span class="step-badge">4</span>
+        <div class="step-text">
+          <strong>Close the browser tab (optional)</strong>
+          Good practice for security.
+        </div>
+      </li>
+    </ol>
+
+    <div class="outcome">
+      <strong>✅ What happens next</strong>
+      <ul>
+        <li>Your session is terminated</li>
+        <li>The system requires login for the next action</li>
+        <li>Your account remains safe if the computer is left unattended</li>
+      </ul>
+    </div>
+
+    <div class="mistakes">
+      <strong>⚠️ Common mistakes to avoid</strong>
+      <ul>
+        <li>Just closing the browser instead of logging out</li>
+        <li>Leaving a session open on a shared computer</li>
+        <li>Forgetting to log out at the end of the day</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL SUMMARY ============ -->
+<section>
+  <h2><span class="icon">🎉</span>Super Admin Guide Complete</h2>
+
+  <p>You have now read the complete Super Admin guide. You know how to:</p>
+
+  <ul style="margin-left:24px; margin-top:8px">
+    <li>Log in and navigate the dashboard</li>
+    <li>Update your account and change your PIN</li>
+    <li>Send internal messages</li>
+    <li>View SMS history</li>
+    <li>Create, edit, and delete users of all 9 types</li>
+    <li>View activity logs</li>
+    <li>Manage system data</li>
+    <li>Create and restore backups</li>
+    <li>Configure system settings</li>
+    <li>Contact developer support</li>
+    <li>Log out safely</li>
+  </ul>
+
+  <div class="callout tip">
+    <span class="co-icon">🎯</span>
+    <div>
+      <strong>What's next?</strong>
+      Read the guide for the next user type — <strong>City Admin</strong> — to understand how the 8 other roles use the system. Or share this guide with anyone who will be assigned the Super Admin role.
+    </div>
+  </div>
+
+  <div class="callout gold" style="background:linear-gradient(90deg,#fef9e7,#fef3c7); border-color:var(--brand-gold)">
+    <span class="co-icon">📘</span>
+    <div>
+      <strong style="color:#92620a">Part 1 of 10 · Super Admin Guide Complete</strong>
+      <span style="color:#475569">Next: Part 2 — City Admin Guide (7 permissions)</span>
+    </div>
+  </div>
+</section>
+
+<div id="noResult">❌ No matching sections — try a different keyword.</div>
+
+</main>
+
+<button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Top">↑</button>
+
+<footer>
+  <div class="f-title">🛡️ Peace Keepers — Super Admin Guide</div>
+  <p>Addis Ababa City Peace &amp; Security Administration Bureau · Internal Use Only</p>
+  <p style="margin-top:14px;opacity:.6;font-size:.8rem">© 2026 · Part 1 of 10</p>
+</footer>
+
+<script>
+/* ============ SEARCH ============ */
+let originalHTML = new Map();
+document.querySelectorAll('main section').forEach((sec,i)=>originalHTML.set(i, sec.innerHTML));
+
+function escapeReg(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+
+function searchManual(){
+  const q = document.getElementById('searchInput').value.trim();
+  const sections = document.querySelectorAll('main section');
+  const noRes = document.getElementById('noResult');
+  const stats = document.getElementById('stats');
+  let visible = 0;
+  const kw = q.toLowerCase();
+
+  sections.forEach((sec, i)=>{
+    sec.innerHTML = originalHTML.get(i);
+    if(!kw){ sec.classList.remove('hidden'); visible++; return; }
+    const text = sec.innerText.toLowerCase();
+    if(text.includes(kw)){
+      sec.classList.remove('hidden'); visible++;
+      highlightNode(sec, kw);
+    } else sec.classList.add('hidden');
+  });
+
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if(target && target.classList.contains('hidden')) a.style.opacity='.3';
+    else a.style.opacity='1';
+  });
+
+  noRes.style.display = (kw && visible === 0) ? 'block' : 'none';
+  stats.textContent = kw ? (visible + ' section(s) match') : '';
+}
+
+function highlightNode(node, kw){
+  const regex = new RegExp('('+escapeReg(kw)+')','gi');
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => {
+      if(!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const p = n.parentNode.nodeName;
+      if(p==='SCRIPT'||p==='STYLE'||p==='CODE'||p==='PRE') return NodeFilter.FILTER_REJECT;
+      return regex.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const targets=[];
+  while(walker.nextNode()) targets.push(walker.currentNode);
+  targets.forEach(t=>{
+    const span = document.createElement('span');
+    span.innerHTML = t.nodeValue.replace(regex,'<span class="hl">$1</span>');
+    t.parentNode.replaceChild(span, t);
+  });
+}
+
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  searchManual();
+  document.getElementById('searchInput').focus();
+}
+
+const toTop = document.getElementById('toTop');
+window.addEventListener('scroll', ()=>{
+  toTop.style.display = window.scrollY > 400 ? 'block' : 'none';
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='/' && document.activeElement.tagName!=='INPUT'){
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+  if(e.key==='Escape') clearSearch();
+});
+</script>
+
+</body>
+</html>
