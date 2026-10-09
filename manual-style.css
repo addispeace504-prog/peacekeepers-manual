@@ -170,7 +170,31 @@ body {
   letter-spacing: 0.5px;
   box-shadow: 0 3px 10px rgba(201, 162, 39, 0.4);
 }
-
+/* Language toggle buttons */
+.lang-toggle {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: 0.25s;
+  font-family: inherit;
+}
+.lang-toggle:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}
+/* Hide Google Translate branding (optional) */
+.goog-logo-link,
+.goog-te-gadget span,
+.goog-te-banner-frame {
+  display: none !important;
+}
+body { top: 0 !important; }
+.skiptranslate { display: none !important; }
 /* ============================================================
    HERO HEADER — Option 1 (Approved) — Vivid Purple/Blue
    ============================================================ */
